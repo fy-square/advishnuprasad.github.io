@@ -1,0 +1,281 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Rails | Rails Murugan]]></title>
+  <link href="http://advishnuprasad.github.io/blog/categories/rails/atom.xml" rel="self"/>
+  <link href="http://advishnuprasad.github.io/"/>
+  <updated>2016-01-26T21:36:19+05:30</updated>
+  <id>http://advishnuprasad.github.io/</id>
+  <author>
+    <name><![CDATA[A D Vishnu Prasad]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Active Model Serializers]]></title>
+    <link href="http://advishnuprasad.github.io/blog/2014/11/14/active-model-serializers/"/>
+    <updated>2014-11-14T19:42:22+05:30</updated>
+    <id>http://advishnuprasad.github.io/blog/2014/11/14/active-model-serializers</id>
+    <content type="html"><![CDATA[<h3>When to use active model serializer ?</h3>
+
+<p>When you have your app running on both browser and mobile app, and if you have a backend rails server then active model serialiser is a perfect gem for serving APIs.</p>
+
+<h3>Gems</h3>
+
+<p>There are other gems like rabl but I personally prefer <code>active_model_serializers</code> gem because this is extremely easy to use and it has lot of + points.</p>
+
+<h4>Step 1 : Add it to your Gemfile</h4>
+
+<pre><code class="ruby">gem 'active_model_serializers', '~&gt; 0.9.3'
+</code></pre>
+
+<h4>Step 2 : Create a serializer</h4>
+
+<p>Create a serializer file by running
+<code>ruby
+rails g serializer user
+</code>
+which will create <code>app/serializers/user_serializer.rb</code></p>
+
+<h4>Step 3 :</h4>
+
+<p>In serializer, you can add attributes, associations, custom methods.</p>
+
+<pre><code class="ruby user_serializer.rb">class UserSerializer &lt; ActiveModel::Serializer
+  attributes :id, :name, :followers, :timestamp
+end
+</code></pre>
+
+<p>So here id and name are user fields. Followers is an association in user. timestamp is a custom method.</p>
+
+<p>You can define that method like this.</p>
+
+<pre><code class="ruby">def timestamp
+  object.created_at.strftime(“%B %d %Y”)
+end       
+</code></pre>
+
+<h4>Step 4 :</h4>
+
+<p>In your controller, make sure you are rendering json and html
+<code>ruby
+respond_with @user
+</code></p>
+
+<p>When you visit <code>/users/1.json</code></p>
+
+<pre><code class="json   ">{
+    "user": {
+        "id": 1,
+        "email": "foodoo@example.com",
+        "name": "Foo doo",
+        "microposts": [
+            {
+                "id": 1,
+                "content": "This is a micropost",
+                "user_id": 1,
+                "created_at": "2014-11-11T16:11:08.500Z",
+                "updated_at": "2014-11-11T16:11:08.500Z"
+            }
+        ],
+        "followers": [ ]
+    }
+}
+</code></pre>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Fetch Records From Sql Query - Ruby on Rails - Oci8 Cursor]]></title>
+    <link href="http://advishnuprasad.github.io/blog/2014/03/14/fetch-records-from-sql-query-ruby-on-rails-oci8-cursor/"/>
+    <updated>2014-03-14T18:50:26+05:30</updated>
+    <id>http://advishnuprasad.github.io/blog/2014/03/14/fetch-records-from-sql-query-ruby-on-rails-oci8-cursor</id>
+    <content type="html"><![CDATA[<p>There might be time when you can&rsquo;t use ActiveRecord finders but have to write custom
+queries to fetch the records.</p>
+
+<p>Below example is to fetch records using oci8 adapter.(i.e If you are using oracle db)</p>
+
+<pre><code class="ruby">users = ActiveRecord::Base.connection.execute("select id, email from users" )
+</code></pre>
+
+<p>The output will be</p>
+
+<pre><code class="ruby  ">&lt;OCI8::Cursor:0xf73ac30&gt;
+</code></pre>
+
+<p>which is nothing but a cursor object.
+But how to read the records from this cursor?.</p>
+
+<pre><code class="ruby">while r = users.fetch_hash
+   puts users
+end
+</code></pre>
+
+<p>The output will be</p>
+
+<pre><code class="json  ">{"ID"=&gt;10005, "EMAIL"=&gt;"2@gmail.com"}
+{"ID"=&gt;10006, "EMAIL"=&gt;"3@gmail.com"}
+{"ID"=&gt;10002, "EMAIL"=&gt;"1@gmail.com"}
+</code></pre>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Find Type of the Request in Controller]]></title>
+    <link href="http://advishnuprasad.github.io/blog/2012/12/15/find-type-of-the-request-in-controller/"/>
+    <updated>2012-12-15T07:51:00+05:30</updated>
+    <id>http://advishnuprasad.github.io/blog/2012/12/15/find-type-of-the-request-in-controller</id>
+    <content type="html"><![CDATA[<p>Is there any way to find the type of request in controller ?</p>
+
+<h4>Yes.</h4>
+
+<p>What we do in <code>routes.rb</code> is , define the type of request to particular action.</p>
+
+<p>But, what If we want to find out the type of request in controller .</p>
+
+<pre><code class="ruby">if request.get?
+   logger.info "Request is GET"
+elsif request.post?
+   logger.info "Request is POST"
+elsif request.xhr?
+   logger.info "Request is AJAX"
+end
+</code></pre>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Ajax Request in Ruby on Rails (UJS)]]></title>
+    <link href="http://advishnuprasad.github.io/blog/2012/10/10/ajax-request-in-ruby-on-rails-ujs/"/>
+    <updated>2012-10-10T06:09:19+05:30</updated>
+    <id>http://advishnuprasad.github.io/blog/2012/10/10/ajax-request-in-ruby-on-rails-ujs</id>
+    <content type="html"><![CDATA[<p>Many programmer uses jquery to catch click event and do $.get or $.post to access the server and print the response in a required div.</p>
+
+<p>But there is a handy way to do ajax request using UJS provided by Rails .</p>
+
+<p>Let us take an example of <code>add to wish list</code> event.</p>
+
+<p>This can be easily achieved in three easy steps.
+Now lets see how to do that in rails using UJS</p>
+
+<h4>Step 1:</h4>
+
+<p>In view(<code>show.haml.html</code>) your may have</p>
+
+<pre><code class="ruby  ">= link_to "Add to wishlist" , wish_list_path(@product) ,:id =&gt; "wish_list_link"
+</code></pre>
+
+<p>Now we make it as ajax request by adding <code>:remote =&gt; true</code></p>
+
+<pre><code class="ruby  ">= link_to "Add to wishlist" , wish_list_path(@product) ,:id =&gt; "wish_list_link" ,:remote =&gt; true
+</code></pre>
+
+<h4>Step 2:</h4>
+
+<p>Now in controller</p>
+
+<pre><code class="ruby products_controller.rb">def wish_list
+  #adding wish list 
+  respond_to do |format|
+     format.js #This line is important
+   end
+end 
+</code></pre>
+
+<h4>Step 3:</h4>
+
+<p>Now create a file named wish_list.js.erb</p>
+
+<pre><code class="erb wish_list.js.erb">$("#wish_list_link").html(''&lt;b&gt;added to wishlist&lt;/b&gt;");
+
+# Lets say you want to render a partial .
+
+$("#wish_list_linkt").html('&lt;%= escape_javascript(render :partial =&gt; "wish_list" , :locals =&gt; { :product =&gt; @product})%&gt;');
+</code></pre>
+
+<h4>Step 4(optional):</h4>
+
+<p>You can use jquery to show the loading part while server is responding</p>
+
+<pre><code class="ruby ">$("#wish_list_link").live("click",function(){
+    #show_loading_img
+})
+</code></pre>
+
+<p>That&rsquo;s it. As simple as that.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Rubber + EC2 + Rails + Oracle + Nginx + Passenger]]></title>
+    <link href="http://advishnuprasad.github.io/blog/2012/02/02/rubber-plus-ec2-plus-rails-plus-oracle-plus-nginx-plus-passenger/"/>
+    <updated>2012-02-02T03:10:36+05:30</updated>
+    <id>http://advishnuprasad.github.io/blog/2012/02/02/rubber-plus-ec2-plus-rails-plus-oracle-plus-nginx-plus-passenger</id>
+    <content type="html"><![CDATA[<h2>Deploying rails app into EC2 using Rubber</h2>
+
+<h4>Step 1</h4>
+
+<p>Get the key from aws and store it in ~/.ec2 folder</p>
+
+<pre><code class="bash">chmod 400 keyname
+</code></pre>
+
+<p>Generate the publickey</p>
+
+<pre><code class="bash">ssh-keygen -y -f keyname &gt; keyname.pub
+</code></pre>
+
+<h4>Step 2</h4>
+
+<p>Add rubber gem in your gemfile</p>
+
+<pre><code class="ruby">gem rubber
+bundle install
+</code></pre>
+
+<h4>Step 3</h4>
+
+<p>Now do vulcanize. Am using nginx and passenger</p>
+
+<pre><code class="ruby">rails g vulcanize minimal_passenger_nginx
+</code></pre>
+
+<h4>Step 4</h4>
+
+<p>Now edit following fields in <code>config/rubber/rubber.yml</code></p>
+
+<pre><code>access key
+secret access key
+account name
+app name
+app user
+image id
+image type
+</code></pre>
+
+<h4>Step 5 :</h4>
+
+<p>Deploy Part :</p>
+
+<pre><code class="ruby">cap rubber:create
+cap rubber:bootstrap 
+cap deploy
+</code></pre>
+
+<p>If you are using oracle instant client set the environment variable in server and then do <code>cap deploy</code></p>
+
+<h4>Troubleshooting:</h4>
+
+<p>Here is the way to bypass fingerprint authentication prompt</p>
+
+<p>add these two lines in deploy script.</p>
+
+<pre><code class="ruby">ssh_options[:keys] = [File.join(ENV["HOME"], ".ssh", "id_rsa")] 
+set :deploy_to, "your_deploy_folder"
+</code></pre>
+]]></content>
+  </entry>
+  
+</feed>
