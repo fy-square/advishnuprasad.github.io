@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Oracle | Rails Murugan]]></title>
+  <link href="http://advishnuprasad.github.io/blog/categories/oracle/atom.xml" rel="self"/>
+  <link href="http://advishnuprasad.github.io/"/>
+  <updated>2016-01-26T19:33:27+05:30</updated>
+  <id>http://advishnuprasad.github.io/</id>
+  <author>
+    <name><![CDATA[A D Vishnu Prasad]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Fetch Records From Sql Query - Ruby on Rails - Oci8 Cursor]]></title>
+    <link href="http://advishnuprasad.github.io/blog/2014/03/14/fetch-records-from-sql-query-ruby-on-rails-oci8-cursor/"/>
+    <updated>2014-03-14T18:50:26+05:30</updated>
+    <id>http://advishnuprasad.github.io/blog/2014/03/14/fetch-records-from-sql-query-ruby-on-rails-oci8-cursor</id>
+    <content type="html"><![CDATA[<p>There might be time when you can&rsquo;t use ActiveRecord finders but have to write custom
+queries to fetch the records.</p>
+
+<p>Below example is to fetch records using oci8 adapter.(i.e If you are using oracle db)</p>
+
+<pre><code class="ruby">users = ActiveRecord::Base.connection.execute("select id, email from users" )
+</code></pre>
+
+<p>The output will be</p>
+
+<pre><code class="ruby  ">&lt;OCI8::Cursor:0xf73ac30&gt;
+</code></pre>
+
+<p>which is nothing but a cursor object.
+But how to read the records from this cursor?.</p>
+
+<pre><code class="ruby">while r = users.fetch_hash
+   puts users
+end
+</code></pre>
+
+<p>The output will be</p>
+
+<pre><code class="json  ">{"ID"=&gt;10005, "EMAIL"=&gt;"2@gmail.com"}
+{"ID"=&gt;10006, "EMAIL"=&gt;"3@gmail.com"}
+{"ID"=&gt;10002, "EMAIL"=&gt;"1@gmail.com"}
+</code></pre>
+]]></content>
+  </entry>
+  
+</feed>

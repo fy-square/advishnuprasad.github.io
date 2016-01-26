@@ -1,9 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd" xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 <url>
+<loc>http://advishnuprasad.github.io/blog/2014/03/14/fetch-records-from-sql-query-ruby-on-rails-oci8-cursor/</loc>
+<lastmod>2014-03-14T18:50:26+05:30</lastmod>
+</url>
+<url>
 <loc>http://advishnuprasad.github.io/blog/archives/</loc>
 </url>
 <url>
 <loc>http://advishnuprasad.github.io/</loc>
+</url>
+<url>
+<loc>http://advishnuprasad.github.io/fetch-records-from-sql-query-ruby-on-rails-oci8-cursor/page.html</loc>
+</url>
+<url>
+<loc>http://advishnuprasad.github.io/blog/categories/rails/</loc>
+</url>
+<url>
+<loc>http://advishnuprasad.github.io/blog/categories/oracle/</loc>
 </url>
 </urlset>
