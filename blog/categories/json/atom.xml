@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Json | Rails Murugan]]></title>
+  <link href="http://advishnuprasad.github.io/blog/categories/json/atom.xml" rel="self"/>
+  <link href="http://advishnuprasad.github.io/"/>
+  <updated>2016-01-26T21:09:27+05:30</updated>
+  <id>http://advishnuprasad.github.io/</id>
+  <author>
+    <name><![CDATA[A D Vishnu Prasad]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Active Model Serializers]]></title>
+    <link href="http://advishnuprasad.github.io/blog/2014/11/14/active-model-serializers/"/>
+    <updated>2014-11-14T19:42:22+05:30</updated>
+    <id>http://advishnuprasad.github.io/blog/2014/11/14/active-model-serializers</id>
+    <content type="html"><![CDATA[<h3>When to use active model serializer ?</h3>
+
+<p>When you have your app running on both browser and mobile app, and if you have a backend rails server then active model serialiser is a perfect gem for serving APIs.</p>
+
+<h3>Gems</h3>
+
+<p>There are other gems like rabl but I personally prefer <code>active_model_serializers</code> gem because this is extremely easy to use and it has lot of + points.</p>
+
+<h4>Step 1 : Add it to your Gemfile</h4>
+
+<pre><code class="ruby">gem 'active_model_serializers', '~&gt; 0.9.3'
+</code></pre>
+
+<h4>Step 2 : Create a serializer</h4>
+
+<p>Create a serializer file by running
+<code>ruby
+rails g serializer user
+</code>
+which will create <code>app/serializers/user_serializer.rb</code></p>
+
+<h4>Step 3 :</h4>
+
+<p>In serializer, you can add attributes, associations, custom methods.</p>
+
+<pre><code class="ruby user_serializer.rb">class UserSerializer &lt; ActiveModel::Serializer
+  attributes :id, :name, :followers, :timestamp
+end
+</code></pre>
+
+<p>So here id and name are user fields. Followers is an association in user. timestamp is a custom method.</p>
+
+<p>You can define that method like this.</p>
+
+<pre><code class="ruby">def timestamp
+  object.created_at.strftime(“%B %d %Y”)
+end       
+</code></pre>
+
+<h4>Step 4 :</h4>
+
+<p>In your controller, make sure you are rendering json and html
+<code>ruby
+respond_with @user
+</code></p>
+
+<p>When you visit <code>/users/1.json</code></p>
+
+<pre><code class="json   ">{
+    "user": {
+        "id": 1,
+        "email": "foodoo@example.com",
+        "name": "Foo doo",
+        "microposts": [
+            {
+                "id": 1,
+                "content": "This is a micropost",
+                "user_id": 1,
+                "created_at": "2014-11-11T16:11:08.500Z",
+                "updated_at": "2014-11-11T16:11:08.500Z"
+            }
+        ],
+        "followers": [ ]
+    }
+}
+</code></pre>
+]]></content>
+  </entry>
+  
+</feed>

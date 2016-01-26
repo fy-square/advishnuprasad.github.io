@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Tips | Rails Murugan]]></title>
+  <link href="http://advishnuprasad.github.io/blog/categories/tips/atom.xml" rel="self"/>
+  <link href="http://advishnuprasad.github.io/"/>
+  <updated>2016-01-26T21:09:27+05:30</updated>
+  <id>http://advishnuprasad.github.io/</id>
+  <author>
+    <name><![CDATA[A D Vishnu Prasad]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Find Type of the Request in Controller]]></title>
+    <link href="http://advishnuprasad.github.io/blog/2012/12/15/find-type-of-the-request-in-controller/"/>
+    <updated>2012-12-15T07:51:00+05:30</updated>
+    <id>http://advishnuprasad.github.io/blog/2012/12/15/find-type-of-the-request-in-controller</id>
+    <content type="html"><![CDATA[<p>Is there any way to find the type of request in controller ?</p>
+
+<h4>Yes.</h4>
+
+<p>What we do in <code>routes.rb</code> is , define the type of request to particular action.</p>
+
+<p>But, what If we want to find out the type of request in controller .</p>
+
+<pre><code class="ruby">if request.get?
+   logger.info "Request is GET"
+elsif request.post?
+   logger.info "Request is POST"
+elsif request.xhr?
+   logger.info "Request is AJAX"
+end
+</code></pre>
+]]></content>
+  </entry>
+  
+</feed>
