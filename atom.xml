@@ -4,7 +4,11 @@
   <title><![CDATA[My Octopress Blog]]></title>
   <link href="http://advishnuprasad.github.io/atom.xml" rel="self"/>
   <link href="http://advishnuprasad.github.io/"/>
+<<<<<<< HEAD
   <updated>2016-01-26T21:26:00+05:30</updated>
+=======
+  <updated>2016-01-26T21:39:58+05:30</updated>
+>>>>>>> 0be1d82... Site updated at 2016-01-26 16:10:17 UTC
   <id>http://advishnuprasad.github.io/</id>
   <author>
     <name><![CDATA[A D Vishnu Prasad]]></name>
