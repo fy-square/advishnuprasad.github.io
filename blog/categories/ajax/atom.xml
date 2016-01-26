@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Ajax | Rails Murugan]]></title>
+  <link href="http://advishnuprasad.github.io/blog/categories/ajax/atom.xml" rel="self"/>
+  <link href="http://advishnuprasad.github.io/"/>
+  <updated>2016-01-26T21:09:27+05:30</updated>
+  <id>http://advishnuprasad.github.io/</id>
+  <author>
+    <name><![CDATA[A D Vishnu Prasad]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Ajax Request in Ruby on Rails (UJS)]]></title>
+    <link href="http://advishnuprasad.github.io/blog/2012/10/10/ajax-request-in-ruby-on-rails-ujs/"/>
+    <updated>2012-10-10T06:09:19+05:30</updated>
+    <id>http://advishnuprasad.github.io/blog/2012/10/10/ajax-request-in-ruby-on-rails-ujs</id>
+    <content type="html"><![CDATA[<p>Many programmer uses jquery to catch click event and do $.get or $.post to access the server and print the response in a required div.</p>
+
+<p>But there is a handy way to do ajax request using UJS provided by Rails .</p>
+
+<p>Let us take an example of <code>add to wish list</code> event.</p>
+
+<p>This can be easily achieved in three easy steps.
+Now lets see how to do that in rails using UJS</p>
+
+<h4>Step 1:</h4>
+
+<p>In view(<code>show.haml.html</code>) your may have</p>
+
+<pre><code class="ruby  ">= link_to "Add to wishlist" , wish_list_path(@product) ,:id =&gt; "wish_list_link"
+</code></pre>
+
+<p>Now we make it as ajax request by adding <code>:remote =&gt; true</code></p>
+
+<pre><code class="ruby  ">= link_to "Add to wishlist" , wish_list_path(@product) ,:id =&gt; "wish_list_link" ,:remote =&gt; true
+</code></pre>
+
+<h4>Step 2:</h4>
+
+<p>Now in controller</p>
+
+<pre><code class="ruby products_controller.rb">def wish_list
+  #adding wish list 
+  respond_to do |format|
+     format.js #This line is important
+   end
+end 
+</code></pre>
+
+<h4>Step 3:</h4>
+
+<p>Now create a file named wish_list.js.erb</p>
+
+<pre><code class="erb wish_list.js.erb">$("#wish_list_link").html(''&lt;b&gt;added to wishlist&lt;/b&gt;");
+
+# Lets say you want to render a partial .
+
+$("#wish_list_linkt").html('&lt;%= escape_javascript(render :partial =&gt; "wish_list" , :locals =&gt; { :product =&gt; @product})%&gt;');
+</code></pre>
+
+<h4>Step 4(optional):</h4>
+
+<p>You can use jquery to show the loading part while server is responding</p>
+
+<pre><code class="ruby ">$("#wish_list_link").live("click",function(){
+    #show_loading_img
+})
+</code></pre>
+
+<p>That&rsquo;s it. As simple as that.</p>
+]]></content>
+  </entry>
+  
+</feed>
