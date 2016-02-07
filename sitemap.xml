@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd" xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 <url>
+<loc>http://advishnuprasad.github.io/blog/2016/02/07/api-docs-using-rspecs/</loc>
+<lastmod>2016-02-07T11:43:58+05:30</lastmod>
+</url>
+<url>
 <loc>http://advishnuprasad.github.io/blog/2014/11/14/active-model-serializers/</loc>
 <lastmod>2014-11-14T19:42:22+05:30</lastmod>
 </url>
@@ -59,5 +63,14 @@
 </url>
 <url>
 <loc>http://advishnuprasad.github.io/blog/categories/serializers/</loc>
+</url>
+<url>
+<loc>http://advishnuprasad.github.io/blog/categories/rails/</loc>
+</url>
+<url>
+<loc>http://advishnuprasad.github.io/blog/categories/apidocs/</loc>
+</url>
+<url>
+<loc>http://advishnuprasad.github.io/blog/categories/rspec/</loc>
 </url>
 </urlset>
