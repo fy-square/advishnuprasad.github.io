@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Rubber | Rails Murugan]]></title>
+  <link href="http://advishnuprasad.github.io/blog/categories/rubber/atom.xml" rel="self"/>
+  <link href="http://advishnuprasad.github.io/"/>
+  <updated>2016-01-26T21:36:19+05:30</updated>
+  <id>http://advishnuprasad.github.io/</id>
+  <author>
+    <name><![CDATA[A D Vishnu Prasad]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Rubber + EC2 + Rails + Oracle + Nginx + Passenger]]></title>
+    <link href="http://advishnuprasad.github.io/blog/2012/02/02/rubber-plus-ec2-plus-rails-plus-oracle-plus-nginx-plus-passenger/"/>
+    <updated>2012-02-02T03:10:36+05:30</updated>
+    <id>http://advishnuprasad.github.io/blog/2012/02/02/rubber-plus-ec2-plus-rails-plus-oracle-plus-nginx-plus-passenger</id>
+    <content type="html"><![CDATA[<h2>Deploying rails app into EC2 using Rubber</h2>
+
+<h4>Step 1</h4>
+
+<p>Get the key from aws and store it in ~/.ec2 folder</p>
+
+<pre><code class="bash">chmod 400 keyname
+</code></pre>
+
+<p>Generate the publickey</p>
+
+<pre><code class="bash">ssh-keygen -y -f keyname &gt; keyname.pub
+</code></pre>
+
+<h4>Step 2</h4>
+
+<p>Add rubber gem in your gemfile</p>
+
+<pre><code class="ruby">gem rubber
+bundle install
+</code></pre>
+
+<h4>Step 3</h4>
+
+<p>Now do vulcanize. Am using nginx and passenger</p>
+
+<pre><code class="ruby">rails g vulcanize minimal_passenger_nginx
+</code></pre>
+
+<h4>Step 4</h4>
+
+<p>Now edit following fields in <code>config/rubber/rubber.yml</code></p>
+
+<pre><code>access key
+secret access key
+account name
+app name
+app user
+image id
+image type
+</code></pre>
+
+<h4>Step 5 :</h4>
+
+<p>Deploy Part :</p>
+
+<pre><code class="ruby">cap rubber:create
+cap rubber:bootstrap 
+cap deploy
+</code></pre>
+
+<p>If you are using oracle instant client set the environment variable in server and then do <code>cap deploy</code></p>
+
+<h4>Troubleshooting:</h4>
+
+<p>Here is the way to bypass fingerprint authentication prompt</p>
+
+<p>add these two lines in deploy script.</p>
+
+<pre><code class="ruby">ssh_options[:keys] = [File.join(ENV["HOME"], ".ssh", "id_rsa")] 
+set :deploy_to, "your_deploy_folder"
+</code></pre>
+]]></content>
+  </entry>
+  
+</feed>
