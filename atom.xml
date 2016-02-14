@@ -4,7 +4,7 @@
   <title><![CDATA[A D Vishnu Prasad]]></title>
   <link href="http://advishnuprasad.github.io/atom.xml" rel="self"/>
   <link href="http://advishnuprasad.github.io/"/>
-  <updated>2016-02-14T11:50:15+05:30</updated>
+  <updated>2016-02-14T11:52:09+05:30</updated>
   <id>http://advishnuprasad.github.io/</id>
   <author>
     <name><![CDATA[A D Vishnu Prasad]]></name>
@@ -74,7 +74,7 @@
 </span><span class='line'>    <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">name</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">Add keys to the users</span>
 </span><span class='line'>      <span class="l-Scalar-Plain">authorized_key</span><span class="p-Indicator">:</span>
 </span><span class='line'>        <span class="l-Scalar-Plain">key=&quot;{ lookup(&#39;file&#39;, &#39;{ key }&#39;) }&quot;</span>
-</span><span class='line'>        <span class="l-Scalar-Plain">user=&quot;&quot;</span>
+</span><span class='line'>        <span class="l-Scalar-Plain">user=&quot;{ user }&quot;</span>
 </span><span class='line'>        <span class="l-Scalar-Plain">state=present</span>
 </span></code></pre></td></tr></table></div></figure>
 
