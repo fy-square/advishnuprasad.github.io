@@ -4,7 +4,7 @@
   <title><![CDATA[A D Vishnu Prasad]]></title>
   <link href="http://advishnuprasad.github.io/atom.xml" rel="self"/>
   <link href="http://advishnuprasad.github.io/"/>
-  <updated>2016-02-07T18:37:37+05:30</updated>
+  <updated>2016-02-14T11:47:30+05:30</updated>
   <id>http://advishnuprasad.github.io/</id>
   <author>
     <name><![CDATA[A D Vishnu Prasad]]></name>
@@ -12,6 +12,85 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Add User]]></title>
+    <link href="http://advishnuprasad.github.io/blog/2016/02/11/add-user/"/>
+    <updated>2016-02-11T19:42:30+05:30</updated>
+    <id>http://advishnuprasad.github.io/blog/2016/02/11/add-user</id>
+    <content type="html"><![CDATA[<h3>How to provide production server access to users?</h3>
+
+<h4>Assumptions:</h4>
+
+<p>  You have  ssh access to prod servers as Ubuntu user.</p>
+
+<h5>Ansible Script for adding user</h5>
+
+<figure class='code'><figcaption><span>add_user.yml</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+</pre></td><td class='code'><pre><code class='yaml'><span class='line'><span class="c1"># ansible-playbook add_user.yml --extra-vars &quot;user=advp key=advp.pub&quot; -i ad</span>
+</span><span class='line'><span class="nn">---</span>
+</span><span class='line'><span class="p-Indicator">-</span> <span class="l-Scalar-Plain">hosts</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">all</span>
+</span><span class='line'>  <span class="l-Scalar-Plain">remote_user</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">ubuntu</span>
+</span><span class='line'>  <span class="l-Scalar-Plain">become</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">True</span>
+</span><span class='line'>  <span class="l-Scalar-Plain">become_method</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">sudo</span>
+</span><span class='line'>  <span class="l-Scalar-Plain">become_user</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">root</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="l-Scalar-Plain">tasks</span><span class="p-Indicator">:</span>
+</span><span class='line'>    <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">name</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">Add user</span>
+</span><span class='line'>      <span class="l-Scalar-Plain">user</span><span class="p-Indicator">:</span>
+</span><span class='line'>            <span class="l-Scalar-Plain">name=&quot;{ user }&quot;</span>
+</span><span class='line'>            <span class="l-Scalar-Plain">shell=/bin/bash</span>
+</span><span class='line'>            <span class="l-Scalar-Plain">state=present</span>
+</span><span class='line'>            <span class="l-Scalar-Plain">groups=staff</span>
+</span><span class='line'>            <span class="l-Scalar-Plain">append=yes</span>
+</span><span class='line'>            <span class="l-Scalar-Plain">createhome=yes</span>
+</span><span class='line'>            <span class="l-Scalar-Plain">password=&lt;password SALT&gt;</span>
+</span><span class='line'>            <span class="l-Scalar-Plain">update_password=on_create</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">name</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">Add keys to the users</span>
+</span><span class='line'>      <span class="l-Scalar-Plain">authorized_key</span><span class="p-Indicator">:</span>
+</span><span class='line'>        <span class="l-Scalar-Plain">key=&quot;{ lookup(&#39;file&#39;, &#39;{ key }&#39;) }&quot;</span>
+</span><span class='line'>        <span class="l-Scalar-Plain">user=&quot;&quot;</span>
+</span><span class='line'>        <span class="l-Scalar-Plain">state=present</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Replace <code>{</code> with double <code>{</code> in the above script.</p>
+
+<h4>Add a single user:</h4>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>ansible-playbook add_user.yml --extra-vars <span class="s2">&quot;user=advp key=&lt;user/pub/key/path&gt;&quot;</span>  -i inventory/ad
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>don&rsquo;t forget to change the user and key location in the above command.</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Generate API Documentation Using Rspec Acceptance Tests]]></title>
