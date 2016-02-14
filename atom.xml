@@ -4,7 +4,7 @@
   <title><![CDATA[A D Vishnu Prasad]]></title>
   <link href="http://advishnuprasad.github.io/atom.xml" rel="self"/>
   <link href="http://advishnuprasad.github.io/"/>
-  <updated>2016-02-14T11:47:30+05:30</updated>
+  <updated>2016-02-14T11:50:15+05:30</updated>
   <id>http://advishnuprasad.github.io/</id>
   <author>
     <name><![CDATA[A D Vishnu Prasad]]></name>
@@ -14,11 +14,11 @@
 
   
   <entry>
-    <title type="html"><![CDATA[Add User]]></title>
+    <title type="html"><![CDATA[Provide Ssh Access to User Using Ansible]]></title>
     <link href="http://advishnuprasad.github.io/blog/2016/02/11/add-user/"/>
     <updated>2016-02-11T19:42:30+05:30</updated>
     <id>http://advishnuprasad.github.io/blog/2016/02/11/add-user</id>
-    <content type="html"><![CDATA[<h3>How to provide production server access to users?</h3>
+    <content type="html"><![CDATA[<h3>How to provide production server access to users using ansible?</h3>
 
 <h4>Assumptions:</h4>
 
