@@ -4,7 +4,7 @@
   <title><![CDATA[A D Vishnu Prasad]]></title>
   <link href="http://advishnuprasad.github.io/atom.xml" rel="self"/>
   <link href="http://advishnuprasad.github.io/"/>
-  <updated>2016-02-14T11:52:09+05:30</updated>
+  <updated>2016-03-25T21:35:30+05:30</updated>
   <id>http://advishnuprasad.github.io/</id>
   <author>
     <name><![CDATA[A D Vishnu Prasad]]></name>
@@ -12,6 +12,93 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[SOAP Request From Ruby Without Savon]]></title>
+    <link href="http://advishnuprasad.github.io/blog/2016/03/25/soap-request-from-ruby-without-savon/"/>
+    <updated>2016-03-25T21:11:47+05:30</updated>
+    <id>http://advishnuprasad.github.io/blog/2016/03/25/soap-request-from-ruby-without-savon</id>
+    <content type="html"><![CDATA[<h3>Send SOAP request from ruby net/http without using Savon gem</h3>
+
+<p>You would have seen everyone is using Savon gem for sending SOAP request. But what if the service is using SOAP 1.1.
+You might want to write your own http request. Here is the way to send request with SOAP envelope body.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="nb">require</span> <span class="s1">&#39;net/https&#39;</span>
+</span><span class='line'><span class="nb">require</span> <span class="s1">&#39;uri&#39;</span>
+</span><span class='line'><span class="nb">require</span> <span class="s1">&#39;nokogiri&#39;</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1"># Create the http object</span>
+</span><span class='line'><span class="n">url</span> <span class="o">=</span> <span class="s2">&quot;http://www.webservicex.net/globalweather.asmx?WSDL&quot;</span>
+</span><span class='line'><span class="n">uri</span> <span class="o">=</span> <span class="no">URI</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+</span><span class='line'><span class="n">http</span> <span class="o">=</span> <span class="no">Net</span><span class="o">::</span><span class="no">HTTP</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">uri</span><span class="o">.</span><span class="n">host</span><span class="p">,</span> <span class="n">uri</span><span class="o">.</span><span class="n">port</span><span class="p">)</span>
+</span><span class='line'><span class="n">http</span><span class="o">.</span><span class="n">use_ssl</span> <span class="o">=</span> <span class="kp">false</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1"># Raw SOAP XML to be passed</span>
+</span><span class='line'><span class="c1"># TODO : Date should be dynamic</span>
+</span><span class='line'><span class="n">data</span> <span class="o">=</span> <span class="o">&lt;&lt;-</span><span class="no">EOF</span>
+</span><span class='line'><span class="sh">&lt;soap:Envelope xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot; xmlns:xsd=&quot;http://www.w3.org/2001/XMLSchema&quot; xmlns:soap=&quot;http://schemas.xmlsoap.org/soap/envelope/&quot;&gt;</span>
+</span><span class='line'><span class="sh">  &lt;soap:Body&gt;</span>
+</span><span class='line'><span class="sh">    &lt;GetWeather xmlns=&quot;http://www.webserviceX.NET&quot;&gt;</span>
+</span><span class='line'><span class="sh">      &lt;CityName&gt;Madras&lt;/CityName&gt;</span>
+</span><span class='line'><span class="sh">      &lt;CountryName&gt;India&lt;/CountryName&gt;</span>
+</span><span class='line'><span class="sh">    &lt;/GetWeather&gt;</span>
+</span><span class='line'><span class="sh">  &lt;/soap:Body&gt;</span>
+</span><span class='line'><span class="sh">&lt;/soap:Envelope&gt;</span>
+</span><span class='line'><span class="no">EOF</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1"># # Set Headers</span>
+</span><span class='line'><span class="c1"># SOAPAction is mandatory</span>
+</span><span class='line'><span class="n">headers</span> <span class="o">=</span> <span class="p">{</span>
+</span><span class='line'>  <span class="s1">&#39;Content-Type&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;text/xml; charset=utf-8&#39;</span><span class="p">,</span>
+</span><span class='line'>  <span class="s1">&#39;SOAPAction&#39;</span> <span class="o">=&gt;</span> <span class="s2">&quot;http://www.webserviceX.NET/GetWeather&quot;</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">result</span><span class="o">=</span> <span class="n">http</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="n">uri</span><span class="o">.</span><span class="n">path</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">headers</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1"># Parse</span>
+</span><span class='line'><span class="n">doc</span> <span class="o">=</span> <span class="no">Nokogiri</span><span class="o">::</span><span class="no">XML</span><span class="p">(</span><span class="n">result</span><span class="o">.</span><span class="n">body</span><span class="p">)</span>
+</span><span class='line'><span class="n">doc</span><span class="o">.</span><span class="n">remove_namespaces!</span> <span class="c1"># Remove namespaces from xml to make it clean</span>
+</span><span class='line'><span class="nb">p</span> <span class="n">doc</span>
+</span></code></pre></td></tr></table></div></figure>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Provide Ssh Access to User Using Ansible]]></title>

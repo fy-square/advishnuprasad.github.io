@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Soap | A D Vishnu Prasad]]></title>
+  <link href="http://advishnuprasad.github.io/blog/categories/soap/atom.xml" rel="self"/>
+  <link href="http://advishnuprasad.github.io/"/>
+  <updated>2016-03-25T21:35:30+05:30</updated>
+  <id>http://advishnuprasad.github.io/</id>
+  <author>
+    <name><![CDATA[A D Vishnu Prasad]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[SOAP Request From Ruby Without Savon]]></title>
+    <link href="http://advishnuprasad.github.io/blog/2016/03/25/soap-request-from-ruby-without-savon/"/>
+    <updated>2016-03-25T21:11:47+05:30</updated>
+    <id>http://advishnuprasad.github.io/blog/2016/03/25/soap-request-from-ruby-without-savon</id>
+    <content type="html"><![CDATA[<h3>Send SOAP request from ruby net/http without using Savon gem</h3>
+
+<p>You would have seen everyone is using Savon gem for sending SOAP request. But what if the service is using SOAP 1.1.
+You might want to write your own http request. Here is the way to send request with SOAP envelope body.</p>
+
+<pre><code class="ruby">require 'net/https'
+require 'uri'
+require 'nokogiri'
+
+# Create the http object
+url = "http://www.webservicex.net/globalweather.asmx?WSDL"
+uri = URI.parse(url)
+http = Net::HTTP.new(uri.host, uri.port)
+http.use_ssl = false
+
+# Raw SOAP XML to be passed
+# TODO : Date should be dynamic
+data = &lt;&lt;-EOF
+&lt;soap:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/"&gt;
+  &lt;soap:Body&gt;
+    &lt;GetWeather xmlns="http://www.webserviceX.NET"&gt;
+      &lt;CityName&gt;Madras&lt;/CityName&gt;
+      &lt;CountryName&gt;India&lt;/CountryName&gt;
+    &lt;/GetWeather&gt;
+  &lt;/soap:Body&gt;
+&lt;/soap:Envelope&gt;
+EOF
+
+# # Set Headers
+# SOAPAction is mandatory
+headers = {
+  'Content-Type' =&gt; 'text/xml; charset=utf-8',
+  'SOAPAction' =&gt; "http://www.webserviceX.NET/GetWeather"
+}
+
+result= http.post(uri.path, data, headers)
+
+# Parse
+doc = Nokogiri::XML(result.body)
+doc.remove_namespaces! # Remove namespaces from xml to make it clean
+p doc
+</code></pre>
+]]></content>
+  </entry>
+  
+</feed>
