@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Nfs | A D Vishnu Prasad]]></title>
+  <link href="http://advishnuprasad.github.io/blog/categories/nfs/atom.xml" rel="self"/>
+  <link href="http://advishnuprasad.github.io/"/>
+  <updated>2016-03-29T18:47:54+05:30</updated>
+  <id>http://advishnuprasad.github.io/</id>
+  <author>
+    <name><![CDATA[A D Vishnu Prasad]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Setup NFS Server and Client Using Ansible]]></title>
+    <link href="http://advishnuprasad.github.io/blog/2016/03/29/setup-nfs-server-and-client-using-ansible/"/>
+    <updated>2016-03-29T18:16:12+05:30</updated>
+    <id>http://advishnuprasad.github.io/blog/2016/03/29/setup-nfs-server-and-client-using-ansible</id>
+    <content type="html"><![CDATA[<h3>Setup NFS server and client using ansible</h3>
+
+<p>If you have a centralized server and you want to share a disk from the server, the best way is
+to use NFS model.</p>
+
+<p><img src="/images/nfs.png" alt="API docs image" /></p>
+
+<p>You might have to create a server with enough disk space. Let&rsquo;s say you have a disk with file system
+as <code>/dev/xvdb</code> and the size is 100 GB.</p>
+
+<p>Now you want to share this volume with other machines. Below is the script to do it using ansible.</p>
+
+<p>Read <a href="https://help.ubuntu.com/community/SettingUpNFSHowTo">this</a> tutorial before writing ansible script.</p>
+
+<h3>Ansible script</h3>
+
+<p>
+<figure class='code'><figcaption><span>inventory.yml</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='yaml'><span class='line'><span class="p-Indicator">[</span><span class="nv">nfs_server</span><span class="p-Indicator">]</span>
+</span><span class='line'><span class="l-Scalar-Plain">10.0.0.1&lt;/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="l-Scalar-Plain">&lt;p&gt;[nfs_clients]</span>
+</span><span class='line'><span class="l-Scalar-Plain">10.0.0.2</span>
+</span><span class='line'><span class="l-Scalar-Plain">10.0.0.3</span>
+</span></code></pre></td></tr></table></div></figure></p>
+
+<pre><code class="bash exports.j2"># /etc/exports: the access control list for filesystems which may be exported
+#               to NFS clients.  See exports(5).
+#
+# Example for NFSv2 and NFSv3:
+# /srv/homes       hostname1(rw,sync,no_subtree_check) hostname2(ro,sync,no_subtree_check)
+#
+# Example for NFSv4:
+# /srv/nfs4        gss/krb5i(rw,sync,fsid=0,crossmnt,no_subtree_check)
+# /srv/nfs4/homes  gss/krb5i(rw,sync,no_subtree_check)
+#
+/share            10.0.0.1/24(rw,sync,no_root_squash,no_subtree_check)
+</code></pre>
+
+<pre><code class="yml nfs-server.yml">---
+- hosts: nfs_server
+  remote_user: ubuntu
+  sudo: yes
+
+  tasks:
+    - name: Create mountable dir
+      file: path=/share state=directory mode=777 owner=root group=root
+
+    - name: make sure the mount drive has a filesystem
+      filesystem: fstype=ext4 dev={{ mountable_share_drive | default('/dev/xvdb') }}
+
+    - name: set mountpoints
+      mount: name=/share src={{ mountable_share_drive | default('/dev/xvdb') }} fstype=auto opts=defaults,nobootwait dump=0 passno=2 state=mounted
+
+    - name: Ensure NFS utilities are installed.
+      apt: name={{ item }} state=installed update_cache=yes
+      with_items:
+        - nfs-common
+        - nfs-kernel-server
+
+    - name: copy /etc/exports
+      template: src=exports.j2 dest=/etc/exports owner=root group=root
+
+    - name: restart nfs server
+      service: name=nfs-kernel-server state=restarted
+</code></pre>
+
+<pre><code class="yml nfs_clients.yml">- hosts: nfs_clients
+  remote_user: ubuntu
+  sudo: yes
+
+  tasks:
+    - name: Ensure NFS common is installed.
+      apt: name=nfs-common state=installed update_cache=yes
+
+    - name: Create mountable dir
+      file: path=/share state=directory mode=777 owner=root group=root
+
+    - name: set mountpoints
+      mount: name=/share src={{hostvars[groups['nfs_server'][0]]['ansible_eth0']['ipv4']['address']}}:/share fstype=nfs opts=defaults,nobootwait dump=0 passno=2 state=mounted
+</code></pre>
+
+<p></p>
+]]></content>
+  </entry>
+  
+</feed>

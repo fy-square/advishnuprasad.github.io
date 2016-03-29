@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd" xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 <url>
+<loc>http://advishnuprasad.github.io/blog/2016/03/29/setup-nfs-server-and-client-using-ansible/</loc>
+<lastmod>2016-03-29T18:16:12+05:30</lastmod>
+</url>
+<url>
 <loc>http://advishnuprasad.github.io/blog/2016/03/25/soap-request-from-ruby-without-savon/</loc>
 <lastmod>2016-03-25T21:11:47+05:30</lastmod>
 </url>
@@ -92,5 +96,11 @@
 </url>
 <url>
 <loc>http://advishnuprasad.github.io/blog/categories/soap/</loc>
+</url>
+<url>
+<loc>http://advishnuprasad.github.io/blog/categories/nfs/</loc>
+</url>
+<url>
+<loc>http://advishnuprasad.github.io/blog/categories/shared-file-system/</loc>
 </url>
 </urlset>
