@@ -4,7 +4,7 @@
   <title><![CDATA[A D Vishnu Prasad]]></title>
   <link href="http://advishnuprasad.github.io/atom.xml" rel="self"/>
   <link href="http://advishnuprasad.github.io/"/>
-  <updated>2016-03-29T18:47:54+05:30</updated>
+  <updated>2016-03-29T18:49:14+05:30</updated>
   <id>http://advishnuprasad.github.io/</id>
   <author>
     <name><![CDATA[A D Vishnu Prasad]]></name>
@@ -72,7 +72,7 @@ as <code>/dev/xvdb</code> and the size is 100 GB.</p>
 </span><span class='line'><span class="c"># /srv/nfs4        gss/krb5i(rw,sync,fsid=0,crossmnt,no_subtree_check)</span>
 </span><span class='line'><span class="c"># /srv/nfs4/homes  gss/krb5i(rw,sync,no_subtree_check)</span>
 </span><span class='line'><span class="c">#</span>
-</span><span class='line'>/share            10.0.0.1/24<span class="o">(</span>rw,sync,no_root_squash,no_subtree_check<span class="o">)</span>
+</span><span class='line'>/nfs            10.0.0.1/24<span class="o">(</span>rw,sync,no_root_squash,no_subtree_check<span class="o">)</span>
 </span></code></pre></td></tr></table></div></figure>
 
 
@@ -157,10 +157,10 @@ as <code>/dev/xvdb</code> and the size is 100 GB.</p>
 </span><span class='line'>      <span class="l-Scalar-Plain">apt</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">name=nfs-common state=installed update_cache=yes</span>
 </span><span class='line'>
 </span><span class='line'>    <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">name</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">Create mountable dir</span>
-</span><span class='line'>      <span class="l-Scalar-Plain">file</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">path=/share state=directory mode=777 owner=root group=root</span>
+</span><span class='line'>      <span class="l-Scalar-Plain">file</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">path=/nfs state=directory mode=777 owner=root group=root</span>
 </span><span class='line'>
 </span><span class='line'>    <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">name</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">set mountpoints</span>
-</span><span class='line'>      <span class="l-Scalar-Plain">mount</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">name=/share src={{hostvars[groups[&#39;nfs_server&#39;][0]][&#39;ansible_eth0&#39;][&#39;ipv4&#39;][&#39;address&#39;]}}:/share fstype=nfs opts=defaults,nobootwait dump=0 passno=2 state=mounted</span>
+</span><span class='line'>      <span class="l-Scalar-Plain">mount</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">name=/nfs src={{hostvars[groups[&#39;nfs_server&#39;][0]][&#39;ansible_eth0&#39;][&#39;ipv4&#39;][&#39;address&#39;]}}:/share fstype=nfs opts=defaults,nobootwait dump=0 passno=2 state=mounted</span>
 </span></code></pre></td></tr></table></div></figure>
 
 

@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Ansible | A D Vishnu Prasad]]></title>
   <link href="http://advishnuprasad.github.io/blog/categories/ansible/atom.xml" rel="self"/>
   <link href="http://advishnuprasad.github.io/"/>
-  <updated>2016-03-29T18:47:54+05:30</updated>
+  <updated>2016-03-29T18:49:14+05:30</updated>
   <id>http://advishnuprasad.github.io/</id>
   <author>
     <name><![CDATA[A D Vishnu Prasad]]></name>
@@ -59,7 +59,7 @@ as <code>/dev/xvdb</code> and the size is 100 GB.</p>
 # /srv/nfs4        gss/krb5i(rw,sync,fsid=0,crossmnt,no_subtree_check)
 # /srv/nfs4/homes  gss/krb5i(rw,sync,no_subtree_check)
 #
-/share            10.0.0.1/24(rw,sync,no_root_squash,no_subtree_check)
+/nfs            10.0.0.1/24(rw,sync,no_root_squash,no_subtree_check)
 </code></pre>
 
 <pre><code class="yml nfs-server.yml">---
@@ -99,10 +99,10 @@ as <code>/dev/xvdb</code> and the size is 100 GB.</p>
       apt: name=nfs-common state=installed update_cache=yes
 
     - name: Create mountable dir
-      file: path=/share state=directory mode=777 owner=root group=root
+      file: path=/nfs state=directory mode=777 owner=root group=root
 
     - name: set mountpoints
-      mount: name=/share src={{hostvars[groups['nfs_server'][0]]['ansible_eth0']['ipv4']['address']}}:/share fstype=nfs opts=defaults,nobootwait dump=0 passno=2 state=mounted
+      mount: name=/nfs src={{hostvars[groups['nfs_server'][0]]['ansible_eth0']['ipv4']['address']}}:/share fstype=nfs opts=defaults,nobootwait dump=0 passno=2 state=mounted
 </code></pre>
 
 <p></p>
