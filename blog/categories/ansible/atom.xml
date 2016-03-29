@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Ansible | A D Vishnu Prasad]]></title>
   <link href="http://advishnuprasad.github.io/blog/categories/ansible/atom.xml" rel="self"/>
   <link href="http://advishnuprasad.github.io/"/>
-  <updated>2016-03-27T09:53:31+05:30</updated>
+  <updated>2016-03-29T16:02:04+05:30</updated>
   <id>http://advishnuprasad.github.io/</id>
   <author>
     <name><![CDATA[A D Vishnu Prasad]]></name>
@@ -26,34 +26,71 @@
 
 <h5>Ansible Script for adding user</h5>
 
-<pre><code class="yml add_user.yml"># ansible-playbook add_user.yml --extra-vars "user=advp key=advp.pub" -i ad
----
-- hosts: all
-  remote_user: ubuntu
-  become: True
-  become_method: sudo
-  become_user: root
+<p>
+<figure class='code'><figcaption><span>add_user.yml</p></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+</pre></td><td class='code'><pre><code class='yaml'><span class='line'><span class="l-Scalar-Plain">&lt;h1&gt;ansible-playbook add_user.yml &amp;ndash;extra-vars &amp;ldquo;user=advp key=advp.pub&amp;rdquo; -i ad&lt;/h1&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="l-Scalar-Plain">&lt;hr /&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="l-Scalar-Plain">&lt;ul&gt;</span>
+</span><span class='line'><span class="l-Scalar-Plain">&lt;li&gt;&lt;p&gt;hosts</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">all</span>
+</span><span class='line'><span class="l-Scalar-Plain">remote_user</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">ubuntu</span>
+</span><span class='line'><span class="l-Scalar-Plain">become</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">True</span>
+</span><span class='line'><span class="l-Scalar-Plain">become_method</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">sudo</span>
+</span><span class='line'><span class="l-Scalar-Plain">become_user</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">root&lt;/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="l-Scalar-Plain">&lt;p&gt;tasks:&lt;/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="l-Scalar-Plain">&lt;ul&gt;</span>
+</span><span class='line'><span class="l-Scalar-Plain">&lt;li&gt;&lt;p&gt;name</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">Add user</span>
+</span><span class='line'><span class="l-Scalar-Plain">user</span><span class="p-Indicator">:</span>
+</span><span class='line'>      <span class="l-Scalar-Plain">name=&amp;ldquo;{{ user }}&amp;rdquo;</span>
+</span><span class='line'>      <span class="l-Scalar-Plain">shell=/bin/bash</span>
+</span><span class='line'>      <span class="l-Scalar-Plain">state=present</span>
+</span><span class='line'>      <span class="l-Scalar-Plain">groups=staff</span>
+</span><span class='line'>      <span class="l-Scalar-Plain">append=yes</span>
+</span><span class='line'>      <span class="l-Scalar-Plain">createhome=yes</span>
+</span><span class='line'>      <span class="l-Scalar-Plain">password=&lt;password SALT&gt;</span>
+</span><span class='line'>      <span class="l-Scalar-Plain">update_password=on_create&lt;/p&gt;&lt;/li&gt;</span>
+</span><span class='line'><span class="l-Scalar-Plain">&lt;li&gt;&lt;p&gt;name</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">Add keys to the users</span>
+</span><span class='line'><span class="l-Scalar-Plain">authorized_key</span><span class="p-Indicator">:</span>
+</span><span class='line'>  <span class="l-Scalar-Plain">key=&amp;ldquo;{{ lookup(&amp;lsquo;file&amp;rsquo;, &amp;lsquo;{{ key }}&amp;rsquo;) }}&amp;rdquo;</span>
+</span><span class='line'>  <span class="l-Scalar-Plain">user=&amp;ldquo;{{ user }}&amp;rdquo;</span>
+</span><span class='line'>  <span class="l-Scalar-Plain">state=present</span>
+</span></code></pre></td></tr></table></div></figure>
+</p></li>
+</ul>
+</li>
+</ul>
 
-  tasks:
-    - name: Add user
-      user:
-            name="{ user }"
-            shell=/bin/bash
-            state=present
-            groups=staff
-            append=yes
-            createhome=yes
-            password=&lt;password SALT&gt;
-            update_password=on_create
-
-    - name: Add keys to the users
-      authorized_key:
-        key="{ lookup('file', '{ key }') }"
-        user="{ user }"
-        state=present
-</code></pre>
-
-<p>Replace <code>{</code> with double <code>{</code> in the above script.</p>
 
 <h4>Add a single user:</h4>
 

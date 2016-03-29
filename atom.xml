@@ -4,7 +4,7 @@
   <title><![CDATA[A D Vishnu Prasad]]></title>
   <link href="http://advishnuprasad.github.io/atom.xml" rel="self"/>
   <link href="http://advishnuprasad.github.io/"/>
-  <updated>2016-03-27T09:53:31+05:30</updated>
+  <updated>2016-03-29T16:02:04+05:30</updated>
   <id>http://advishnuprasad.github.io/</id>
   <author>
     <name><![CDATA[A D Vishnu Prasad]]></name>
@@ -149,7 +149,7 @@ You might want to write your own http request. Here is the way to send request w
 </span><span class='line'>  <span class="l-Scalar-Plain">tasks</span><span class="p-Indicator">:</span>
 </span><span class='line'>    <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">name</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">Add user</span>
 </span><span class='line'>      <span class="l-Scalar-Plain">user</span><span class="p-Indicator">:</span>
-</span><span class='line'>            <span class="l-Scalar-Plain">name=&quot;{ user }&quot;</span>
+</span><span class='line'>            <span class="l-Scalar-Plain">name=&quot;{{ user }}&quot;</span>
 </span><span class='line'>            <span class="l-Scalar-Plain">shell=/bin/bash</span>
 </span><span class='line'>            <span class="l-Scalar-Plain">state=present</span>
 </span><span class='line'>            <span class="l-Scalar-Plain">groups=staff</span>
@@ -160,13 +160,11 @@ You might want to write your own http request. Here is the way to send request w
 </span><span class='line'>
 </span><span class='line'>    <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">name</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">Add keys to the users</span>
 </span><span class='line'>      <span class="l-Scalar-Plain">authorized_key</span><span class="p-Indicator">:</span>
-</span><span class='line'>        <span class="l-Scalar-Plain">key=&quot;{ lookup(&#39;file&#39;, &#39;{ key }&#39;) }&quot;</span>
-</span><span class='line'>        <span class="l-Scalar-Plain">user=&quot;{ user }&quot;</span>
+</span><span class='line'>        <span class="l-Scalar-Plain">key=&quot;{{ lookup(&#39;file&#39;, &#39;{{ key }}&#39;) }}&quot;</span>
+</span><span class='line'>        <span class="l-Scalar-Plain">user=&quot;{{ user }}&quot;</span>
 </span><span class='line'>        <span class="l-Scalar-Plain">state=present</span>
 </span></code></pre></td></tr></table></div></figure>
 
-
-<p>Replace <code>{</code> with double <code>{</code> in the above script.</p>
 
 <h4>Add a single user:</h4>
 
