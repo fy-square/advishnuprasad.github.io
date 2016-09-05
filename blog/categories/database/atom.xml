@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Database | A D Vishnu Prasad]]></title>
+  <link href="http://advishnuprasad.github.io/blog/categories/database/atom.xml" rel="self"/>
+  <link href="http://advishnuprasad.github.io/"/>
+  <updated>2016-09-05T13:29:32+05:30</updated>
+  <id>http://advishnuprasad.github.io/</id>
+  <author>
+    <name><![CDATA[A D Vishnu Prasad]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Creating a Postgres Master and Slave Streaming Server With S3 Backup]]></title>
+    <link href="http://advishnuprasad.github.io/blog/2016/09/05/creating-a-postgres-master-and-slave-streaming-server-with-s3-backup/"/>
+    <updated>2016-09-05T13:01:13+05:30</updated>
+    <id>http://advishnuprasad.github.io/blog/2016/09/05/creating-a-postgres-master-and-slave-streaming-server-with-s3-backup</id>
+    <content type="html"><![CDATA[<h3>Setup</h3>
+
+<p><img src="http://localhost:4000/images/db.png" alt="API docs image" />
+<sub><sup> * Image credit: google images </sub></sup></p>
+
+<h3>Master server setup</h3>
+
+<pre><code class="bash">
+sudo sh -c 'echo "deb http://apt.postgresql.org/pub/repos/apt/ `lsb_release -cs`-pgdg main" &gt;&gt; /etc/apt/sources.list.d/pgdg.list'
+wget -q https://www.postgresql.org/media/keys/ACCC4CF8.asc -O - | sudo apt-key add -
+sudo apt-get update
+sudo apt-get install postgresql postgresql-contrib
+</code></pre>
+
+<p>Create user for replication</p>
+
+<pre><code class="bash">sudo su postgres
+psql
+CREATE USER replicator REPLICATION LOGIN ENCRYPTED PASSWORD 'password';
+</code></pre>
+
+<p>Edit the following line in postgresql.conf</p>
+
+<pre><code class="sql /etc/postgresql/9.5/postgresql.conf">wal_level = hot_standby
+max_wal_senders = 3
+wal_keep_segments = 8
+</code></pre>
+
+<p>Add the following line in pg_hba.conf</p>
+
+<pre><code class="sql /etc/postgresql/9.5/pg_hba.conf">host     replication     replicator      &lt;slave ip&gt;            md5
+</code></pre>
+
+<p>Restart master postgres.</p>
+
+<h3>Slave server setup</h3>
+
+<p>Setup postgresql 9.5 in slave server.
+Stop the server before chaning any configurations
+<code>bash
+sudo su postgres
+service postgresql stop
+</code></p>
+
+<p>Edit the following line in postgresql.conf</p>
+
+<pre><code class="sql /etc/postgresql/9.5/postgresql.conf">wal_level = hot_standby
+hot_standby = on
+</code></pre>
+
+<p>Pull base backup from master server</p>
+
+<pre><code class="sql">rm -rf /var/lib/postgresql/9.5/main
+pg_basebackup -h &lt;master_ip&gt; -D /var/lib/postgresql/9.5/main -U replicator -v -P
+</code></pre>
+
+<p>Create a recovery file for streaming
+<code>sql /var/lib/postgresql/9.5/main/recovery.conf
+    standby_mode = 'on'
+    primary_conninfo = 'host=&lt;master_ip&gt; port=5432 user=replicator password=password'
+    trigger_file = '/var/lib/postgresql.trigger'
+</code></p>
+
+<p>Now start the slave server
+<code>bash
+service postgresql start
+</code></p>
+
+<p>Run the following command in master to check whether replication is on or not.
+<code>sql
+select * from pg_stat_replication;
+</code></p>
+
+<h2>Send Wal-E files to S3 for backup</h2>
+
+<p>Run the following commands to setup wal-e</p>
+
+<pre><code class="bash">sudo su
+sudo apt-get install daemontools libevent-dev python-all-dev lzop pv
+sudo apt-get install python-setuptools
+sudo easy_install pip
+sudo pip install wal-e --upgrade
+</code></pre>
+
+<p>Add your s3 credentials
+<code>bash
+mkdir -p /etc/wal-e.d/env
+echo &lt;ACCESS_KEY&gt; &gt; /etc/wal-e.d/env/AWS_ACCESS_KEY_ID
+echo &lt;SECRET_KEY&gt; &gt; /etc/wal-e.d/env/AWS_SECRET_ACCESS_KEY
+echo 's3://&lt;bucket_path&gt;' &gt; /etc/wal-e.d/env/WALE_S3_PREFIX
+echo 'us-east-1' &gt; /etc/wal-e.d/env/AWS_REGION
+chown -R root:postgres /etc/wal-e.d
+</code></p>
+
+<p>Create a base backup
+<code>bash
+envdir /etc/wal-e.d/env wal-e backup-push $PG_DATA
+</code></p>
+
+<p>List all the backup files
+<code>bash
+envdir /etc/wal-e.d/env /usr/local/bin/wal-e backup-list
+</code></p>
+
+<p>Push Latest backup from S3
+<code>bash
+envdir /etc/wal-e.d/env /usr/local/bin/wal-e backup-fetch LATEST
+</code></p>
+
+<p>Setup daily backup push crontab
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>crontab -e
+</span><span class='line'>/usr/bin/envdir /etc/wal-e.d/env /usr/local/bin/wal-e backup-push /e_data/main/ &gt; /tmp/postgres_wale_backup_push.log<span class="p">;</span>&lt;/p&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;h1&gt;keep last <span class="m">5</span> base backups&lt;/h1&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;/usr/bin/envdir /etc/wal-e.d/env /usr/local/bin/wal-e delete <span class="p">&amp;</span>ndash<span class="p">;</span>confirm retain <span class="m">5</span> &gt; /tmp/postgres_wale_backup_delete.log<span class="p">;</span>
+</span></code></pre></td></tr></table></div></figure></p>
+
+<p>Please comment here if you face any problems during the setup.</p>
+]]></content>
+  </entry>
+  
+</feed>

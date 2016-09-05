@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd" xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 <url>
+<loc>http://advishnuprasad.github.io/blog/2016/09/05/creating-a-postgres-master-and-slave-streaming-server-with-s3-backup/</loc>
+<lastmod>2016-09-05T13:01:13+05:30</lastmod>
+</url>
+<url>
 <loc>http://advishnuprasad.github.io/blog/2016/03/29/setup-nfs-server-and-client-using-ansible/</loc>
 <lastmod>2016-03-29T18:16:12+05:30</lastmod>
 </url>
@@ -104,6 +108,21 @@
 <loc>http://advishnuprasad.github.io/blog/categories/shared-file-system/</loc>
 </url>
 <url>
+<loc>http://advishnuprasad.github.io/blog/categories/postgres/</loc>
+</url>
+<url>
+<loc>http://advishnuprasad.github.io/blog/categories/database/</loc>
+</url>
+<url>
+<loc>http://advishnuprasad.github.io/blog/categories/streaming/</loc>
+</url>
+<url>
+<loc>http://advishnuprasad.github.io/blog/categories/wal-e/</loc>
+</url>
+<url>
+<loc>http://advishnuprasad.github.io/blog/categories/s3/</loc>
+</url>
+<url>
 <loc>http://advishnuprasad.github.io/posts/2/</loc>
 </url>
 <url>
@@ -129,5 +148,8 @@
 </url>
 <url>
 <loc>http://advishnuprasad.github.io/posts/10/</loc>
+</url>
+<url>
+<loc>http://advishnuprasad.github.io/posts/11/</loc>
 </url>
 </urlset>

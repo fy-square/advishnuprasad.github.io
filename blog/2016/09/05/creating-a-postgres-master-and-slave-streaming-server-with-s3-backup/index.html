@@ -1,0 +1,409 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Creating a Postgres Master and Slave Streaming Server With S3 Backup - A D Vishnu Prasad</title>
+  <meta name="author" content="A D Vishnu Prasad">
+
+  
+  <meta name="description" content="Setup * Image credit: google images Master server setup 1
+2
+3
+4
+sudo sh -c &#39;echo &quot;deb http://apt.postgresql.org/pub/repos/apt/ `lsb_release &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://advishnuprasad.github.io/blog/2016/09/05/creating-a-postgres-master-and-slave-streaming-server-with-s3-backup/">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="A D Vishnu Prasad" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="/javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="//fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="//fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">A D Vishnu Prasad</a></h1>
+  
+    <h2>Ruby on Rails and DevOps</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="https://www.google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="sitesearch" value="advishnuprasad.github.io">
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">Creating a Postgres Master and Slave Streaming Server With S3 Backup</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2016-09-05T13:01:13+05:30'><span class='date'><span class='date-month'>Sep</span> <span class='date-day'>5</span><span class='date-suffix'>th</span>, <span class='date-year'>2016</span></span> <span class='time'>1:01 pm</span></time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><h3>Setup</h3>
+
+<p><img src="http://localhost:4000/images/db.png" alt="API docs image" />
+<sub><sup> * Image credit: google images </sub></sup></p>
+
+<h3>Master server setup</h3>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>sudo sh -c <span class="s1">&#39;echo &quot;deb http://apt.postgresql.org/pub/repos/apt/ `lsb_release -cs`-pgdg main&quot; &gt;&gt; /etc/apt/sources.list.d/pgdg.list&#39;</span>
+</span><span class='line'>wget -q https://www.postgresql.org/media/keys/ACCC4CF8.asc -O - <span class="p">|</span> sudo apt-key add -
+</span><span class='line'>sudo apt-get update
+</span><span class='line'>sudo apt-get install postgresql postgresql-contrib
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Create user for replication</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>sudo su postgres
+</span><span class='line'>psql
+</span><span class='line'>CREATE USER replicator REPLICATION LOGIN ENCRYPTED PASSWORD <span class="s1">&#39;password&#39;</span><span class="p">;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Edit the following line in postgresql.conf</p>
+
+<figure class='code'><figcaption><span>/etc/postgresql/9.5/postgresql.conf</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='sql'><span class='line'><span class="n">wal_level</span> <span class="o">=</span> <span class="n">hot_standby</span>
+</span><span class='line'><span class="n">max_wal_senders</span> <span class="o">=</span> <span class="mi">3</span>
+</span><span class='line'><span class="n">wal_keep_segments</span> <span class="o">=</span> <span class="mi">8</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Add the following line in pg_hba.conf</p>
+
+<figure class='code'><figcaption><span>/etc/postgresql/9.5/pg_hba.conf</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='sql'><span class='line'><span class="k">host</span>     <span class="n">replication</span>     <span class="n">replicator</span>      <span class="o">&lt;</span><span class="n">slave</span> <span class="n">ip</span><span class="o">&gt;</span>            <span class="n">md5</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Restart master postgres.</p>
+
+<h3>Slave server setup</h3>
+
+<p>Setup postgresql 9.5 in slave server.
+Stop the server before chaning any configurations</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>sudo su postgres
+</span><span class='line'>service postgresql stop
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Edit the following line in postgresql.conf</p>
+
+<figure class='code'><figcaption><span>/etc/postgresql/9.5/postgresql.conf</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='sql'><span class='line'><span class="n">wal_level</span> <span class="o">=</span> <span class="n">hot_standby</span>
+</span><span class='line'><span class="n">hot_standby</span> <span class="o">=</span> <span class="k">on</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Pull base backup from master server</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='sql'><span class='line'><span class="n">rm</span> <span class="o">-</span><span class="n">rf</span> <span class="o">/</span><span class="n">var</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">postgresql</span><span class="o">/</span><span class="mi">9</span><span class="p">.</span><span class="mi">5</span><span class="o">/</span><span class="n">main</span>
+</span><span class='line'><span class="n">pg_basebackup</span> <span class="o">-</span><span class="n">h</span> <span class="o">&lt;</span><span class="n">master_ip</span><span class="o">&gt;</span> <span class="o">-</span><span class="n">D</span> <span class="o">/</span><span class="n">var</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">postgresql</span><span class="o">/</span><span class="mi">9</span><span class="p">.</span><span class="mi">5</span><span class="o">/</span><span class="n">main</span> <span class="o">-</span><span class="n">U</span> <span class="n">replicator</span> <span class="o">-</span><span class="n">v</span> <span class="o">-</span><span class="n">P</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Create a recovery file for streaming</p>
+
+<figure class='code'><figcaption><span>/var/lib/postgresql/9.5/main/recovery.conf</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='sql'><span class='line'><span class="n">standby_mode</span> <span class="o">=</span> <span class="s1">&#39;on&#39;</span>
+</span><span class='line'><span class="n">primary_conninfo</span> <span class="o">=</span> <span class="s1">&#39;host=&lt;master_ip&gt; port=5432 user=replicator password=password&#39;</span>
+</span><span class='line'><span class="n">trigger_file</span> <span class="o">=</span> <span class="s1">&#39;/var/lib/postgresql.trigger&#39;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Now start the slave server</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>service postgresql start
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Run the following command in master to check whether replication is on or not.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='sql'><span class='line'><span class="k">select</span> <span class="o">*</span> <span class="k">from</span> <span class="n">pg_stat_replication</span><span class="p">;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>Send Wal-E files to S3 for backup</h2>
+
+<p>Run the following commands to setup wal-e</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>sudo su
+</span><span class='line'>sudo apt-get install daemontools libevent-dev python-all-dev lzop pv
+</span><span class='line'>sudo apt-get install python-setuptools
+</span><span class='line'>sudo easy_install pip
+</span><span class='line'>sudo pip install wal-e --upgrade
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Add your s3 credentials</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>mkdir -p /etc/wal-e.d/env
+</span><span class='line'><span class="nb">echo</span> &lt;ACCESS_KEY&gt; &gt; /etc/wal-e.d/env/AWS_ACCESS_KEY_ID
+</span><span class='line'><span class="nb">echo</span> &lt;SECRET_KEY&gt; &gt; /etc/wal-e.d/env/AWS_SECRET_ACCESS_KEY
+</span><span class='line'><span class="nb">echo</span> <span class="s1">&#39;s3://&lt;bucket_path&gt;&#39;</span> &gt; /etc/wal-e.d/env/WALE_S3_PREFIX
+</span><span class='line'><span class="nb">echo</span> <span class="s1">&#39;us-east-1&#39;</span> &gt; /etc/wal-e.d/env/AWS_REGION
+</span><span class='line'>chown -R root:postgres /etc/wal-e.d
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Create a base backup</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>envdir /etc/wal-e.d/env wal-e backup-push <span class="nv">$PG_DATA</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>List all the backup files</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>envdir /etc/wal-e.d/env /usr/local/bin/wal-e backup-list
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Push Latest backup from S3</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>envdir /etc/wal-e.d/env /usr/local/bin/wal-e backup-fetch LATEST
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Setup daily backup push crontab</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>crontab -e
+</span><span class='line'>/usr/bin/envdir /etc/wal-e.d/env /usr/local/bin/wal-e backup-push /e_data/main/ &gt; /tmp/postgres_wale_backup_push.log<span class="p">;</span>
+</span><span class='line'><span class="c">#keep last 5 base backups</span>
+</span><span class='line'>/usr/bin/envdir /etc/wal-e.d/env /usr/local/bin/wal-e delete --confirm retain <span class="m">5</span> &gt; /tmp/postgres_wale_backup_delete.log<span class="p">;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Please comment here if you face any problems during the setup.</p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">A D Vishnu Prasad</span></span>
+
+      
+
+
+
+
+<time class='entry-date' datetime='2016-09-05T13:01:13+05:30'><span class='date'><span class='date-month'>Sep</span> <span class='date-day'>5</span><span class='date-suffix'>th</span>, <span class='date-year'>2016</span></span> <span class='time'>1:01 pm</span></time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/database/'>database</a>, <a class='category' href='/blog/categories/postgres/'>postgres</a>, <a class='category' href='/blog/categories/s3/'>s3</a>, <a class='category' href='/blog/categories/streaming/'>streaming</a>, <a class='category' href='/blog/categories/wal-e/'>wal-e</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2016/03/29/setup-nfs-server-and-client-using-ansible/" title="Previous Post: Setup NFS server and client using ansible">&laquo; Setup NFS server and client using ansible</a>
+      
+      
+    </p>
+  </footer>
+</article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2016/09/05/creating-a-postgres-master-and-slave-streaming-server-with-s3-backup/">Creating a Postgres Master and Slave Streaming Server With S3 Backup</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2016/03/29/setup-nfs-server-and-client-using-ansible/">Setup NFS Server and Client Using Ansible</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2016/03/25/soap-request-from-ruby-without-savon/">SOAP Request From Ruby Without Savon</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2016/02/11/add-user/">Provide Ssh Access to User Using Ansible</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2016/02/07/api-docs-using-rspecs/">Generate API Documentation Using Rspec Acceptance Tests</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/11/14/active-model-serializers/">Active Model Serializers</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/04/26/multiple-solrs-in-single-solr-instance/">Multiple Solr Servers in Single Machine</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/03/14/fetch-records-from-sql-query-ruby-on-rails-oci8-cursor/">Fetch Records From Sql Query - Ruby on Rails - Oci8 Cursor</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2012/12/15/find-type-of-the-request-in-controller/">Find Type of the Request in Controller</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2012/10/10/ajax-request-in-ruby-on-rails-ujs/">Ajax Request in Ruby on Rails (UJS)</a>
+      </li>
+    
+  </ul>
+</section>
+
+
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2016 - A D Vishnu Prasad -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'advishnuprasad';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://advishnuprasad.github.io/blog/2016/09/05/creating-a-postgres-master-and-slave-streaming-server-with-s3-backup/';
+        var disqus_url = 'http://advishnuprasad.github.io/blog/2016/09/05/creating-a-postgres-master-and-slave-streaming-server-with-s3-backup/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = '//' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>
