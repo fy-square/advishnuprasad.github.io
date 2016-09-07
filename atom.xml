@@ -4,7 +4,7 @@
   <title><![CDATA[A D Vishnu Prasad]]></title>
   <link href="http://advishnuprasad.github.io/atom.xml" rel="self"/>
   <link href="http://advishnuprasad.github.io/"/>
-  <updated>2016-09-05T13:29:32+05:30</updated>
+  <updated>2016-09-07T11:00:55+05:30</updated>
   <id>http://advishnuprasad.github.io/</id>
   <author>
     <name><![CDATA[A D Vishnu Prasad]]></name>
@@ -20,7 +20,7 @@
     <id>http://advishnuprasad.github.io/blog/2016/09/05/creating-a-postgres-master-and-slave-streaming-server-with-s3-backup</id>
     <content type="html"><![CDATA[<h3>Setup</h3>
 
-<p><img src="http://localhost:4000/images/db.png" alt="API docs image" />
+<p><img src="http://advishnuprasad.github.io/images/db.png" alt="API docs image" />
 <sub><sup> * Image credit: google images </sub></sup></p>
 
 <h3>Master server setup</h3>
@@ -57,6 +57,9 @@
 </span><span class='line'><span class="n">wal_keep_segments</span> <span class="o">=</span> <span class="mi">8</span>
 </span></code></pre></td></tr></table></div></figure>
 
+
+<p>vuhyhgfrrfreedfdedssfdr4eer44y HJKKJDSD
+c .o0</p>
 
 <p>Add the following line in pg_hba.conf</p>
 
