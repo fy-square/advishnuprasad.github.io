@@ -1,0 +1,279 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Encryption at REST - A D Vishnu Prasad</title>
+  <meta name="author" content="A D Vishnu Prasad">
+
+  
+  <meta name="description" content="Already so many people have written about what/why Encryption at REST.
+So I am just going to help you to setup Encryption at REST in ubuntu using &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://advishnuprasad.github.io/blog/2016/09/24/encryption-at-rest/">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="A D Vishnu Prasad" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="/javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="//fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="//fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">A D Vishnu Prasad</a></h1>
+  
+    <h2>Ruby on Rails and DevOps</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="https://www.google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="sitesearch" value="advishnuprasad.github.io">
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">Encryption at REST</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2016-09-24T22:04:32+05:30'><span class='date'><span class='date-month'>Sep</span> <span class='date-day'>24</span><span class='date-suffix'>th</span>, <span class='date-year'>2016</span></span> <span class='time'>10:04 pm</span></time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>Already so many people have written about what/why Encryption at REST.
+So I am just going to help you to setup Encryption at REST in ubuntu using luksFormat.
+You can read more about the cryptsetup and LuksFormat <a href="https://wiki.archlinux.org/index.php/Dm-crypt/Device_encryption">here</a></p>
+
+<h3>Step 1: Create crypt volume file format</h3>
+
+<p>Assuming the device is <code>/dev/xvdc</code>. Please do not forget the passphrase. You will not be able to recover the data if you forget.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>sudo su
+</span><span class='line'>cryptsetup -y -v luksFormat /dev/xvdc
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>Step 2:</h3>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>cryptsetup luksOpen /dev/xvdc edata-epg
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>Step 3:</h3>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>cryptsetup -v status edata-epg
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Step 4:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>apt-get install pv
+</span><span class='line'>pv -tpreb /dev/zero <span class="p">|</span> dd <span class="nv">of</span><span class="o">=</span>/dev/mapper/edata-epg <span class="nv">bs</span><span class="o">=</span>128M
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Step 5:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>mkfs.ext4 /dev/mapper/edata-epg
+</span><span class='line'>mount /dev/mapper/edata-epg /e_data
+</span></code></pre></td></tr></table></div></figure>
+
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">A D Vishnu Prasad</span></span>
+
+      
+
+
+
+
+<time class='entry-date' datetime='2016-09-24T22:04:32+05:30'><span class='date'><span class='date-month'>Sep</span> <span class='date-day'>24</span><span class='date-suffix'>th</span>, <span class='date-year'>2016</span></span> <span class='time'>10:04 pm</span></time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/data/'>data</a>, <a class='category' href='/blog/categories/devops/'>devops</a>, <a class='category' href='/blog/categories/encryption/'>encryption</a>, <a class='category' href='/blog/categories/ubuntu/'>ubuntu</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2016/09/05/creating-a-postgres-master-and-slave-streaming-server-with-s3-backup/" title="Previous Post: Creating a postgres master and slave streaming server with S3 backup">&laquo; Creating a postgres master and slave streaming server with S3 backup</a>
+      
+      
+    </p>
+  </footer>
+</article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2016/09/24/encryption-at-rest/">Encryption at REST</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2016/09/05/creating-a-postgres-master-and-slave-streaming-server-with-s3-backup/">Creating a Postgres Master and Slave Streaming Server With S3 Backup</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2016/03/29/setup-nfs-server-and-client-using-ansible/">Setup NFS Server and Client Using Ansible</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2016/03/25/soap-request-from-ruby-without-savon/">SOAP Request From Ruby Without Savon</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2016/02/11/add-user/">Provide Ssh Access to User Using Ansible</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2016/02/07/api-docs-using-rspecs/">Generate API Documentation Using Rspec Acceptance Tests</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/11/14/active-model-serializers/">Active Model Serializers</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/04/26/multiple-solrs-in-single-solr-instance/">Multiple Solr Servers in Single Machine</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/03/14/fetch-records-from-sql-query-ruby-on-rails-oci8-cursor/">Fetch Records From Sql Query - Ruby on Rails - Oci8 Cursor</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2012/12/15/find-type-of-the-request-in-controller/">Find Type of the Request in Controller</a>
+      </li>
+    
+  </ul>
+</section>
+
+
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2016 - A D Vishnu Prasad -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'advishnuprasad';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://advishnuprasad.github.io/blog/2016/09/24/encryption-at-rest/';
+        var disqus_url = 'http://advishnuprasad.github.io/blog/2016/09/24/encryption-at-rest/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = '//' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>

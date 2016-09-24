@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Encryption | A D Vishnu Prasad]]></title>
+  <link href="http://advishnuprasad.github.io/blog/categories/encryption/atom.xml" rel="self"/>
+  <link href="http://advishnuprasad.github.io/"/>
+  <updated>2016-09-24T22:22:31+05:30</updated>
+  <id>http://advishnuprasad.github.io/</id>
+  <author>
+    <name><![CDATA[A D Vishnu Prasad]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Encryption at REST]]></title>
+    <link href="http://advishnuprasad.github.io/blog/2016/09/24/encryption-at-rest/"/>
+    <updated>2016-09-24T22:04:32+05:30</updated>
+    <id>http://advishnuprasad.github.io/blog/2016/09/24/encryption-at-rest</id>
+    <content type="html"><![CDATA[<p>Already so many people have written about what/why Encryption at REST.
+So I am just going to help you to setup Encryption at REST in ubuntu using luksFormat.
+You can read more about the cryptsetup and LuksFormat <a href="https://wiki.archlinux.org/index.php/Dm-crypt/Device_encryption">here</a></p>
+
+<h3>Step 1: Create crypt volume file format</h3>
+
+<p>Assuming the device is <code>/dev/xvdc</code>. Please do not forget the passphrase. You will not be able to recover the data if you forget.</p>
+
+<pre><code class="bash">sudo su
+cryptsetup -y -v luksFormat /dev/xvdc
+</code></pre>
+
+<h3>Step 2:</h3>
+
+<pre><code class="bash">cryptsetup luksOpen /dev/xvdc edata-epg
+</code></pre>
+
+<h3>Step 3:</h3>
+
+<pre><code class="bash">cryptsetup -v status edata-epg
+</code></pre>
+
+<p>Step 4:
+<code>bash
+apt-get install pv
+pv -tpreb /dev/zero | dd of=/dev/mapper/edata-epg bs=128M
+</code></p>
+
+<p>Step 5:
+<code>bash
+mkfs.ext4 /dev/mapper/edata-epg
+mount /dev/mapper/edata-epg /e_data
+</code></p>
+]]></content>
+  </entry>
+  
+</feed>

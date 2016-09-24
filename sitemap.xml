@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd" xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 <url>
+<loc>http://advishnuprasad.github.io/blog/2016/09/24/encryption-at-rest/</loc>
+<lastmod>2016-09-24T22:04:32+05:30</lastmod>
+</url>
+<url>
 <loc>http://advishnuprasad.github.io/blog/2016/09/05/creating-a-postgres-master-and-slave-streaming-server-with-s3-backup/</loc>
 <lastmod>2016-09-05T13:01:13+05:30</lastmod>
 </url>
@@ -123,6 +127,15 @@
 <loc>http://advishnuprasad.github.io/blog/categories/s3/</loc>
 </url>
 <url>
+<loc>http://advishnuprasad.github.io/blog/categories/ubuntu/</loc>
+</url>
+<url>
+<loc>http://advishnuprasad.github.io/blog/categories/data/</loc>
+</url>
+<url>
+<loc>http://advishnuprasad.github.io/blog/categories/encryption/</loc>
+</url>
+<url>
 <loc>http://advishnuprasad.github.io/posts/2/</loc>
 </url>
 <url>
@@ -151,5 +164,8 @@
 </url>
 <url>
 <loc>http://advishnuprasad.github.io/posts/11/</loc>
+</url>
+<url>
+<loc>http://advishnuprasad.github.io/posts/12/</loc>
 </url>
 </urlset>
