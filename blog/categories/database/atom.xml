@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Database | A D Vishnu Prasad]]></title>
   <link href="http://advishnuprasad.github.io/blog/categories/database/atom.xml" rel="self"/>
   <link href="http://advishnuprasad.github.io/"/>
-  <updated>2016-09-24T22:22:31+05:30</updated>
+  <updated>2017-02-22T07:02:01+05:30</updated>
   <id>http://advishnuprasad.github.io/</id>
   <author>
     <name><![CDATA[A D Vishnu Prasad]]></name>
@@ -45,8 +45,6 @@ CREATE USER replicator REPLICATION LOGIN ENCRYPTED PASSWORD 'password';
 max_wal_senders = 3
 wal_keep_segments = 8
 </code></pre>
-
-<p>c .o0</p>
 
 <p>Add the following line in pg_hba.conf</p>
 
