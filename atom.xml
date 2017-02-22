@@ -4,7 +4,7 @@
   <title><![CDATA[A D Vishnu Prasad]]></title>
   <link href="http://advishnuprasad.github.io/atom.xml" rel="self"/>
   <link href="http://advishnuprasad.github.io/"/>
-  <updated>2017-02-22T07:02:01+05:30</updated>
+  <updated>2017-02-22T07:11:28+05:30</updated>
   <id>http://advishnuprasad.github.io/</id>
   <author>
     <name><![CDATA[A D Vishnu Prasad]]></name>
@@ -12,6 +12,116 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Create Swap Using Ansible in Ubuntu]]></title>
+    <link href="http://advishnuprasad.github.io/blog/2017/02/22/create-swap-using-ansible-in-ubuntu/"/>
+    <updated>2017-02-22T07:03:12+05:30</updated>
+    <id>http://advishnuprasad.github.io/blog/2017/02/22/create-swap-using-ansible-in-ubuntu</id>
+    <content type="html"><![CDATA[<p>This ansible script will help you to create SWAP memory in a single command.
+Just change this line based on your required memory.</p>
+
+<p>For 4 GB : <code>command: dd if=/dev/zero of=/swapfile bs=1G count=4</code></p>
+
+<p>For 2 GB : <code>command: dd if=/dev/zero of=/swapfile bs=1G count=2</code></p>
+
+<figure class='code'><figcaption><span>Playbook command</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>ansible-playbook swap.yml -i inventorys/hosts --ask-pass
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<figure class='code'><figcaption><span>swap.yml</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+</pre></td><td class='code'><pre><code class='yaml'><span class='line'><span class="p-Indicator">-</span> <span class="l-Scalar-Plain">name</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">Create swap</span>
+</span><span class='line'>  <span class="l-Scalar-Plain">hosts</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">all</span>
+</span><span class='line'>  <span class="l-Scalar-Plain">remote_user</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">advp</span>
+</span><span class='line'>  <span class="l-Scalar-Plain">become</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">True</span>
+</span><span class='line'>  <span class="l-Scalar-Plain">become_method</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">sudo</span>
+</span><span class='line'>  <span class="l-Scalar-Plain">become_user</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">root</span>
+</span><span class='line'>  <span class="l-Scalar-Plain">gather_facts</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">True</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="l-Scalar-Plain">tasks</span><span class="p-Indicator">:</span>
+</span><span class='line'><span class="err">    </span><span class="p-Indicator">-</span> <span class="l-Scalar-Plain">name</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">Check whether swap is already enabled or not</span>
+</span><span class='line'><span class="err">    </span>  <span class="l-Scalar-Plain">shell</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">cat /etc/sysctl.conf</span>
+</span><span class='line'><span class="err">    </span>  <span class="l-Scalar-Plain">register</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">swap_enabled</span>
+</span><span class='line'>
+</span><span class='line'><span class="err">    </span><span class="p-Indicator">-</span> <span class="l-Scalar-Plain">block</span><span class="p-Indicator">:</span>
+</span><span class='line'><span class="err">    </span>  <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">name</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">create swap file</span>
+</span><span class='line'><span class="err">    </span>    <span class="l-Scalar-Plain">command</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">dd if=/dev/zero of=/swapfile bs=1G count=4</span>
+</span><span class='line'>
+</span><span class='line'><span class="err">    </span>  <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">name</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">change permission type</span>
+</span><span class='line'><span class="err">    </span>    <span class="l-Scalar-Plain">file</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">path=/swapfile mode=600 state=file</span>
+</span><span class='line'>
+</span><span class='line'><span class="err">    </span>  <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">name</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">setup swap</span>
+</span><span class='line'><span class="err">    </span>    <span class="l-Scalar-Plain">command</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">mkswap /swapfile</span>
+</span><span class='line'><span class="err">    </span>
+</span><span class='line'><span class="err">    </span>  <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">name</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">create swap</span>
+</span><span class='line'><span class="err">    </span>    <span class="l-Scalar-Plain">command</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">swapon /swapfile</span>
+</span><span class='line'>
+</span><span class='line'><span class="err">    </span>  <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">name</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">Add to fstab</span>
+</span><span class='line'><span class="err">    </span>    <span class="l-Scalar-Plain">action</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">lineinfile dest=/etc/fstab regexp=&quot;swapfile&quot; line=&quot;/swapfile none swap sw 0 0&quot; state=present</span>
+</span><span class='line'>
+</span><span class='line'><span class="err">    </span>  <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">name</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">start swap</span>
+</span><span class='line'><span class="err">    </span>    <span class="l-Scalar-Plain">command</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">swapon -a</span>
+</span><span class='line'>
+</span><span class='line'><span class="err">    </span>  <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">name</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">set swapiness</span>
+</span><span class='line'><span class="err">    </span>    <span class="l-Scalar-Plain">sysctl</span><span class="p-Indicator">:</span>
+</span><span class='line'><span class="err">    </span>      <span class="l-Scalar-Plain">name</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">vm.swappiness</span>
+</span><span class='line'><span class="err">    </span>      <span class="l-Scalar-Plain">value</span><span class="p-Indicator">:</span> <span class="s">&quot;10&quot;</span>
+</span><span class='line'>
+</span><span class='line'><span class="err">    </span>  <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">name</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">set swapiness</span>
+</span><span class='line'><span class="err">    </span>    <span class="l-Scalar-Plain">sysctl</span><span class="p-Indicator">:</span>
+</span><span class='line'><span class="err">    </span>      <span class="l-Scalar-Plain">name</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">vm.vfs_cache_pressure</span>
+</span><span class='line'><span class="err">    </span>      <span class="l-Scalar-Plain">value</span><span class="p-Indicator">:</span> <span class="s">&quot;50&quot;</span>
+</span><span class='line'>
+</span><span class='line'><span class="err">    </span>  <span class="l-Scalar-Plain">when</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">swap_enabled.stdout.find(&#39;swappiness&#39;) == -1</span>
+</span></code></pre></td></tr></table></div></figure>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Encryption at REST]]></title>
