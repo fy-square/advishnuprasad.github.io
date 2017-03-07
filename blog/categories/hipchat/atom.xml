@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Hipchat | A D Vishnu Prasad]]></title>
+  <link href="http://advishnuprasad.github.io/blog/categories/hipchat/atom.xml" rel="self"/>
+  <link href="http://advishnuprasad.github.io/"/>
+  <updated>2017-03-07T19:17:23+05:30</updated>
+  <id>http://advishnuprasad.github.io/</id>
+  <author>
+    <name><![CDATA[A D Vishnu Prasad]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Send Hipchat Notifications Using Python]]></title>
+    <link href="http://advishnuprasad.github.io/blog/2017/03/07/send-hipchat-notifications-using-python/"/>
+    <updated>2017-03-07T18:57:53+05:30</updated>
+    <id>http://advishnuprasad.github.io/blog/2017/03/07/send-hipchat-notifications-using-python</id>
+    <content type="html"><![CDATA[<p>There might be scenarios where you want to send hipchat notifications programatically.
+Following python script will help you to create notifications in 3 simple steps.</p>
+
+<p><img src="/images/hipchat.png" alt="Hipchat Image" />
+<sub><sup> * Image credit: google images </sub></sup></p>
+
+<!-- ![Hipchat Image](http://localhost:4000/images/hipchat.png) -->
+
+
+<h3>Step 1:</h3>
+
+<p>Generate your auth token from your hipchat account.
+<code>Hipchat -&gt; Account Settings -&gt; API Access</code></p>
+
+<h3>Step 2:</h3>
+
+<p>Note: I am using hipchat api v1.</p>
+
+<pre><code class="python hipchat.py">#!/usr/bin/env python3.5
+
+import requests, json
+
+def notify(message, deployer = 'Vishnu', color = 'green'):
+    url = "https://api.hipchat.com/v1/rooms/message?auth_token=&lt;auth_token&gt;&amp;format=json"
+    payload = { "room_id" : "deployments" , "from" : deployer, "message" : message, "color" : color, "notify" : 1 }
+    requests.post(url, params=payload)
+</code></pre>
+
+<h3>Step 3:</h3>
+
+<pre><code class="python deployer.py">#!/usr/bin/env python3.5
+
+import hipchat
+
+# For successful notif
+hipchat.notify("Deployment started", "Vishnu", "green")
+
+# If you want error notif
+hipchat.notify("Deployment failed", "Vishnu", "red")
+</code></pre>
+]]></content>
+  </entry>
+  
+</feed>

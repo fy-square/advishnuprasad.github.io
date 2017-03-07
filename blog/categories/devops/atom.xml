@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
 
-  <title><![CDATA[Category: Devops | A D Vishnu Prasad]]></title>
+  <title><![CDATA[Category: Devops, | A D Vishnu Prasad]]></title>
   <link href="http://advishnuprasad.github.io/blog/categories/devops/atom.xml" rel="self"/>
   <link href="http://advishnuprasad.github.io/"/>
-  <updated>2017-02-22T07:23:57+05:30</updated>
+  <updated>2017-03-07T19:17:23+05:30</updated>
   <id>http://advishnuprasad.github.io/</id>
   <author>
     <name><![CDATA[A D Vishnu Prasad]]></name>
@@ -14,289 +14,50 @@
 
   
   <entry>
-    <title type="html"><![CDATA[Create Swap Using Ansible in Ubuntu]]></title>
-    <link href="http://advishnuprasad.github.io/blog/2017/02/22/create-swap-using-ansible-in-ubuntu/"/>
-    <updated>2017-02-22T07:03:12+05:30</updated>
-    <id>http://advishnuprasad.github.io/blog/2017/02/22/create-swap-using-ansible-in-ubuntu</id>
-    <content type="html"><![CDATA[<p>This ansible script will help you to create SWAP memory in a single command.
-Just change this line based on your required memory.</p>
+    <title type="html"><![CDATA[Send Hipchat Notifications Using Python]]></title>
+    <link href="http://advishnuprasad.github.io/blog/2017/03/07/send-hipchat-notifications-using-python/"/>
+    <updated>2017-03-07T18:57:53+05:30</updated>
+    <id>http://advishnuprasad.github.io/blog/2017/03/07/send-hipchat-notifications-using-python</id>
+    <content type="html"><![CDATA[<p>There might be scenarios where you want to send hipchat notifications programatically.
+Following python script will help you to create notifications in 3 simple steps.</p>
 
-<p>For 4 GB : <code>command: dd if=/dev/zero of=/swapfile bs=1G count=4</code></p>
+<p><img src="/images/hipchat.png" alt="Hipchat Image" />
+<sub><sup> * Image credit: google images </sub></sup></p>
 
-<p>For 2 GB : <code>command: dd if=/dev/zero of=/swapfile bs=1G count=2</code></p>
+<!-- ![Hipchat Image](http://localhost:4000/images/hipchat.png) -->
 
-<pre><code class="bash Playbook command">ansible-playbook swap.yml -i inventorys/hosts --ask-pass
-</code></pre>
 
-<pre><code class="yml swap.yml">- name: Create swap
-  hosts: all
-  remote_user: advp
-  become: True
-  become_method: sudo
-  become_user: root
-  gather_facts: True
+<h3>Step 1:</h3>
 
-  tasks:
-    - name: Check whether swap is already enabled or not
-      shell: cat /etc/sysctl.conf 
-      register: swap_enabled
-
-    - block:
-      - name: create swap file
-        command: dd if=/dev/zero of=/swapfile bs=1G count=4
-
-      - name: change permission type
-        file: path=/swapfile mode=600 state=file
-
-      - name: setup swap
-        command: mkswap /swapfile
-
-      - name: create swap
-        command: swapon /swapfile
-
-      - name: Add to fstab
-        action: lineinfile dest=/etc/fstab regexp="swapfile" line="/swapfile none swap sw 0 0" state=present
-
-      - name: start swap
-        command: swapon -a
-
-      - name: set swapiness
-        sysctl:
-          name: vm.swappiness
-          value: "10"
-
-      - name: set swapiness
-        sysctl:
-          name: vm.vfs_cache_pressure
-          value: "50"
-
-      when: swap_enabled.stdout.find('swappiness') == -1
-</code></pre>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Encryption at REST]]></title>
-    <link href="http://advishnuprasad.github.io/blog/2016/09/24/encryption-at-rest/"/>
-    <updated>2016-09-24T22:04:32+05:30</updated>
-    <id>http://advishnuprasad.github.io/blog/2016/09/24/encryption-at-rest</id>
-    <content type="html"><![CDATA[<p>Already so many people have written about what/why Encryption at REST.
-So I am just going to help you to setup Encryption at REST in ubuntu using luksFormat.
-You can read more about the cryptsetup and LuksFormat <a href="https://wiki.archlinux.org/index.php/Dm-crypt/Device_encryption">here</a></p>
-
-<h3>Step 1: Create crypt volume file format</h3>
-
-<p>Assuming the device is <code>/dev/xvdc</code>. Please do not forget the passphrase. You will not be able to recover the data if you forget.</p>
-
-<pre><code class="bash">sudo su
-cryptsetup -y -v luksFormat /dev/xvdc
-</code></pre>
+<p>Generate your auth token from your hipchat account.
+<code>Hipchat -&gt; Account Settings -&gt; API Access</code></p>
 
 <h3>Step 2:</h3>
 
-<pre><code class="bash">cryptsetup luksOpen /dev/xvdc edata-epg
+<p>Note: I am using hipchat api v1.</p>
+
+<pre><code class="python hipchat.py">#!/usr/bin/env python3.5
+
+import requests, json
+
+def notify(message, deployer = 'Vishnu', color = 'green'):
+    url = "https://api.hipchat.com/v1/rooms/message?auth_token=&lt;auth_token&gt;&amp;format=json"
+    payload = { "room_id" : "deployments" , "from" : deployer, "message" : message, "color" : color, "notify" : 1 }
+    requests.post(url, params=payload)
 </code></pre>
 
 <h3>Step 3:</h3>
 
-<pre><code class="bash">cryptsetup -v status edata-epg
+<pre><code class="python deployer.py">#!/usr/bin/env python3.5
+
+import hipchat
+
+# For successful notif
+hipchat.notify("Deployment started", "Vishnu", "green")
+
+# If you want error notif
+hipchat.notify("Deployment failed", "Vishnu", "red")
 </code></pre>
-
-<p>Step 4:
-<code>bash
-apt-get install pv
-pv -tpreb /dev/zero | dd of=/dev/mapper/edata-epg bs=128M
-</code></p>
-
-<p>Step 5:
-<code>bash
-mkfs.ext4 /dev/mapper/edata-epg
-mount /dev/mapper/edata-epg /e_data
-</code></p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Setup NFS Server and Client Using Ansible]]></title>
-    <link href="http://advishnuprasad.github.io/blog/2016/03/29/setup-nfs-server-and-client-using-ansible/"/>
-    <updated>2016-03-29T18:16:12+05:30</updated>
-    <id>http://advishnuprasad.github.io/blog/2016/03/29/setup-nfs-server-and-client-using-ansible</id>
-    <content type="html"><![CDATA[<h3>Setup NFS server and client using ansible</h3>
-
-<p>If you have a centralized server and you want to share a disk from the server, the best way is
-to use NFS model.</p>
-
-<p><img src="/images/nfs.png" alt="API docs image" /></p>
-
-<p>You might have to create a server with enough disk space. Let&rsquo;s say you have a disk with file system
-as <code>/dev/xvdb</code> and the size is 100 GB.</p>
-
-<p>Now you want to share this volume with other machines. Below is the script to do it using ansible.</p>
-
-<p>Read <a href="https://help.ubuntu.com/community/SettingUpNFSHowTo">this</a> tutorial before writing ansible script.</p>
-
-<h3>Ansible script</h3>
-
-<p>
-<figure class='code'><figcaption><span>inventory.yml</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-</pre></td><td class='code'><pre><code class='yaml'><span class='line'><span class="p-Indicator">[</span><span class="nv">nfs_server</span><span class="p-Indicator">]</span>
-</span><span class='line'><span class="l-Scalar-Plain">10.0.0.1&lt;/p&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="l-Scalar-Plain">&lt;p&gt;[nfs_clients]</span>
-</span><span class='line'><span class="l-Scalar-Plain">10.0.0.2</span>
-</span><span class='line'><span class="l-Scalar-Plain">10.0.0.3</span>
-</span></code></pre></td></tr></table></div></figure></p>
-
-<pre><code class="bash exports.j2"># /etc/exports: the access control list for filesystems which may be exported
-#               to NFS clients.  See exports(5).
-#
-# Example for NFSv2 and NFSv3:
-# /srv/homes       hostname1(rw,sync,no_subtree_check) hostname2(ro,sync,no_subtree_check)
-#
-# Example for NFSv4:
-# /srv/nfs4        gss/krb5i(rw,sync,fsid=0,crossmnt,no_subtree_check)
-# /srv/nfs4/homes  gss/krb5i(rw,sync,no_subtree_check)
-#
-/nfs            10.0.0.1/24(rw,sync,no_root_squash,no_subtree_check)
-</code></pre>
-
-<pre><code class="yml nfs-server.yml">---
-- hosts: nfs_server
-  remote_user: ubuntu
-  sudo: yes
-
-  tasks:
-    - name: Create mountable dir
-      file: path=/share state=directory mode=777 owner=root group=root
-
-    - name: make sure the mount drive has a filesystem
-      filesystem: fstype=ext4 dev={{ mountable_share_drive | default('/dev/xvdb') }}
-
-    - name: set mountpoints
-      mount: name=/share src={{ mountable_share_drive | default('/dev/xvdb') }} fstype=auto opts=defaults,nobootwait dump=0 passno=2 state=mounted
-
-    - name: Ensure NFS utilities are installed.
-      apt: name={{ item }} state=installed update_cache=yes
-      with_items:
-        - nfs-common
-        - nfs-kernel-server
-
-    - name: copy /etc/exports
-      template: src=exports.j2 dest=/etc/exports owner=root group=root
-
-    - name: restart nfs server
-      service: name=nfs-kernel-server state=restarted
-</code></pre>
-
-<pre><code class="yml nfs_clients.yml">- hosts: nfs_clients
-  remote_user: ubuntu
-  sudo: yes
-
-  tasks:
-    - name: Ensure NFS common is installed.
-      apt: name=nfs-common state=installed update_cache=yes
-
-    - name: Create mountable dir
-      file: path=/nfs state=directory mode=777 owner=root group=root
-
-    - name: set mountpoints
-      mount: name=/nfs src={{hostvars[groups['nfs_server'][0]]['ansible_eth0']['ipv4']['address']}}:/share fstype=nfs opts=defaults,nobootwait dump=0 passno=2 state=mounted
-</code></pre>
-
-<p></p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Provide Ssh Access to User Using Ansible]]></title>
-    <link href="http://advishnuprasad.github.io/blog/2016/02/11/add-user/"/>
-    <updated>2016-02-11T19:42:30+05:30</updated>
-    <id>http://advishnuprasad.github.io/blog/2016/02/11/add-user</id>
-    <content type="html"><![CDATA[<h3>How to provide production server access to users using ansible?</h3>
-
-<h4>Assumptions:</h4>
-
-<p>  You have  ssh access to prod servers as Ubuntu user.</p>
-
-<h5>Ansible Script for adding user</h5>
-
-<p>
-<figure class='code'><figcaption><span>add_user.yml</p></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-<span class='line-number'>24</span>
-<span class='line-number'>25</span>
-<span class='line-number'>26</span>
-<span class='line-number'>27</span>
-<span class='line-number'>28</span>
-<span class='line-number'>29</span>
-</pre></td><td class='code'><pre><code class='yaml'><span class='line'><span class="l-Scalar-Plain">&lt;h1&gt;ansible-playbook add_user.yml &amp;ndash;extra-vars &amp;ldquo;user=advp key=advp.pub&amp;rdquo; -i ad&lt;/h1&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="l-Scalar-Plain">&lt;hr /&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="l-Scalar-Plain">&lt;ul&gt;</span>
-</span><span class='line'><span class="l-Scalar-Plain">&lt;li&gt;&lt;p&gt;hosts</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">all</span>
-</span><span class='line'><span class="l-Scalar-Plain">remote_user</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">ubuntu</span>
-</span><span class='line'><span class="l-Scalar-Plain">become</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">True</span>
-</span><span class='line'><span class="l-Scalar-Plain">become_method</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">sudo</span>
-</span><span class='line'><span class="l-Scalar-Plain">become_user</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">root&lt;/p&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="l-Scalar-Plain">&lt;p&gt;tasks:&lt;/p&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="l-Scalar-Plain">&lt;ul&gt;</span>
-</span><span class='line'><span class="l-Scalar-Plain">&lt;li&gt;&lt;p&gt;name</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">Add user</span>
-</span><span class='line'><span class="l-Scalar-Plain">user</span><span class="p-Indicator">:</span>
-</span><span class='line'>      <span class="l-Scalar-Plain">name=&amp;ldquo;{{ user }}&amp;rdquo;</span>
-</span><span class='line'>      <span class="l-Scalar-Plain">shell=/bin/bash</span>
-</span><span class='line'>      <span class="l-Scalar-Plain">state=present</span>
-</span><span class='line'>      <span class="l-Scalar-Plain">groups=staff</span>
-</span><span class='line'>      <span class="l-Scalar-Plain">append=yes</span>
-</span><span class='line'>      <span class="l-Scalar-Plain">createhome=yes</span>
-</span><span class='line'>      <span class="l-Scalar-Plain">password=&lt;password SALT&gt;</span>
-</span><span class='line'>      <span class="l-Scalar-Plain">update_password=on_create&lt;/p&gt;&lt;/li&gt;</span>
-</span><span class='line'><span class="l-Scalar-Plain">&lt;li&gt;&lt;p&gt;name</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">Add keys to the users</span>
-</span><span class='line'><span class="l-Scalar-Plain">authorized_key</span><span class="p-Indicator">:</span>
-</span><span class='line'>  <span class="l-Scalar-Plain">key=&amp;ldquo;{{ lookup(&amp;lsquo;file&amp;rsquo;, &amp;lsquo;{{ key }}&amp;rsquo;) }}&amp;rdquo;</span>
-</span><span class='line'>  <span class="l-Scalar-Plain">user=&amp;ldquo;{{ user }}&amp;rdquo;</span>
-</span><span class='line'>  <span class="l-Scalar-Plain">state=present</span>
-</span></code></pre></td></tr></table></div></figure>
-</p></li>
-</ul>
-</li>
-</ul>
-
-
-<h4>Add a single user:</h4>
-
-<pre><code class="bash">ansible-playbook add_user.yml --extra-vars "user=advp key=&lt;user/pub/key/path&gt;"  -i inventory/ad
-</code></pre>
-
-<p>don&rsquo;t forget to change the user and key location in the above command.</p>
 ]]></content>
   </entry>
   

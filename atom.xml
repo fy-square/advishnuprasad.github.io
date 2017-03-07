@@ -4,7 +4,7 @@
   <title><![CDATA[A D Vishnu Prasad]]></title>
   <link href="http://advishnuprasad.github.io/atom.xml" rel="self"/>
   <link href="http://advishnuprasad.github.io/"/>
-  <updated>2017-02-22T07:23:57+05:30</updated>
+  <updated>2017-03-07T19:17:23+05:30</updated>
   <id>http://advishnuprasad.github.io/</id>
   <author>
     <name><![CDATA[A D Vishnu Prasad]]></name>
@@ -12,6 +12,75 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Send Hipchat Notifications Using Python]]></title>
+    <link href="http://advishnuprasad.github.io/blog/2017/03/07/send-hipchat-notifications-using-python/"/>
+    <updated>2017-03-07T18:57:53+05:30</updated>
+    <id>http://advishnuprasad.github.io/blog/2017/03/07/send-hipchat-notifications-using-python</id>
+    <content type="html"><![CDATA[<p>There might be scenarios where you want to send hipchat notifications programatically.
+Following python script will help you to create notifications in 3 simple steps.</p>
+
+<p><img src="http://advishnuprasad.github.io/images/hipchat.png" alt="Hipchat Image" />
+<sub><sup> * Image credit: google images </sub></sup></p>
+
+<!-- ![Hipchat Image](http://localhost:4000/images/hipchat.png) -->
+
+
+<h3>Step 1:</h3>
+
+<p>Generate your auth token from your hipchat account.
+<code>Hipchat -&gt; Account Settings -&gt; API Access</code></p>
+
+<h3>Step 2:</h3>
+
+<p>Note: I am using hipchat api v1.</p>
+
+<figure class='code'><figcaption><span>hipchat.py</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="c">#!/usr/bin/env python3.5</span>
+</span><span class='line'>
+</span><span class='line'><span class="kn">import</span> <span class="nn">requests</span><span class="o">,</span> <span class="nn">json</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">def</span> <span class="nf">notify</span><span class="p">(</span><span class="n">message</span><span class="p">,</span> <span class="n">deployer</span> <span class="o">=</span> <span class="s">&#39;Vishnu&#39;</span><span class="p">,</span> <span class="n">color</span> <span class="o">=</span> <span class="s">&#39;green&#39;</span><span class="p">):</span>
+</span><span class='line'>  <span class="n">url</span> <span class="o">=</span> <span class="s">&quot;https://api.hipchat.com/v1/rooms/message?auth_token=&lt;auth_token&gt;&amp;format=json&quot;</span>
+</span><span class='line'>  <span class="n">payload</span> <span class="o">=</span> <span class="p">{</span> <span class="s">&quot;room_id&quot;</span> <span class="p">:</span> <span class="s">&quot;deployments&quot;</span> <span class="p">,</span> <span class="s">&quot;from&quot;</span> <span class="p">:</span> <span class="n">deployer</span><span class="p">,</span> <span class="s">&quot;message&quot;</span> <span class="p">:</span> <span class="n">message</span><span class="p">,</span> <span class="s">&quot;color&quot;</span> <span class="p">:</span> <span class="n">color</span><span class="p">,</span> <span class="s">&quot;notify&quot;</span> <span class="p">:</span> <span class="mi">1</span> <span class="p">}</span>
+</span><span class='line'>  <span class="n">requests</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="n">payload</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>Step 3:</h3>
+
+<figure class='code'><figcaption><span>deployer.py</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="c">#!/usr/bin/env python3.5</span>
+</span><span class='line'>
+</span><span class='line'><span class="kn">import</span> <span class="nn">hipchat</span>
+</span><span class='line'>
+</span><span class='line'><span class="c"># For successful notif</span>
+</span><span class='line'><span class="n">hipchat</span><span class="o">.</span><span class="n">notify</span><span class="p">(</span><span class="s">&quot;Deployment started&quot;</span><span class="p">,</span> <span class="s">&quot;Vishnu&quot;</span><span class="p">,</span> <span class="s">&quot;green&quot;</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'><span class="c"># If you want error notif</span>
+</span><span class='line'><span class="n">hipchat</span><span class="o">.</span><span class="n">notify</span><span class="p">(</span><span class="s">&quot;Deployment failed&quot;</span><span class="p">,</span> <span class="s">&quot;Vishnu&quot;</span><span class="p">,</span> <span class="s">&quot;red&quot;</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Create Swap Using Ansible in Ubuntu]]></title>
