@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Devops, | A D Vishnu Prasad]]></title>
   <link href="http://advishnuprasad.github.io/blog/categories/devops/atom.xml" rel="self"/>
   <link href="http://advishnuprasad.github.io/"/>
-  <updated>2017-03-07T19:17:23+05:30</updated>
+  <updated>2017-03-16T19:49:20+05:30</updated>
   <id>http://advishnuprasad.github.io/</id>
   <author>
     <name><![CDATA[A D Vishnu Prasad]]></name>
@@ -18,7 +18,10 @@
     <link href="http://advishnuprasad.github.io/blog/2017/03/07/send-hipchat-notifications-using-python/"/>
     <updated>2017-03-07T18:57:53+05:30</updated>
     <id>http://advishnuprasad.github.io/blog/2017/03/07/send-hipchat-notifications-using-python</id>
-    <content type="html"><![CDATA[<p>There might be scenarios where you want to send hipchat notifications programatically.
+    <content type="html"><![CDATA[<p><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>Awesome code snippet</span></code></pre></td></tr></table></div></figure></p>
+
+<p>There might be scenarios where you want to send hipchat notifications programatically.
 Following python script will help you to create notifications in 3 simple steps.</p>
 
 <p><img src="/images/hipchat.png" alt="Hipchat Image" />
