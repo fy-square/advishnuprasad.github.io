@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Ssh | A D Vishnu Prasad]]></title>
   <link href="http://advishnuprasad.github.io/blog/categories/ssh/atom.xml" rel="self"/>
   <link href="http://advishnuprasad.github.io/"/>
-  <updated>2017-03-16T20:00:44+05:30</updated>
+  <updated>2017-10-31T14:16:47-04:00</updated>
   <id>http://advishnuprasad.github.io/</id>
   <author>
     <name><![CDATA[A D Vishnu Prasad]]></name>
@@ -16,7 +16,7 @@
   <entry>
     <title type="html"><![CDATA[Provide Ssh Access to User Using Ansible]]></title>
     <link href="http://advishnuprasad.github.io/blog/2016/02/11/add-user/"/>
-    <updated>2016-02-11T19:42:30+05:30</updated>
+    <updated>2016-02-11T09:12:30-05:00</updated>
     <id>http://advishnuprasad.github.io/blog/2016/02/11/add-user</id>
     <content type="html"><![CDATA[<h3>How to provide production server access to users using ansible?</h3>
 

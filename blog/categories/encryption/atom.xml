@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Encryption | A D Vishnu Prasad]]></title>
   <link href="http://advishnuprasad.github.io/blog/categories/encryption/atom.xml" rel="self"/>
   <link href="http://advishnuprasad.github.io/"/>
-  <updated>2017-03-16T20:00:44+05:30</updated>
+  <updated>2017-10-31T14:16:47-04:00</updated>
   <id>http://advishnuprasad.github.io/</id>
   <author>
     <name><![CDATA[A D Vishnu Prasad]]></name>
@@ -16,7 +16,7 @@
   <entry>
     <title type="html"><![CDATA[Encryption at REST]]></title>
     <link href="http://advishnuprasad.github.io/blog/2016/09/24/encryption-at-rest/"/>
-    <updated>2016-09-24T22:04:32+05:30</updated>
+    <updated>2016-09-24T12:34:32-04:00</updated>
     <id>http://advishnuprasad.github.io/blog/2016/09/24/encryption-at-rest</id>
     <content type="html"><![CDATA[<p>Already so many people have written about what/why Encryption at REST.
 So I am just going to help you to setup Encryption at REST in ubuntu using luksFormat.

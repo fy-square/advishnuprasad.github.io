@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Ansible | A D Vishnu Prasad]]></title>
   <link href="http://advishnuprasad.github.io/blog/categories/ansible/atom.xml" rel="self"/>
   <link href="http://advishnuprasad.github.io/"/>
-  <updated>2017-03-16T20:00:44+05:30</updated>
+  <updated>2017-10-31T14:16:47-04:00</updated>
   <id>http://advishnuprasad.github.io/</id>
   <author>
     <name><![CDATA[A D Vishnu Prasad]]></name>
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[Create Swap Using Ansible in Ubuntu]]></title>
-    <link href="http://advishnuprasad.github.io/blog/2017/02/22/create-swap-using-ansible-in-ubuntu/"/>
-    <updated>2017-02-22T07:03:12+05:30</updated>
-    <id>http://advishnuprasad.github.io/blog/2017/02/22/create-swap-using-ansible-in-ubuntu</id>
+    <link href="http://advishnuprasad.github.io/blog/2017/02/21/create-swap-using-ansible-in-ubuntu/"/>
+    <updated>2017-02-21T20:33:12-05:00</updated>
+    <id>http://advishnuprasad.github.io/blog/2017/02/21/create-swap-using-ansible-in-ubuntu</id>
     <content type="html"><![CDATA[<p>This ansible script will help you to create SWAP memory in a single command.
 Just change this line based on your required memory.</p>
 
@@ -78,7 +78,7 @@ Just change this line based on your required memory.</p>
   <entry>
     <title type="html"><![CDATA[Setup NFS Server and Client Using Ansible]]></title>
     <link href="http://advishnuprasad.github.io/blog/2016/03/29/setup-nfs-server-and-client-using-ansible/"/>
-    <updated>2016-03-29T18:16:12+05:30</updated>
+    <updated>2016-03-29T08:46:12-04:00</updated>
     <id>http://advishnuprasad.github.io/blog/2016/03/29/setup-nfs-server-and-client-using-ansible</id>
     <content type="html"><![CDATA[<h3>Setup NFS server and client using ansible</h3>
 
@@ -174,7 +174,7 @@ as <code>/dev/xvdb</code> and the size is 100 GB.</p>
   <entry>
     <title type="html"><![CDATA[Provide Ssh Access to User Using Ansible]]></title>
     <link href="http://advishnuprasad.github.io/blog/2016/02/11/add-user/"/>
-    <updated>2016-02-11T19:42:30+05:30</updated>
+    <updated>2016-02-11T09:12:30-05:00</updated>
     <id>http://advishnuprasad.github.io/blog/2016/02/11/add-user</id>
     <content type="html"><![CDATA[<h3>How to provide production server access to users using ansible?</h3>
 

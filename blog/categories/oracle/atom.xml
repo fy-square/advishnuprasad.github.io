@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Oracle | A D Vishnu Prasad]]></title>
   <link href="http://advishnuprasad.github.io/blog/categories/oracle/atom.xml" rel="self"/>
   <link href="http://advishnuprasad.github.io/"/>
-  <updated>2017-03-16T20:00:44+05:30</updated>
+  <updated>2017-10-31T14:16:47-04:00</updated>
   <id>http://advishnuprasad.github.io/</id>
   <author>
     <name><![CDATA[A D Vishnu Prasad]]></name>
@@ -16,7 +16,7 @@
   <entry>
     <title type="html"><![CDATA[Fetch Records From Sql Query - Ruby on Rails - Oci8 Cursor]]></title>
     <link href="http://advishnuprasad.github.io/blog/2014/03/14/fetch-records-from-sql-query-ruby-on-rails-oci8-cursor/"/>
-    <updated>2014-03-14T18:50:26+05:30</updated>
+    <updated>2014-03-14T09:20:26-04:00</updated>
     <id>http://advishnuprasad.github.io/blog/2014/03/14/fetch-records-from-sql-query-ruby-on-rails-oci8-cursor</id>
     <content type="html"><![CDATA[<p>There might be time when you can&rsquo;t use ActiveRecord finders but have to write custom
 queries to fetch the records.</p>
