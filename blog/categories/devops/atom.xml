@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Devops, | A D Vishnu Prasad]]></title>
   <link href="http://advishnuprasad.github.io/blog/categories/devops/atom.xml" rel="self"/>
   <link href="http://advishnuprasad.github.io/"/>
-  <updated>2017-11-09T13:47:03-05:00</updated>
+  <updated>2017-11-09T13:48:23-05:00</updated>
   <id>http://advishnuprasad.github.io/</id>
   <author>
     <name><![CDATA[A D Vishnu Prasad]]></name>
@@ -26,8 +26,9 @@
 
 <h3>Step 1: Storage account</h3>
 
-<p>Create Storage Account:
-<img src="/images/es1.jpg" alt="ES1" /></p>
+<p>Create Storage Account:</p>
+
+<p><img src="/images/es1.jpg" alt="ES1" /></p>
 
 <!-- ![ES1](http://localhost:4000/images/es1.jpg)  -->
 
