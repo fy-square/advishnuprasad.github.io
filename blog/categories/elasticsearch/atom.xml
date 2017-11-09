@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Elasticsearch | A D Vishnu Prasad]]></title>
+  <link href="http://advishnuprasad.github.io/blog/categories/elasticsearch/atom.xml" rel="self"/>
+  <link href="http://advishnuprasad.github.io/"/>
+  <updated>2017-11-09T13:47:03-05:00</updated>
+  <id>http://advishnuprasad.github.io/</id>
+  <author>
+    <name><![CDATA[A D Vishnu Prasad]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Elasticsearch Backup and Restore From Azure Blob Storage]]></title>
+    <link href="http://advishnuprasad.github.io/blog/2017/11/09/elasticsearch-backup-and-restore-from-azure-blob-storage/"/>
+    <updated>2017-11-09T13:00:26-05:00</updated>
+    <id>http://advishnuprasad.github.io/blog/2017/11/09/elasticsearch-backup-and-restore-from-azure-blob-storage</id>
+    <content type="html"><![CDATA[<p>Assumptions:</p>
+
+<p>You already have a working ELK cluster (5.x).</p>
+
+<p>Azure Account</p>
+
+<h3>Step 1: Storage account</h3>
+
+<p>Create Storage Account:
+<img src="/images/es1.jpg" alt="ES1" /></p>
+
+<!-- ![ES1](http://localhost:4000/images/es1.jpg)  -->
+
+
+<h3>Step 2: Get Credentials</h3>
+
+<p>Get Storage account name and key</p>
+
+<p><img src="/images/es2.jpg" alt="ES2" /></p>
+
+<!-- ![ES2](http://localhost:4000/images/es2.jpg)  -->
+
+
+<h3>Step 3: Install azure plugin</h3>
+
+<p>Ssh into all elastic search nodes.</p>
+
+<p>Go to <code>/usr/share/elasticsearch/</code></p>
+
+<p>Run <code>sudo bin/elasticsearch-plugin install repository-azure</code></p>
+
+<h3>Step 4: Update config</h3>
+
+<p>Go to <code>/etc/elasticsearch/elasticsearch.yml</code>. Add your Azure configuration
+<img src="/images/es3.jpg" alt="ES3" /></p>
+
+<!-- ![ES3](http://localhost:4000/images/es3.jpg)  -->
+
+
+<p>Restart <code>sudo service elasticsearch restart</code></p>
+
+<h3>Step 5: Create snapshots</h3>
+
+<p>Open Kibana portal and Click on <code>Dev Tools</code></p>
+
+<p>Configure Repository
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>PUT _snapshot/es_snapshot
+</span><span class='line'><span class="o">{</span>
+</span><span class='line'>    <span class="p">&amp;</span>ldquo<span class="p">;</span><span class="nb">type</span><span class="p">&amp;</span>rdquo<span class="p">;</span>: <span class="p">&amp;</span>ldquo<span class="p">;</span>azure<span class="p">&amp;</span>rdquo<span class="p">;</span>
+</span><span class='line'><span class="o">}</span>&lt;/p&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;pre&gt;&lt;code&gt;
+</span><span class='line'>Create Backup
+</span><span class='line'>&lt;/code&gt;&lt;/pre&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;PUT _snapshot/es_snapshot/mybackup_1
+</span></code></pre></td></tr></table></div></figure></p>
+
+<p>List snapshots
+<code>bash
+GET /_snapshot/es_snapshot/mybackup_1
+</code></p>
+
+<h3>Step 6:</h3>
+
+<p>Go to Storage account. Click on &ldquo;Containers&rdquo; to see the snapshots.</p>
+
+<p><img src="/images/es4.jpg" alt="ES4" /></p>
+
+<!-- ![ES4](http://localhost:4000/images/es4.jpg)  -->
+
+
+<h2>Restore from Azure storage account</h2>
+
+<h3>Step 7:</h3>
+
+<p>Follow step 1 to step 4 to configure your new cluster.</p>
+
+<h3>Step 8:</h3>
+
+<p>Close all the indices
+<code>
+POST /_all/_close
+</code></p>
+
+<h3>Step 9:</h3>
+
+<p>Restore from snapshot</p>
+
+<pre><code>POST /_snapshot/es_snapshot/mybackup_1/_restore
+</code></pre>
+]]></content>
+  </entry>
+  
+</feed>

@@ -9,9 +9,7 @@
   <meta name="author" content="A D Vishnu Prasad">
 
   
-  <meta name="description" content="Deploying rails app into EC2 using Rubber Step 1 Get the key from aws and store it in ~/.ec2 folder 1
-chmod 400 keyname Generate the publickey 1
-ssh- &hellip;">
+  <meta name="description" content="Many programmer uses jquery to catch click event and do $.get or $.post to access the server and print the response in a required div. But there is a &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -86,7 +84,7 @@ ssh- &hellip;">
       
   <header>
     
-      <h1 class="entry-title"><a href="/blog/2012/02/01/rubber-plus-ec2-plus-rails-plus-oracle-plus-nginx-plus-passenger/">Rubber + EC2 + Rails + Oracle + Nginx + Passenger</a></h1>
+      <h1 class="entry-title"><a href="/blog/2012/10/09/ajax-request-in-ruby-on-rails-ujs/">Ajax Request in Ruby on Rails (UJS)</a></h1>
     
     
       <p class="meta">
@@ -95,93 +93,90 @@ ssh- &hellip;">
 
 
 
-<time class='entry-date' datetime='2012-02-01T16:40:36-05:00'><span class='date'><span class='date-month'>Feb</span> <span class='date-day'>1</span><span class='date-suffix'>st</span>, <span class='date-year'>2012</span></span> <span class='time'>4:40 pm</span></time>
+<time class='entry-date' datetime='2012-10-09T20:39:19-04:00'><span class='date'><span class='date-month'>Oct</span> <span class='date-day'>9</span><span class='date-suffix'>th</span>, <span class='date-year'>2012</span></span> <span class='time'>8:39 pm</span></time>
         
       </p>
     
   </header>
 
 
-  <div class="entry-content"><h2>Deploying rails app into EC2 using Rubber</h2>
+  <div class="entry-content"><p>Many programmer uses jquery to catch click event and do $.get or $.post to access the server and print the response in a required div.</p>
 
-<h4>Step 1</h4>
+<p>But there is a handy way to do ajax request using UJS provided by Rails .</p>
 
-<p>Get the key from aws and store it in ~/.ec2 folder</p>
+<p>Let us take an example of <code>add to wish list</code> event.</p>
+
+<p>This can be easily achieved in three easy steps.
+Now lets see how to do that in rails using UJS</p>
+
+<h4>Step 1:</h4>
+
+<p>In view(<code>show.haml.html</code>) your may have</p>
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'>chmod <span class="m">400</span> keyname
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="o">=</span> <span class="n">link_to</span> <span class="s2">&quot;Add to wishlist&quot;</span> <span class="p">,</span> <span class="n">wish_list_path</span><span class="p">(</span><span class="vi">@product</span><span class="p">)</span> <span class="p">,</span><span class="ss">:id</span> <span class="o">=&gt;</span> <span class="s2">&quot;wish_list_link&quot;</span>
 </span></code></pre></td></tr></table></div></figure>
 
 
-<p>Generate the publickey</p>
+<p>Now we make it as ajax request by adding <code>:remote =&gt; true</code></p>
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'>ssh-keygen -y -f keyname &gt; keyname.pub
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="o">=</span> <span class="n">link_to</span> <span class="s2">&quot;Add to wishlist&quot;</span> <span class="p">,</span> <span class="n">wish_list_path</span><span class="p">(</span><span class="vi">@product</span><span class="p">)</span> <span class="p">,</span><span class="ss">:id</span> <span class="o">=&gt;</span> <span class="s2">&quot;wish_list_link&quot;</span> <span class="p">,</span><span class="ss">:remote</span> <span class="o">=&gt;</span> <span class="kp">true</span>
 </span></code></pre></td></tr></table></div></figure>
 
 
-<h4>Step 2</h4>
+<h4>Step 2:</h4>
 
-<p>Add rubber gem in your gemfile</p>
+<p>Now in controller</p>
 
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<figure class='code'><figcaption><span>products_controller.rb</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">gem</span> <span class="n">rubber</span>
-</span><span class='line'><span class="n">bundle</span> <span class="n">install</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">def</span> <span class="nf">wish_list</span>
+</span><span class='line'>  <span class="c1">#adding wish list </span>
+</span><span class='line'>  <span class="n">respond_to</span> <span class="k">do</span> <span class="o">|</span><span class="nb">format</span><span class="o">|</span>
+</span><span class='line'>     <span class="nb">format</span><span class="o">.</span><span class="n">js</span> <span class="c1">#This line is important</span>
+</span><span class='line'>   <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
 </span></code></pre></td></tr></table></div></figure>
 
 
-<h4>Step 3</h4>
+<p></p>
 
-<p>Now do vulcanize. Am using nginx and passenger</p>
+<h4>Step 3:</h4>
 
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">rails</span> <span class="n">g</span> <span class="n">vulcanize</span> <span class="n">minimal_passenger_nginx</span>
+<p>Now create a file named wish_list.js.erb</p>
+
+<figure class='code'><figcaption><span>wish_list.js.erb</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='erb'><span class='line'><span class="x">$(&quot;#wish_list_link&quot;).html(&#39;&#39;&lt;b&gt;added to wishlist&lt;/b&gt;&quot;);</span>
+</span><span class='line'>
+</span><span class='line'><span class="x"># Lets say you want to render a partial .</span>
+</span><span class='line'>
+</span><span class='line'><span class="x">$(&quot;#wish_list_linkt&quot;).html(&#39;</span><span class="cp">&lt;%=</span> <span class="n">escape_javascript</span><span class="p">(</span><span class="n">render</span> <span class="ss">:partial</span> <span class="o">=&gt;</span> <span class="s2">&quot;wish_list&quot;</span> <span class="p">,</span> <span class="ss">:locals</span> <span class="o">=&gt;</span> <span class="p">{</span> <span class="ss">:product</span> <span class="o">=&gt;</span> <span class="vi">@product</span><span class="p">})</span><span class="cp">%&gt;</span><span class="x">&#39;);</span>
 </span></code></pre></td></tr></table></div></figure>
 
 
-<h4>Step 4</h4>
+<h4>Step 4(optional):</h4>
 
-<p>Now edit following fields in <code>config/rubber/rubber.yml</code></p>
-
-<pre><code>access key
-secret access key
-account name
-app name
-app user
-image id
-image type
-</code></pre>
-
-<h4>Step 5 :</h4>
-
-<p>Deploy Part :</p>
+<p>You can use jquery to show the loading part while server is responding</p>
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">cap</span> <span class="ss">rubber</span><span class="p">:</span><span class="n">create</span>
-</span><span class='line'><span class="n">cap</span> <span class="ss">rubber</span><span class="p">:</span><span class="n">bootstrap</span>
-</span><span class='line'><span class="n">cap</span> <span class="n">deploy</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="err">$</span><span class="p">(</span><span class="s2">&quot;#wish_list_link&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">live</span><span class="p">(</span><span class="s2">&quot;click&quot;</span><span class="p">,</span><span class="n">function</span><span class="p">(){</span>
+</span><span class='line'>    <span class="c1">#show_loading_img</span>
+</span><span class='line'><span class="p">})</span>
 </span></code></pre></td></tr></table></div></figure>
 
 
-<p>If you are using oracle instant client set the environment variable in server and then do <code>cap deploy</code></p>
-
-<h4>Troubleshooting:</h4>
-
-<p>Here is the way to bypass fingerprint authentication prompt</p>
-
-<p>add these two lines in deploy script.</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">ssh_options</span><span class="o">[</span><span class="ss">:keys</span><span class="o">]</span> <span class="o">=</span> <span class="o">[</span><span class="no">File</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="no">ENV</span><span class="o">[</span><span class="s2">&quot;HOME&quot;</span><span class="o">]</span><span class="p">,</span> <span class="s2">&quot;.ssh&quot;</span><span class="p">,</span> <span class="s2">&quot;id_rsa&quot;</span><span class="p">)</span><span class="o">]</span>
-</span><span class='line'><span class="n">set</span> <span class="ss">:deploy_to</span><span class="p">,</span> <span class="s2">&quot;your_deploy_folder&quot;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-
+<p>That&rsquo;s it. As simple as that.</p>
 </div>
   
   
@@ -190,6 +185,8 @@ image type
     </article>
   
   <div class="pagination">
+    
+      <a class="prev" href="/posts/16">&larr; Older</a>
     
     <a href="/blog/archives">Blog Archives</a>
     
@@ -202,6 +199,10 @@ image type
     <section>
   <h1>Recent Posts</h1>
   <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2017/11/09/elasticsearch-backup-and-restore-from-azure-blob-storage/">Elasticsearch Backup and Restore From Azure Blob Storage</a>
+      </li>
     
       <li class="post">
         <a href="/blog/2017/10/31/docker-commands/">Docker Commands</a>
@@ -237,10 +238,6 @@ image type
     
       <li class="post">
         <a href="/blog/2016/02/07/api-docs-using-rspecs/">Generate API Documentation Using Rspec Acceptance Tests</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2014/11/14/active-model-serializers/">Active Model Serializers</a>
       </li>
     
   </ul>

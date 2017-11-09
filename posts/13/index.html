@@ -9,7 +9,8 @@
   <meta name="author" content="A D Vishnu Prasad">
 
   
-  <meta name="description" content="Is there any way to find the type of request in controller ? Yes. What we do in routes.rb is , define the type of request to particular action. But, &hellip;">
+  <meta name="description" content="There might be time when you can&rsquo;t use ActiveRecord finders but have to write custom
+queries to fetch the records. Below example is to fetch &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -84,7 +85,7 @@
       
   <header>
     
-      <h1 class="entry-title"><a href="/blog/2012/12/14/find-type-of-the-request-in-controller/">Find Type of the Request in Controller</a></h1>
+      <h1 class="entry-title"><a href="/blog/2014/03/14/fetch-records-from-sql-query-ruby-on-rails-oci8-cursor/">Fetch Records From Sql Query - Ruby on Rails - Oci8 Cursor</a></h1>
     
     
       <p class="meta">
@@ -93,38 +94,51 @@
 
 
 
-<time class='entry-date' datetime='2012-12-14T21:21:00-05:00'><span class='date'><span class='date-month'>Dec</span> <span class='date-day'>14</span><span class='date-suffix'>th</span>, <span class='date-year'>2012</span></span> <span class='time'>9:21 pm</span></time>
+<time class='entry-date' datetime='2014-03-14T09:20:26-04:00'><span class='date'><span class='date-month'>Mar</span> <span class='date-day'>14</span><span class='date-suffix'>th</span>, <span class='date-year'>2014</span></span> <span class='time'>9:20 am</span></time>
         
       </p>
     
   </header>
 
 
-  <div class="entry-content"><p>Is there any way to find the type of request in controller ?</p>
+  <div class="entry-content"><p>There might be time when you can&rsquo;t use ActiveRecord finders but have to write custom
+queries to fetch the records.</p>
 
-<h4>Yes.</h4>
+<p>Below example is to fetch records using oci8 adapter.(i.e If you are using oracle db)</p>
 
-<p>What we do in <code>routes.rb</code> is , define the type of request to particular action.</p>
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">users</span> <span class="o">=</span> <span class="no">ActiveRecord</span><span class="o">::</span><span class="no">Base</span><span class="o">.</span><span class="n">connection</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;select id, email from users&quot;</span> <span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
 
-<p>But, what If we want to find out the type of request in controller .</p>
+
+<p>The output will be</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="o">&lt;</span><span class="no">OCI8</span><span class="o">::</span><span class="ss">Cursor</span><span class="p">:</span><span class="mh">0xf73ac30</span><span class="o">&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>which is nothing but a cursor object.
+But how to read the records from this cursor?.</p>
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">if</span> <span class="n">request</span><span class="o">.</span><span class="n">get?</span>
-</span><span class='line'>   <span class="n">logger</span><span class="o">.</span><span class="n">info</span> <span class="s2">&quot;Request is GET&quot;</span>
-</span><span class='line'><span class="k">elsif</span> <span class="n">request</span><span class="o">.</span><span class="n">post?</span>
-</span><span class='line'>   <span class="n">logger</span><span class="o">.</span><span class="n">info</span> <span class="s2">&quot;Request is POST&quot;</span>
-</span><span class='line'><span class="k">elsif</span> <span class="n">request</span><span class="o">.</span><span class="n">xhr?</span>
-</span><span class='line'>   <span class="n">logger</span><span class="o">.</span><span class="n">info</span> <span class="s2">&quot;Request is AJAX&quot;</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">while</span> <span class="n">r</span> <span class="o">=</span> <span class="n">users</span><span class="o">.</span><span class="n">fetch_hash</span>
+</span><span class='line'>   <span class="nb">puts</span> <span class="n">users</span>
 </span><span class='line'><span class="k">end</span>
 </span></code></pre></td></tr></table></div></figure>
 
 
+<p>The output will be</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='json'><span class='line'><span class="p">{</span><span class="nt">&quot;ID&quot;</span><span class="err">=&gt;</span><span class="mi">10005</span><span class="p">,</span> <span class="nt">&quot;EMAIL&quot;</span><span class="err">=&gt;</span><span class="s2">&quot;2@gmail.com&quot;</span><span class="p">}</span>
+</span><span class='line'><span class="p">{</span><span class="nt">&quot;ID&quot;</span><span class="err">=&gt;</span><span class="mi">10006</span><span class="p">,</span> <span class="nt">&quot;EMAIL&quot;</span><span class="err">=&gt;</span><span class="s2">&quot;3@gmail.com&quot;</span><span class="p">}</span>
+</span><span class='line'><span class="p">{</span><span class="nt">&quot;ID&quot;</span><span class="err">=&gt;</span><span class="mi">10002</span><span class="p">,</span> <span class="nt">&quot;EMAIL&quot;</span><span class="err">=&gt;</span><span class="s2">&quot;1@gmail.com&quot;</span><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
 
 </div>
   
@@ -148,6 +162,10 @@
     <section>
   <h1>Recent Posts</h1>
   <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2017/11/09/elasticsearch-backup-and-restore-from-azure-blob-storage/">Elasticsearch Backup and Restore From Azure Blob Storage</a>
+      </li>
     
       <li class="post">
         <a href="/blog/2017/10/31/docker-commands/">Docker Commands</a>
@@ -183,10 +201,6 @@
     
       <li class="post">
         <a href="/blog/2016/02/07/api-docs-using-rspecs/">Generate API Documentation Using Rspec Acceptance Tests</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2014/11/14/active-model-serializers/">Active Model Serializers</a>
       </li>
     
   </ul>
