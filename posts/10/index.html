@@ -9,10 +9,7 @@
   <meta name="author" content="A D Vishnu Prasad">
 
   
-  <meta name="description" content="Step 1: Install required gems 1
-2
-gem &#39;rspec_api_documentation&#39;
-gem &#39;raddocs&#39; Step 2: Create acceptance_helper.rb in spec folder &hellip;">
+  <meta name="description" content="How to provide production server access to users using ansible? Assumptions: You have ssh access to prod servers as Ubuntu user. Ansible Script for &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -87,7 +84,7 @@ gem &#39;raddocs&#39; Step 2: Create acceptance_helper.rb in spec folder &hellip
       
   <header>
     
-      <h1 class="entry-title"><a href="/blog/2016/02/07/api-docs-using-rspecs/">Generate API Documentation Using Rspec Acceptance Tests</a></h1>
+      <h1 class="entry-title"><a href="/blog/2016/02/11/add-user/">Provide Ssh Access to User Using Ansible</a></h1>
     
     
       <p class="meta">
@@ -96,84 +93,22 @@ gem &#39;raddocs&#39; Step 2: Create acceptance_helper.rb in spec folder &hellip
 
 
 
-<time class='entry-date' datetime='2016-02-07T01:13:58-05:00'><span class='date'><span class='date-month'>Feb</span> <span class='date-day'>7</span><span class='date-suffix'>th</span>, <span class='date-year'>2016</span></span> <span class='time'>1:13 am</span></time>
+<time class='entry-date' datetime='2016-02-11T19:42:30+05:30'><span class='date'><span class='date-month'>Feb</span> <span class='date-day'>11</span><span class='date-suffix'>th</span>, <span class='date-year'>2016</span></span> <span class='time'>7:42 pm</span></time>
         
       </p>
     
   </header>
 
 
-  <div class="entry-content"><h4>Step 1:</h4>
+  <div class="entry-content"><h3>How to provide production server access to users using ansible?</h3>
 
-<p>Install required gems</p>
+<h4>Assumptions:</h4>
 
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">gem</span> <span class="s1">&#39;rspec_api_documentation&#39;</span>
-</span><span class='line'><span class="n">gem</span> <span class="s1">&#39;raddocs&#39;</span>
-</span></code></pre></td></tr></table></div></figure>
+<p>  You have  ssh access to prod servers as Ubuntu user.</p>
 
+<h5>Ansible Script for adding user</h5>
 
-<h4>Step 2:</h4>
-
-<p>Create acceptance_helper.rb in spec folder</p>
-
-<figure class='code'><figcaption><span>acceptance_helper.rb</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="nb">require</span> <span class="s1">&#39;rails_helper&#39;</span>
-</span><span class='line'><span class="nb">require</span> <span class="s1">&#39;rspec_api_documentation&#39;</span>
-</span><span class='line'><span class="nb">require</span> <span class="s1">&#39;rspec_api_documentation/dsl&#39;</span>
-</span><span class='line'>
-</span><span class='line'><span class="no">RspecApiDocumentation</span><span class="o">.</span><span class="n">configure</span> <span class="k">do</span> <span class="o">|</span><span class="n">config</span><span class="o">|</span>
-</span><span class='line'>  <span class="n">config</span><span class="o">.</span><span class="n">format</span> <span class="o">=</span> <span class="ss">:json</span>
-</span><span class='line'>  <span class="n">config</span><span class="o">.</span><span class="n">curl_host</span> <span class="o">=</span> <span class="s1">&#39;http://fysquare.dev&#39;</span> <span class="c1"># Will be used in curl request</span>
-</span><span class='line'>  <span class="n">config</span><span class="o">.</span><span class="n">api_name</span> <span class="o">=</span> <span class="s2">&quot;FySquare API&quot;</span> <span class="c1"># Your API name</span>
-</span><span class='line'>  <span class="n">config</span><span class="o">.</span><span class="n">request_headers_to_include</span> <span class="o">=</span> <span class="o">[</span><span class="s2">&quot;Host&quot;</span><span class="p">,</span> <span class="s2">&quot;Content-Type&quot;</span><span class="o">]</span>
-</span><span class='line'>  <span class="n">config</span><span class="o">.</span><span class="n">response_headers_to_include</span> <span class="o">=</span> <span class="o">[</span><span class="s2">&quot;Host&quot;</span><span class="p">,</span> <span class="s2">&quot;Content-Type&quot;</span><span class="o">]</span>
-</span><span class='line'>  <span class="n">config</span><span class="o">.</span><span class="n">curl_headers_to_filter</span> <span class="o">=</span> <span class="o">[</span><span class="s2">&quot;Authorization&quot;</span><span class="o">]</span> <span class="c1"># Remove this if you want to show Auth headers in request</span>
-</span><span class='line'>  <span class="n">config</span><span class="o">.</span><span class="n">keep_source_order</span> <span class="o">=</span> <span class="kp">true</span>
-</span><span class='line'><span class="k">end</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Create raddoc.rb in initializers</p>
-
-<figure class='code'><figcaption><span>raddoc.rb</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="no">Raddocs</span><span class="o">.</span><span class="n">configure</span> <span class="k">do</span> <span class="o">|</span><span class="n">config</span><span class="o">|</span>
-</span><span class='line'>  <span class="n">config</span><span class="o">.</span><span class="n">api_name</span> <span class="o">=</span> <span class="s2">&quot;FySquare API Documentation&quot;</span>
-</span><span class='line'><span class="k">end</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Add API route in config.rb</p>
-
-<figure class='code'><figcaption><span>routes.rb</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">mount</span> <span class="no">Raddocs</span><span class="o">::</span><span class="no">App</span> <span class="o">=&gt;</span> <span class="s2">&quot;/api_docs&quot;</span>
-</span><span class='line'><span class="k">end</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h4>Step 3:</h4>
-
-<p>Now you need to write acceptance specs which will be used to generate docs.</p>
-
-<p>Below is the spec for listing users API. You can change the params depends on your API.</p>
-
-<figure class='code'><figcaption><span>users_spec.rb</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<figure class='code'><figcaption><span>add_user.yml</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
 <span class='line-number'>4</span>
@@ -198,70 +133,42 @@ gem &#39;raddocs&#39; Step 2: Create acceptance_helper.rb in spec folder &hellip
 <span class='line-number'>23</span>
 <span class='line-number'>24</span>
 <span class='line-number'>25</span>
-<span class='line-number'>26</span>
-<span class='line-number'>27</span>
-<span class='line-number'>28</span>
-<span class='line-number'>29</span>
-<span class='line-number'>30</span>
-<span class='line-number'>31</span>
-<span class='line-number'>32</span>
-<span class='line-number'>33</span>
-<span class='line-number'>34</span>
-<span class='line-number'>35</span>
-<span class='line-number'>36</span>
-<span class='line-number'>37</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="nb">require</span> <span class="s1">&#39;acceptance_helper&#39;</span>
+</pre></td><td class='code'><pre><code class='yaml'><span class='line'><span class="c1"># ansible-playbook add_user.yml --extra-vars &quot;user=advp key=advp.pub&quot; -i ad</span>
+</span><span class='line'><span class="nn">---</span>
+</span><span class='line'><span class="p-Indicator">-</span> <span class="l-Scalar-Plain">hosts</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">all</span>
+</span><span class='line'>  <span class="l-Scalar-Plain">remote_user</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">ubuntu</span>
+</span><span class='line'>  <span class="l-Scalar-Plain">become</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">True</span>
+</span><span class='line'>  <span class="l-Scalar-Plain">become_method</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">sudo</span>
+</span><span class='line'>  <span class="l-Scalar-Plain">become_user</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">root</span>
 </span><span class='line'>
-</span><span class='line'><span class="n">resource</span> <span class="s2">&quot;User&quot;</span><span class="p">,</span> <span class="ss">acceptance</span><span class="p">:</span> <span class="kp">true</span> <span class="k">do</span>
-</span><span class='line'>  <span class="n">let</span><span class="p">(</span><span class="ss">:user</span><span class="p">)</span> <span class="p">{</span> <span class="no">FactoryGirl</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="ss">:user</span><span class="p">)</span> <span class="p">}</span>
-</span><span class='line'>  <span class="n">before</span> <span class="k">do</span>
-</span><span class='line'>    <span class="n">header</span> <span class="s1">&#39;Authorization&#39;</span><span class="p">,</span> <span class="s1">&#39;Auth code&#39;</span>
-</span><span class='line'>    <span class="n">header</span> <span class="s1">&#39;Content-Type&#39;</span><span class="p">,</span> <span class="s1">&#39;application/json&#39;</span>
-</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>  <span class="l-Scalar-Plain">tasks</span><span class="p-Indicator">:</span>
+</span><span class='line'>    <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">name</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">Add user</span>
+</span><span class='line'>      <span class="l-Scalar-Plain">user</span><span class="p-Indicator">:</span>
+</span><span class='line'>            <span class="l-Scalar-Plain">name=&quot;{{ user }}&quot;</span>
+</span><span class='line'>            <span class="l-Scalar-Plain">shell=/bin/bash</span>
+</span><span class='line'>            <span class="l-Scalar-Plain">state=present</span>
+</span><span class='line'>            <span class="l-Scalar-Plain">groups=staff</span>
+</span><span class='line'>            <span class="l-Scalar-Plain">append=yes</span>
+</span><span class='line'>            <span class="l-Scalar-Plain">createhome=yes</span>
+</span><span class='line'>            <span class="l-Scalar-Plain">password=&lt;password SALT&gt;</span>
+</span><span class='line'>            <span class="l-Scalar-Plain">update_password=on_create</span>
 </span><span class='line'>
-</span><span class='line'>  <span class="n">get</span> <span class="s2">&quot;/api/users&quot;</span> <span class="k">do</span>
-</span><span class='line'>    <span class="n">example_request</span> <span class="s2">&quot;Listing Users&quot;</span> <span class="k">do</span>
-</span><span class='line'>      <span class="n">explanation</span> <span class="s2">&quot;List all the users in the system&quot;</span>
-</span><span class='line'>      <span class="n">expect</span><span class="p">(</span><span class="n">status</span><span class="p">)</span><span class="o">.</span><span class="n">to</span> <span class="n">eq</span> <span class="mi">200</span>
-</span><span class='line'>    <span class="k">end</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="n">parameter</span> <span class="ss">:ids</span><span class="p">,</span> <span class="s2">&quot;List of user ids to be fetched&quot;</span>
-</span><span class='line'>    <span class="n">parameter</span> <span class="ss">:email</span><span class="p">,</span> <span class="s2">&quot;Search users by email&quot;</span>
-</span><span class='line'>    <span class="n">parameter</span> <span class="ss">:page</span><span class="p">,</span> <span class="s2">&quot;Page to view&quot;</span>
-</span><span class='line'>    <span class="n">example</span> <span class="s2">&quot;Get users by params&quot;</span> <span class="k">do</span>
-</span><span class='line'>      <span class="n">explanation</span> <span class="s2">&quot;Get users by params&quot;</span>
-</span><span class='line'>
-</span><span class='line'>      <span class="n">do_request</span><span class="p">(</span><span class="ss">:ids</span> <span class="o">=&gt;</span> <span class="o">[</span><span class="n">user</span><span class="o">.</span><span class="n">id</span><span class="o">]</span><span class="p">)</span>
-</span><span class='line'>      <span class="n">expect</span><span class="p">(</span><span class="n">status</span><span class="p">)</span><span class="o">.</span><span class="n">to</span> <span class="n">eq</span> <span class="mi">200</span>
-</span><span class='line'>
-</span><span class='line'>      <span class="n">do_request</span><span class="p">(</span><span class="ss">:email</span> <span class="o">=&gt;</span> <span class="o">[</span><span class="s1">&#39;foo@example.com&#39;</span><span class="p">,</span> <span class="s1">&#39;doo@example.com&#39;</span><span class="o">]</span><span class="p">)</span>
-</span><span class='line'>      <span class="n">expect</span><span class="p">(</span><span class="n">status</span><span class="p">)</span><span class="o">.</span><span class="n">to</span> <span class="n">eq</span> <span class="mi">200</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="k">end</span>
-</span><span class='line'>  <span class="k">end</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="n">get</span> <span class="s2">&quot;/api/users/:id&quot;</span> <span class="k">do</span>
-</span><span class='line'>    <span class="n">let</span><span class="p">(</span><span class="ss">:id</span><span class="p">)</span> <span class="p">{</span> <span class="n">user</span><span class="o">.</span><span class="n">id</span> <span class="p">}</span>
-</span><span class='line'>    <span class="n">example_request</span> <span class="s2">&quot;Getting a specific user&quot;</span> <span class="k">do</span>
-</span><span class='line'>      <span class="n">expect</span><span class="p">(</span><span class="n">status</span><span class="p">)</span><span class="o">.</span><span class="n">to</span> <span class="n">eq</span><span class="p">(</span><span class="mi">200</span><span class="p">)</span>
-</span><span class='line'>    <span class="k">end</span>
-</span><span class='line'>  <span class="k">end</span>
-</span><span class='line'><span class="k">end</span>
+</span><span class='line'>    <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">name</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">Add keys to the users</span>
+</span><span class='line'>      <span class="l-Scalar-Plain">authorized_key</span><span class="p-Indicator">:</span>
+</span><span class='line'>        <span class="l-Scalar-Plain">key=&quot;{{ lookup(&#39;file&#39;, &#39;{{ key }}&#39;) }}&quot;</span>
+</span><span class='line'>        <span class="l-Scalar-Plain">user=&quot;{{ user }}&quot;</span>
+</span><span class='line'>        <span class="l-Scalar-Plain">state=present</span>
 </span></code></pre></td></tr></table></div></figure>
 
 
-<h4>Step 4:</h4>
-
-<p>Run this rake command to generate API.</p>
+<h4>Add a single user:</h4>
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">rake</span> <span class="ss">docs</span><span class="p">:</span><span class="n">generate</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>ansible-playbook add_user.yml --extra-vars <span class="s2">&quot;user=advp key=&lt;user/pub/key/path&gt;&quot;</span>  -i inventory/ad
 </span></code></pre></td></tr></table></div></figure>
 
 
-<p>Now navigate to <code>localhost:3000/docs</code></p>
-
-<p><img src="http://advishnuprasad.github.io/images/api_doc1.png" alt="API docs image" /></p>
+<p>don&rsquo;t forget to change the user and key location in the above command.</p>
 </div>
   
   
@@ -286,6 +193,10 @@ gem &#39;raddocs&#39; Step 2: Create acceptance_helper.rb in spec folder &hellip
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2018/09/23/elasticsearch-autocomplete-example/">Elasticsearch Autocomplete Example</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2017/11/09/elasticsearch-backup-and-restore-from-azure-blob-storage/">Elasticsearch Backup and Restore From Azure Blob Storage</a>
       </li>
     
@@ -298,7 +209,7 @@ gem &#39;raddocs&#39; Step 2: Create acceptance_helper.rb in spec folder &hellip
       </li>
     
       <li class="post">
-        <a href="/blog/2017/02/21/create-swap-using-ansible-in-ubuntu/">Create Swap Using Ansible in Ubuntu</a>
+        <a href="/blog/2017/02/22/create-swap-using-ansible-in-ubuntu/">Create Swap Using Ansible in Ubuntu</a>
       </li>
     
       <li class="post">
@@ -321,10 +232,6 @@ gem &#39;raddocs&#39; Step 2: Create acceptance_helper.rb in spec folder &hellip
         <a href="/blog/2016/02/11/add-user/">Provide Ssh Access to User Using Ansible</a>
       </li>
     
-      <li class="post">
-        <a href="/blog/2016/02/07/api-docs-using-rspecs/">Generate API Documentation Using Rspec Acceptance Tests</a>
-      </li>
-    
   </ul>
 </section>
 
@@ -338,7 +245,7 @@ gem &#39;raddocs&#39; Step 2: Create acceptance_helper.rb in spec folder &hellip
     </div>
   </div>
   <footer role="contentinfo"><p>
-  Copyright &copy; 2017 - A D Vishnu Prasad -
+  Copyright &copy; 2018 - A D Vishnu Prasad -
   <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
 </p>
 

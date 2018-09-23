@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Ubuntu | A D Vishnu Prasad]]></title>
   <link href="http://advishnuprasad.github.io/blog/categories/ubuntu/atom.xml" rel="self"/>
   <link href="http://advishnuprasad.github.io/"/>
-  <updated>2017-11-09T13:48:23-05:00</updated>
+  <updated>2018-09-23T21:18:47+05:30</updated>
   <id>http://advishnuprasad.github.io/</id>
   <author>
     <name><![CDATA[A D Vishnu Prasad]]></name>
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[Create Swap Using Ansible in Ubuntu]]></title>
-    <link href="http://advishnuprasad.github.io/blog/2017/02/21/create-swap-using-ansible-in-ubuntu/"/>
-    <updated>2017-02-21T20:33:12-05:00</updated>
-    <id>http://advishnuprasad.github.io/blog/2017/02/21/create-swap-using-ansible-in-ubuntu</id>
+    <link href="http://advishnuprasad.github.io/blog/2017/02/22/create-swap-using-ansible-in-ubuntu/"/>
+    <updated>2017-02-22T07:03:12+05:30</updated>
+    <id>http://advishnuprasad.github.io/blog/2017/02/22/create-swap-using-ansible-in-ubuntu</id>
     <content type="html"><![CDATA[<p>This ansible script will help you to create SWAP memory in a single command.
 Just change this line based on your required memory.</p>
 
@@ -78,7 +78,7 @@ Just change this line based on your required memory.</p>
   <entry>
     <title type="html"><![CDATA[Encryption at REST]]></title>
     <link href="http://advishnuprasad.github.io/blog/2016/09/24/encryption-at-rest/"/>
-    <updated>2016-09-24T12:34:32-04:00</updated>
+    <updated>2016-09-24T22:04:32+05:30</updated>
     <id>http://advishnuprasad.github.io/blog/2016/09/24/encryption-at-rest</id>
     <content type="html"><![CDATA[<p>Already so many people have written about what/why Encryption at REST.
 So I am just going to help you to setup Encryption at REST in ubuntu using luksFormat.
