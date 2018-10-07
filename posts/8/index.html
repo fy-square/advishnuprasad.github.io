@@ -9,8 +9,11 @@
   <meta name="author" content="A D Vishnu Prasad">
 
   
-  <meta name="description" content="Setup NFS server and client using ansible If you have a centralized server and you want to share a disk from the server, the best way is
-to use NFS &hellip;">
+  <meta name="description" content="Setup * Image credit: google images Master server setup 1
+2
+3
+4
+sudo sh -c &#39;echo &quot;deb http://apt.postgresql.org/pub/repos/apt/ `lsb_release &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -85,7 +88,7 @@ to use NFS &hellip;">
       
   <header>
     
-      <h1 class="entry-title"><a href="/blog/2016/03/29/setup-nfs-server-and-client-using-ansible/">Setup NFS Server and Client Using Ansible</a></h1>
+      <h1 class="entry-title"><a href="/blog/2016/09/05/creating-a-postgres-master-and-slave-streaming-server-with-s3-backup/">Creating a Postgres Master and Slave Streaming Server With S3 Backup</a></h1>
     
     
       <p class="meta">
@@ -94,160 +97,186 @@ to use NFS &hellip;">
 
 
 
-<time class='entry-date' datetime='2016-03-29T18:16:12+05:30'><span class='date'><span class='date-month'>Mar</span> <span class='date-day'>29</span><span class='date-suffix'>th</span>, <span class='date-year'>2016</span></span> <span class='time'>6:16 pm</span></time>
+<time class='entry-date' datetime='2016-09-05T13:01:13+05:30'><span class='date'><span class='date-month'>Sep</span> <span class='date-day'>5</span><span class='date-suffix'>th</span>, <span class='date-year'>2016</span></span> <span class='time'>1:01 pm</span></time>
         
       </p>
     
   </header>
 
 
-  <div class="entry-content"><h3>Setup NFS server and client using ansible</h3>
+  <div class="entry-content"><h3>Setup</h3>
 
-<p>If you have a centralized server and you want to share a disk from the server, the best way is
-to use NFS model.</p>
+<p><img src="https://advishnuprasad.com/images/db.png" alt="API docs image" />
+<sub><sup> * Image credit: google images </sub></sup></p>
 
-<p><img src="https://advishnuprasad.com/images/nfs.png" alt="API docs image" /></p>
+<h3>Master server setup</h3>
 
-<p>You might have to create a server with enough disk space. Let&rsquo;s say you have a disk with file system
-as <code>/dev/xvdb</code> and the size is 100 GB.</p>
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>sudo sh -c <span class="s1">&#39;echo &quot;deb http://apt.postgresql.org/pub/repos/apt/ `lsb_release -cs`-pgdg main&quot; &gt;&gt; /etc/apt/sources.list.d/pgdg.list&#39;</span>
+</span><span class='line'>wget -q https://www.postgresql.org/media/keys/ACCC4CF8.asc -O - <span class="p">|</span> sudo apt-key add -
+</span><span class='line'>sudo apt-get update
+</span><span class='line'>sudo apt-get install postgresql postgresql-contrib
+</span></code></pre></td></tr></table></div></figure>
 
-<p>Now you want to share this volume with other machines. Below is the script to do it using ansible.</p>
 
-<p>Read <a href="https://help.ubuntu.com/community/SettingUpNFSHowTo">this</a> tutorial before writing ansible script.</p>
+<p>Create user for replication</p>
 
-<h3>Ansible script</h3>
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>sudo su postgres
+</span><span class='line'>psql
+</span><span class='line'>CREATE USER replicator REPLICATION LOGIN ENCRYPTED PASSWORD <span class="s1">&#39;password&#39;</span><span class="p">;</span>
+</span></code></pre></td></tr></table></div></figure>
 
-<figure class='code'><figcaption><span>inventory.yml</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+
+<p>Edit the following line in postgresql.conf</p>
+
+<figure class='code'><figcaption><span>/etc/postgresql/9.5/postgresql.conf</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='sql'><span class='line'><span class="n">wal_level</span> <span class="o">=</span> <span class="n">hot_standby</span>
+</span><span class='line'><span class="n">max_wal_senders</span> <span class="o">=</span> <span class="mi">3</span>
+</span><span class='line'><span class="n">wal_keep_segments</span> <span class="o">=</span> <span class="mi">8</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Add the following line in pg_hba.conf</p>
+
+<figure class='code'><figcaption><span>/etc/postgresql/9.5/pg_hba.conf</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='sql'><span class='line'><span class="k">host</span>     <span class="n">replication</span>     <span class="n">replicator</span>      <span class="o">&lt;</span><span class="n">slave</span> <span class="n">ip</span><span class="o">&gt;</span>            <span class="n">md5</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Restart master postgres.</p>
+
+<h3>Slave server setup</h3>
+
+<p>Setup postgresql 9.5 in slave server.
+Stop the server before chaning any configurations</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>sudo su postgres
+</span><span class='line'>service postgresql stop
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Edit the following line in postgresql.conf</p>
+
+<figure class='code'><figcaption><span>/etc/postgresql/9.5/postgresql.conf</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='sql'><span class='line'><span class="n">wal_level</span> <span class="o">=</span> <span class="n">hot_standby</span>
+</span><span class='line'><span class="n">hot_standby</span> <span class="o">=</span> <span class="k">on</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Pull base backup from master server</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='sql'><span class='line'><span class="n">rm</span> <span class="o">-</span><span class="n">rf</span> <span class="o">/</span><span class="n">var</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">postgresql</span><span class="o">/</span><span class="mi">9</span><span class="p">.</span><span class="mi">5</span><span class="o">/</span><span class="n">main</span>
+</span><span class='line'><span class="n">pg_basebackup</span> <span class="o">-</span><span class="n">h</span> <span class="o">&lt;</span><span class="n">master_ip</span><span class="o">&gt;</span> <span class="o">-</span><span class="n">D</span> <span class="o">/</span><span class="n">var</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">postgresql</span><span class="o">/</span><span class="mi">9</span><span class="p">.</span><span class="mi">5</span><span class="o">/</span><span class="n">main</span> <span class="o">-</span><span class="n">U</span> <span class="n">replicator</span> <span class="o">-</span><span class="n">v</span> <span class="o">-</span><span class="n">P</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Create a recovery file for streaming</p>
+
+<figure class='code'><figcaption><span>/var/lib/postgresql/9.5/main/recovery.conf</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='sql'><span class='line'><span class="n">standby_mode</span> <span class="o">=</span> <span class="s1">&#39;on&#39;</span>
+</span><span class='line'><span class="n">primary_conninfo</span> <span class="o">=</span> <span class="s1">&#39;host=&lt;master_ip&gt; port=5432 user=replicator password=password&#39;</span>
+</span><span class='line'><span class="n">trigger_file</span> <span class="o">=</span> <span class="s1">&#39;/var/lib/postgresql.trigger&#39;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Now start the slave server</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>service postgresql start
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Run the following command in master to check whether replication is on or not.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='sql'><span class='line'><span class="k">select</span> <span class="o">*</span> <span class="k">from</span> <span class="n">pg_stat_replication</span><span class="p">;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>Send Wal-E files to S3 for backup</h2>
+
+<p>Run the following commands to setup wal-e</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>sudo su
+</span><span class='line'>sudo apt-get install daemontools libevent-dev python-all-dev lzop pv
+</span><span class='line'>sudo apt-get install python-setuptools
+</span><span class='line'>sudo easy_install pip
+</span><span class='line'>sudo pip install wal-e --upgrade
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Add your s3 credentials</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
 <span class='line-number'>4</span>
 <span class='line-number'>5</span>
 <span class='line-number'>6</span>
-</pre></td><td class='code'><pre><code class='yaml'><span class='line'><span class="p-Indicator">[</span><span class="nv">nfs_server</span><span class="p-Indicator">]</span>
-</span><span class='line'><span class="l-Scalar-Plain">10.0.0.1</span>
-</span><span class='line'>
-</span><span class='line'><span class="l-Scalar-Plain">[nfs_clients]</span>
-</span><span class='line'><span class="l-Scalar-Plain">10.0.0.2</span>
-</span><span class='line'><span class="l-Scalar-Plain">10.0.0.3</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>mkdir -p /etc/wal-e.d/env
+</span><span class='line'><span class="nb">echo</span> &lt;ACCESS_KEY&gt; &gt; /etc/wal-e.d/env/AWS_ACCESS_KEY_ID
+</span><span class='line'><span class="nb">echo</span> &lt;SECRET_KEY&gt; &gt; /etc/wal-e.d/env/AWS_SECRET_ACCESS_KEY
+</span><span class='line'><span class="nb">echo</span> <span class="s1">&#39;s3://&lt;bucket_path&gt;&#39;</span> &gt; /etc/wal-e.d/env/WALE_S3_PREFIX
+</span><span class='line'><span class="nb">echo</span> <span class="s1">&#39;us-east-1&#39;</span> &gt; /etc/wal-e.d/env/AWS_REGION
+</span><span class='line'>chown -R root:postgres /etc/wal-e.d
 </span></code></pre></td></tr></table></div></figure>
 
 
+<p>Create a base backup</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>envdir /etc/wal-e.d/env wal-e backup-push <span class="nv">$PG_DATA</span>
+</span></code></pre></td></tr></table></div></figure>
 
 
-<figure class='code'><figcaption><span>exports.j2</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<p>List all the backup files</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>envdir /etc/wal-e.d/env /usr/local/bin/wal-e backup-list
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Push Latest backup from S3</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>envdir /etc/wal-e.d/env /usr/local/bin/wal-e backup-fetch LATEST
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Setup daily backup push crontab</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
 <span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="c"># /etc/exports: the access control list for filesystems which may be exported</span>
-</span><span class='line'><span class="c">#               to NFS clients.  See exports(5).</span>
-</span><span class='line'><span class="c">#</span>
-</span><span class='line'><span class="c"># Example for NFSv2 and NFSv3:</span>
-</span><span class='line'><span class="c"># /srv/homes       hostname1(rw,sync,no_subtree_check) hostname2(ro,sync,no_subtree_check)</span>
-</span><span class='line'><span class="c">#</span>
-</span><span class='line'><span class="c"># Example for NFSv4:</span>
-</span><span class='line'><span class="c"># /srv/nfs4        gss/krb5i(rw,sync,fsid=0,crossmnt,no_subtree_check)</span>
-</span><span class='line'><span class="c"># /srv/nfs4/homes  gss/krb5i(rw,sync,no_subtree_check)</span>
-</span><span class='line'><span class="c">#</span>
-</span><span class='line'>/nfs            10.0.0.1/24<span class="o">(</span>rw,sync,no_root_squash,no_subtree_check<span class="o">)</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>crontab -e
+</span><span class='line'>/usr/bin/envdir /etc/wal-e.d/env /usr/local/bin/wal-e backup-push /e_data/main/ &gt; /tmp/postgres_wale_backup_push.log<span class="p">;</span>
+</span><span class='line'><span class="c">#keep last 5 base backups</span>
+</span><span class='line'>/usr/bin/envdir /etc/wal-e.d/env /usr/local/bin/wal-e delete --confirm retain <span class="m">5</span> &gt; /tmp/postgres_wale_backup_delete.log<span class="p">;</span>
 </span></code></pre></td></tr></table></div></figure>
 
 
-
-
-<figure class='code'><figcaption><span>nfs-server.yml</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-<span class='line-number'>24</span>
-<span class='line-number'>25</span>
-<span class='line-number'>26</span>
-</pre></td><td class='code'><pre><code class='yaml'><span class='line'><span class="nn">---</span>
-</span><span class='line'><span class="p-Indicator">-</span> <span class="l-Scalar-Plain">hosts</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">nfs_server</span>
-</span><span class='line'>  <span class="l-Scalar-Plain">remote_user</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">ubuntu</span>
-</span><span class='line'>  <span class="l-Scalar-Plain">sudo</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">yes</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="l-Scalar-Plain">tasks</span><span class="p-Indicator">:</span>
-</span><span class='line'>    <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">name</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">Create mountable dir</span>
-</span><span class='line'>      <span class="l-Scalar-Plain">file</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">path=/share state=directory mode=777 owner=root group=root</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">name</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">make sure the mount drive has a filesystem</span>
-</span><span class='line'>      <span class="l-Scalar-Plain">filesystem</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">fstype=ext4 dev={{ mountable_share_drive | default(&#39;/dev/xvdb&#39;) }}</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">name</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">set mountpoints</span>
-</span><span class='line'>      <span class="l-Scalar-Plain">mount</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">name=/share src={{ mountable_share_drive | default(&#39;/dev/xvdb&#39;) }} fstype=auto opts=defaults,nobootwait dump=0 passno=2 state=mounted</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">name</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">Ensure NFS utilities are installed.</span>
-</span><span class='line'>      <span class="l-Scalar-Plain">apt</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">name={{ item }} state=installed update_cache=yes</span>
-</span><span class='line'>      <span class="l-Scalar-Plain">with_items</span><span class="p-Indicator">:</span>
-</span><span class='line'>        <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">nfs-common</span>
-</span><span class='line'>        <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">nfs-kernel-server</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">name</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">copy /etc/exports</span>
-</span><span class='line'>      <span class="l-Scalar-Plain">template</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">src=exports.j2 dest=/etc/exports owner=root group=root</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">name</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">restart nfs server</span>
-</span><span class='line'>      <span class="l-Scalar-Plain">service</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">name=nfs-kernel-server state=restarted</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-
-
-<figure class='code'><figcaption><span>nfs_clients.yml</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-</pre></td><td class='code'><pre><code class='yaml'><span class='line'><span class="p-Indicator">-</span> <span class="l-Scalar-Plain">hosts</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">nfs_clients</span>
-</span><span class='line'>  <span class="l-Scalar-Plain">remote_user</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">ubuntu</span>
-</span><span class='line'>  <span class="l-Scalar-Plain">sudo</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">yes</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="l-Scalar-Plain">tasks</span><span class="p-Indicator">:</span>
-</span><span class='line'>    <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">name</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">Ensure NFS common is installed.</span>
-</span><span class='line'>      <span class="l-Scalar-Plain">apt</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">name=nfs-common state=installed update_cache=yes</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">name</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">Create mountable dir</span>
-</span><span class='line'>      <span class="l-Scalar-Plain">file</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">path=/nfs state=directory mode=777 owner=root group=root</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">name</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">set mountpoints</span>
-</span><span class='line'>      <span class="l-Scalar-Plain">mount</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">name=/nfs src={{hostvars[groups[&#39;nfs_server&#39;][0]][&#39;ansible_eth0&#39;][&#39;ipv4&#39;][&#39;address&#39;]}}:/share fstype=nfs opts=defaults,nobootwait dump=0 passno=2 state=mounted</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-
+<p>Please comment here if you face any problems during the setup.</p>
 </div>
   
   
@@ -270,6 +299,10 @@ as <code>/dev/xvdb</code> and the size is 100 GB.</p>
     <section>
   <h1>Recent Posts</h1>
   <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2018/10/07/kubernetes-elasticsearch-scheduled-backup-and-retention-using-curator/">Kubernetes: Elasticsearch Scheduled Backup and Retention Using Curator</a>
+      </li>
     
       <li class="post">
         <a href="/blog/2018/09/23/elasticsearch-autocomplete-example/">Elasticsearch Autocomplete Example</a>
@@ -305,10 +338,6 @@ as <code>/dev/xvdb</code> and the size is 100 GB.</p>
     
       <li class="post">
         <a href="/blog/2016/03/25/soap-request-from-ruby-without-savon/">SOAP Request From Ruby Without Savon</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2016/02/11/add-user/">Provide Ssh Access to User Using Ansible</a>
       </li>
     
   </ul>
