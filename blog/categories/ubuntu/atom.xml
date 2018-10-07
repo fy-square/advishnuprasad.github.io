@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: Ubuntu | A D Vishnu Prasad]]></title>
-  <link href="http://advishnuprasad.github.io/blog/categories/ubuntu/atom.xml" rel="self"/>
-  <link href="http://advishnuprasad.github.io/"/>
-  <updated>2018-10-07T21:34:29+05:30</updated>
-  <id>http://advishnuprasad.github.io/</id>
+  <link href="https://advishnuprasad.com/blog/categories/ubuntu/atom.xml" rel="self"/>
+  <link href="https://advishnuprasad.com/"/>
+  <updated>2018-10-07T21:42:27+05:30</updated>
+  <id>https://advishnuprasad.com/</id>
   <author>
     <name><![CDATA[A D Vishnu Prasad]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[Create Swap Using Ansible in Ubuntu]]></title>
-    <link href="http://advishnuprasad.github.io/blog/2017/02/22/create-swap-using-ansible-in-ubuntu/"/>
+    <link href="https://advishnuprasad.com/blog/2017/02/22/create-swap-using-ansible-in-ubuntu/"/>
     <updated>2017-02-22T07:03:12+05:30</updated>
-    <id>http://advishnuprasad.github.io/blog/2017/02/22/create-swap-using-ansible-in-ubuntu</id>
+    <id>https://advishnuprasad.com/blog/2017/02/22/create-swap-using-ansible-in-ubuntu</id>
     <content type="html"><![CDATA[<p>This ansible script will help you to create SWAP memory in a single command.
 Just change this line based on your required memory.</p>
 
@@ -77,9 +77,9 @@ Just change this line based on your required memory.</p>
   
   <entry>
     <title type="html"><![CDATA[Encryption at REST]]></title>
-    <link href="http://advishnuprasad.github.io/blog/2016/09/24/encryption-at-rest/"/>
+    <link href="https://advishnuprasad.com/blog/2016/09/24/encryption-at-rest/"/>
     <updated>2016-09-24T22:04:32+05:30</updated>
-    <id>http://advishnuprasad.github.io/blog/2016/09/24/encryption-at-rest</id>
+    <id>https://advishnuprasad.com/blog/2016/09/24/encryption-at-rest</id>
     <content type="html"><![CDATA[<p>Already so many people have written about what/why Encryption at REST.
 So I am just going to help you to setup Encryption at REST in ubuntu using luksFormat.
 You can read more about the cryptsetup and LuksFormat <a href="https://wiki.archlinux.org/index.php/Dm-crypt/Device_encryption">here</a></p>

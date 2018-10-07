@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: Serializers | A D Vishnu Prasad]]></title>
-  <link href="http://advishnuprasad.github.io/blog/categories/serializers/atom.xml" rel="self"/>
-  <link href="http://advishnuprasad.github.io/"/>
-  <updated>2018-10-07T21:34:29+05:30</updated>
-  <id>http://advishnuprasad.github.io/</id>
+  <link href="https://advishnuprasad.com/blog/categories/serializers/atom.xml" rel="self"/>
+  <link href="https://advishnuprasad.com/"/>
+  <updated>2018-10-07T21:42:27+05:30</updated>
+  <id>https://advishnuprasad.com/</id>
   <author>
     <name><![CDATA[A D Vishnu Prasad]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[Active Model Serializers]]></title>
-    <link href="http://advishnuprasad.github.io/blog/2014/11/14/active-model-serializers/"/>
+    <link href="https://advishnuprasad.com/blog/2014/11/14/active-model-serializers/"/>
     <updated>2014-11-14T19:42:22+05:30</updated>
-    <id>http://advishnuprasad.github.io/blog/2014/11/14/active-model-serializers</id>
+    <id>https://advishnuprasad.com/blog/2014/11/14/active-model-serializers</id>
     <content type="html"><![CDATA[<h3>When to use active model serializer ?</h3>
 
 <p>When you have your app running on both browser and mobile app, and if you have a backend rails server then active model serialiser is a perfect gem for serving APIs.</p>

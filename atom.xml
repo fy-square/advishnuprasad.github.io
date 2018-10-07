@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[A D Vishnu Prasad]]></title>
-  <link href="http://advishnuprasad.github.io/atom.xml" rel="self"/>
-  <link href="http://advishnuprasad.github.io/"/>
-  <updated>2018-10-07T21:34:29+05:30</updated>
-  <id>http://advishnuprasad.github.io/</id>
+  <link href="https://advishnuprasad.com/atom.xml" rel="self"/>
+  <link href="https://advishnuprasad.com/"/>
+  <updated>2018-10-07T21:42:27+05:30</updated>
+  <id>https://advishnuprasad.com/</id>
   <author>
     <name><![CDATA[A D Vishnu Prasad]]></name>
     
@@ -15,14 +15,14 @@
   
   <entry>
     <title type="html"><![CDATA[Elasticsearch Autocomplete Example]]></title>
-    <link href="http://advishnuprasad.github.io/blog/2018/09/23/elasticsearch-autocomplete-example/"/>
+    <link href="https://advishnuprasad.com/blog/2018/09/23/elasticsearch-autocomplete-example/"/>
     <updated>2018-09-23T20:57:23+05:30</updated>
-    <id>http://advishnuprasad.github.io/blog/2018/09/23/elasticsearch-autocomplete-example</id>
+    <id>https://advishnuprasad.com/blog/2018/09/23/elasticsearch-autocomplete-example</id>
     <content type="html"><![CDATA[<p>This post will help you to create autocomplete feature on Elasticsearch.</p>
 
 <p>For Example, if you have a select box and when you search for <code>data</code> you would want to get all results that starts with <code>data</code>.</p>
 
-<p><img src="http://advishnuprasad.github.io/images/blog_1.png" alt="ES1" /></p>
+<p><img src="https://advishnuprasad.com/images/blog_1.png" alt="ES1" /></p>
 
 <!-- ![ES1](http://localhost:4000/images/blog_1.png) -->
 
@@ -354,9 +354,9 @@
   
   <entry>
     <title type="html"><![CDATA[Elasticsearch Backup and Restore From Azure Blob Storage]]></title>
-    <link href="http://advishnuprasad.github.io/blog/2017/11/09/elasticsearch-backup-and-restore-from-azure-blob-storage/"/>
+    <link href="https://advishnuprasad.com/blog/2017/11/09/elasticsearch-backup-and-restore-from-azure-blob-storage/"/>
     <updated>2017-11-09T23:30:26+05:30</updated>
-    <id>http://advishnuprasad.github.io/blog/2017/11/09/elasticsearch-backup-and-restore-from-azure-blob-storage</id>
+    <id>https://advishnuprasad.com/blog/2017/11/09/elasticsearch-backup-and-restore-from-azure-blob-storage</id>
     <content type="html"><![CDATA[<p>Assumptions:</p>
 
 <p>You already have a working ELK cluster (5.x).</p>
@@ -367,7 +367,7 @@
 
 <p>Create Storage Account:</p>
 
-<p><img src="http://advishnuprasad.github.io/images/es1.jpg" alt="ES1" /></p>
+<p><img src="https://advishnuprasad.com/images/es1.jpg" alt="ES1" /></p>
 
 <!-- ![ES1](http://localhost:4000/images/es1.jpg)  -->
 
@@ -376,7 +376,7 @@
 
 <p>Get Storage account name and key</p>
 
-<p><img src="http://advishnuprasad.github.io/images/es2.jpg" alt="ES2" /></p>
+<p><img src="https://advishnuprasad.com/images/es2.jpg" alt="ES2" /></p>
 
 <!-- ![ES2](http://localhost:4000/images/es2.jpg)  -->
 
@@ -392,7 +392,7 @@
 <h3>Step 4: Update config</h3>
 
 <p>Go to <code>/etc/elasticsearch/elasticsearch.yml</code>. Add your Azure configuration
-<img src="http://advishnuprasad.github.io/images/es3.jpg" alt="ES3" /></p>
+<img src="https://advishnuprasad.com/images/es3.jpg" alt="ES3" /></p>
 
 <!-- ![ES3](http://localhost:4000/images/es3.jpg)  -->
 
@@ -434,7 +434,7 @@
 
 <p>Go to Storage account. Click on &ldquo;Containers&rdquo; to see the snapshots.</p>
 
-<p><img src="http://advishnuprasad.github.io/images/es4.jpg" alt="ES4" /></p>
+<p><img src="https://advishnuprasad.com/images/es4.jpg" alt="ES4" /></p>
 
 <!-- ![ES4](http://localhost:4000/images/es4.jpg)  -->
 
@@ -467,9 +467,9 @@
   
   <entry>
     <title type="html"><![CDATA[Docker Commands]]></title>
-    <link href="http://advishnuprasad.github.io/blog/2017/10/31/docker-commands/"/>
+    <link href="https://advishnuprasad.com/blog/2017/10/31/docker-commands/"/>
     <updated>2017-10-31T21:20:54+05:30</updated>
-    <id>http://advishnuprasad.github.io/blog/2017/10/31/docker-commands</id>
+    <id>https://advishnuprasad.com/blog/2017/10/31/docker-commands</id>
     <content type="html"><![CDATA[<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
@@ -586,13 +586,13 @@
   
   <entry>
     <title type="html"><![CDATA[Send Hipchat Notifications Using Python]]></title>
-    <link href="http://advishnuprasad.github.io/blog/2017/03/07/send-hipchat-notifications-using-python/"/>
+    <link href="https://advishnuprasad.com/blog/2017/03/07/send-hipchat-notifications-using-python/"/>
     <updated>2017-03-07T18:57:53+05:30</updated>
-    <id>http://advishnuprasad.github.io/blog/2017/03/07/send-hipchat-notifications-using-python</id>
+    <id>https://advishnuprasad.com/blog/2017/03/07/send-hipchat-notifications-using-python</id>
     <content type="html"><![CDATA[<p>There might be scenarios where you want to send hipchat notifications programatically.
 Following python script will help you to create notifications in 3 simple steps.</p>
 
-<p><img src="http://advishnuprasad.github.io/images/hipchat.png" alt="Hipchat Image" />
+<p><img src="https://advishnuprasad.com/images/hipchat.png" alt="Hipchat Image" />
 <sub><sup> * Image credit: google images </sub></sup></p>
 
 <!-- ![Hipchat Image](http://localhost:4000/images/hipchat.png) -->
@@ -655,9 +655,9 @@ Following python script will help you to create notifications in 3 simple steps.
   
   <entry>
     <title type="html"><![CDATA[Create Swap Using Ansible in Ubuntu]]></title>
-    <link href="http://advishnuprasad.github.io/blog/2017/02/22/create-swap-using-ansible-in-ubuntu/"/>
+    <link href="https://advishnuprasad.com/blog/2017/02/22/create-swap-using-ansible-in-ubuntu/"/>
     <updated>2017-02-22T07:03:12+05:30</updated>
-    <id>http://advishnuprasad.github.io/blog/2017/02/22/create-swap-using-ansible-in-ubuntu</id>
+    <id>https://advishnuprasad.com/blog/2017/02/22/create-swap-using-ansible-in-ubuntu</id>
     <content type="html"><![CDATA[<p>This ansible script will help you to create SWAP memory in a single command.
 Just change this line based on your required memory.</p>
 
@@ -765,9 +765,9 @@ Just change this line based on your required memory.</p>
   
   <entry>
     <title type="html"><![CDATA[Encryption at REST]]></title>
-    <link href="http://advishnuprasad.github.io/blog/2016/09/24/encryption-at-rest/"/>
+    <link href="https://advishnuprasad.com/blog/2016/09/24/encryption-at-rest/"/>
     <updated>2016-09-24T22:04:32+05:30</updated>
-    <id>http://advishnuprasad.github.io/blog/2016/09/24/encryption-at-rest</id>
+    <id>https://advishnuprasad.com/blog/2016/09/24/encryption-at-rest</id>
     <content type="html"><![CDATA[<p>Already so many people have written about what/why Encryption at REST.
 So I am just going to help you to setup Encryption at REST in ubuntu using luksFormat.
 You can read more about the cryptsetup and LuksFormat <a href="https://wiki.archlinux.org/index.php/Dm-crypt/Device_encryption">here</a></p>
@@ -819,12 +819,12 @@ You can read more about the cryptsetup and LuksFormat <a href="https://wiki.arch
   
   <entry>
     <title type="html"><![CDATA[Creating a Postgres Master and Slave Streaming Server With S3 Backup]]></title>
-    <link href="http://advishnuprasad.github.io/blog/2016/09/05/creating-a-postgres-master-and-slave-streaming-server-with-s3-backup/"/>
+    <link href="https://advishnuprasad.com/blog/2016/09/05/creating-a-postgres-master-and-slave-streaming-server-with-s3-backup/"/>
     <updated>2016-09-05T13:01:13+05:30</updated>
-    <id>http://advishnuprasad.github.io/blog/2016/09/05/creating-a-postgres-master-and-slave-streaming-server-with-s3-backup</id>
+    <id>https://advishnuprasad.com/blog/2016/09/05/creating-a-postgres-master-and-slave-streaming-server-with-s3-backup</id>
     <content type="html"><![CDATA[<h3>Setup</h3>
 
-<p><img src="http://advishnuprasad.github.io/images/db.png" alt="API docs image" />
+<p><img src="https://advishnuprasad.com/images/db.png" alt="API docs image" />
 <sub><sup> * Image credit: google images </sub></sup></p>
 
 <h3>Master server setup</h3>
@@ -1000,15 +1000,15 @@ Stop the server before chaning any configurations</p>
   
   <entry>
     <title type="html"><![CDATA[Setup NFS Server and Client Using Ansible]]></title>
-    <link href="http://advishnuprasad.github.io/blog/2016/03/29/setup-nfs-server-and-client-using-ansible/"/>
+    <link href="https://advishnuprasad.com/blog/2016/03/29/setup-nfs-server-and-client-using-ansible/"/>
     <updated>2016-03-29T18:16:12+05:30</updated>
-    <id>http://advishnuprasad.github.io/blog/2016/03/29/setup-nfs-server-and-client-using-ansible</id>
+    <id>https://advishnuprasad.com/blog/2016/03/29/setup-nfs-server-and-client-using-ansible</id>
     <content type="html"><![CDATA[<h3>Setup NFS server and client using ansible</h3>
 
 <p>If you have a centralized server and you want to share a disk from the server, the best way is
 to use NFS model.</p>
 
-<p><img src="http://advishnuprasad.github.io/images/nfs.png" alt="API docs image" /></p>
+<p><img src="https://advishnuprasad.com/images/nfs.png" alt="API docs image" /></p>
 
 <p>You might have to create a server with enough disk space. Let&rsquo;s say you have a disk with file system
 as <code>/dev/xvdb</code> and the size is 100 GB.</p>
@@ -1155,9 +1155,9 @@ as <code>/dev/xvdb</code> and the size is 100 GB.</p>
   
   <entry>
     <title type="html"><![CDATA[SOAP Request From Ruby Without Savon]]></title>
-    <link href="http://advishnuprasad.github.io/blog/2016/03/25/soap-request-from-ruby-without-savon/"/>
+    <link href="https://advishnuprasad.com/blog/2016/03/25/soap-request-from-ruby-without-savon/"/>
     <updated>2016-03-25T21:11:47+05:30</updated>
-    <id>http://advishnuprasad.github.io/blog/2016/03/25/soap-request-from-ruby-without-savon</id>
+    <id>https://advishnuprasad.com/blog/2016/03/25/soap-request-from-ruby-without-savon</id>
     <content type="html"><![CDATA[<h3>Send SOAP request from ruby net/http without using Savon gem</h3>
 
 <p>You would have seen everyone is using Savon gem for sending SOAP request. But what if the service is using SOAP 1.1.
@@ -1242,9 +1242,9 @@ You might want to write your own http request. Here is the way to send request w
   
   <entry>
     <title type="html"><![CDATA[Provide Ssh Access to User Using Ansible]]></title>
-    <link href="http://advishnuprasad.github.io/blog/2016/02/11/add-user/"/>
+    <link href="https://advishnuprasad.com/blog/2016/02/11/add-user/"/>
     <updated>2016-02-11T19:42:30+05:30</updated>
-    <id>http://advishnuprasad.github.io/blog/2016/02/11/add-user</id>
+    <id>https://advishnuprasad.com/blog/2016/02/11/add-user</id>
     <content type="html"><![CDATA[<h3>How to provide production server access to users using ansible?</h3>
 
 <h4>Assumptions:</h4>
@@ -1319,9 +1319,9 @@ You might want to write your own http request. Here is the way to send request w
   
   <entry>
     <title type="html"><![CDATA[Generate API Documentation Using Rspec Acceptance Tests]]></title>
-    <link href="http://advishnuprasad.github.io/blog/2016/02/07/api-docs-using-rspecs/"/>
+    <link href="https://advishnuprasad.com/blog/2016/02/07/api-docs-using-rspecs/"/>
     <updated>2016-02-07T11:43:58+05:30</updated>
-    <id>http://advishnuprasad.github.io/blog/2016/02/07/api-docs-using-rspecs</id>
+    <id>https://advishnuprasad.com/blog/2016/02/07/api-docs-using-rspecs</id>
     <content type="html"><![CDATA[<h4>Step 1:</h4>
 
 <p>Install required gems</p>
@@ -1480,15 +1480,15 @@ You might want to write your own http request. Here is the way to send request w
 
 <p>Now navigate to <code>localhost:3000/docs</code></p>
 
-<p><img src="http://advishnuprasad.github.io/images/api_doc1.png" alt="API docs image" /></p>
+<p><img src="https://advishnuprasad.com/images/api_doc1.png" alt="API docs image" /></p>
 ]]></content>
   </entry>
   
   <entry>
     <title type="html"><![CDATA[Active Model Serializers]]></title>
-    <link href="http://advishnuprasad.github.io/blog/2014/11/14/active-model-serializers/"/>
+    <link href="https://advishnuprasad.com/blog/2014/11/14/active-model-serializers/"/>
     <updated>2014-11-14T19:42:22+05:30</updated>
-    <id>http://advishnuprasad.github.io/blog/2014/11/14/active-model-serializers</id>
+    <id>https://advishnuprasad.com/blog/2014/11/14/active-model-serializers</id>
     <content type="html"><![CDATA[<h3>When to use active model serializer ?</h3>
 
 <p>When you have your app running on both browser and mobile app, and if you have a backend rails server then active model serialiser is a perfect gem for serving APIs.</p>
@@ -1593,9 +1593,9 @@ You might want to write your own http request. Here is the way to send request w
   
   <entry>
     <title type="html"><![CDATA[Multiple Solr Servers in Single Machine]]></title>
-    <link href="http://advishnuprasad.github.io/blog/2014/04/26/multiple-solrs-in-single-solr-instance/"/>
+    <link href="https://advishnuprasad.com/blog/2014/04/26/multiple-solrs-in-single-solr-instance/"/>
     <updated>2014-04-26T10:52:00+05:30</updated>
-    <id>http://advishnuprasad.github.io/blog/2014/04/26/multiple-solrs-in-single-solr-instance</id>
+    <id>https://advishnuprasad.com/blog/2014/04/26/multiple-solrs-in-single-solr-instance</id>
     <content type="html"><![CDATA[<h4>Step 1:</h4>
 
 <p>Go to your solr directory.</p>
@@ -1663,9 +1663,9 @@ You might want to write your own http request. Here is the way to send request w
   
   <entry>
     <title type="html"><![CDATA[Fetch Records From Sql Query - Ruby on Rails - Oci8 Cursor]]></title>
-    <link href="http://advishnuprasad.github.io/blog/2014/03/14/fetch-records-from-sql-query-ruby-on-rails-oci8-cursor/"/>
+    <link href="https://advishnuprasad.com/blog/2014/03/14/fetch-records-from-sql-query-ruby-on-rails-oci8-cursor/"/>
     <updated>2014-03-14T18:50:26+05:30</updated>
-    <id>http://advishnuprasad.github.io/blog/2014/03/14/fetch-records-from-sql-query-ruby-on-rails-oci8-cursor</id>
+    <id>https://advishnuprasad.com/blog/2014/03/14/fetch-records-from-sql-query-ruby-on-rails-oci8-cursor</id>
     <content type="html"><![CDATA[<p>There might be time when you can&rsquo;t use ActiveRecord finders but have to write custom
 queries to fetch the records.</p>
 
@@ -1710,9 +1710,9 @@ But how to read the records from this cursor?.</p>
   
   <entry>
     <title type="html"><![CDATA[Find Type of the Request in Controller]]></title>
-    <link href="http://advishnuprasad.github.io/blog/2012/12/15/find-type-of-the-request-in-controller/"/>
+    <link href="https://advishnuprasad.com/blog/2012/12/15/find-type-of-the-request-in-controller/"/>
     <updated>2012-12-15T07:51:00+05:30</updated>
-    <id>http://advishnuprasad.github.io/blog/2012/12/15/find-type-of-the-request-in-controller</id>
+    <id>https://advishnuprasad.com/blog/2012/12/15/find-type-of-the-request-in-controller</id>
     <content type="html"><![CDATA[<p>Is there any way to find the type of request in controller ?</p>
 
 <h4>Yes.</h4>
@@ -1744,9 +1744,9 @@ But how to read the records from this cursor?.</p>
   
   <entry>
     <title type="html"><![CDATA[Ajax Request in Ruby on Rails (UJS)]]></title>
-    <link href="http://advishnuprasad.github.io/blog/2012/10/10/ajax-request-in-ruby-on-rails-ujs/"/>
+    <link href="https://advishnuprasad.com/blog/2012/10/10/ajax-request-in-ruby-on-rails-ujs/"/>
     <updated>2012-10-10T06:09:19+05:30</updated>
-    <id>http://advishnuprasad.github.io/blog/2012/10/10/ajax-request-in-ruby-on-rails-ujs</id>
+    <id>https://advishnuprasad.com/blog/2012/10/10/ajax-request-in-ruby-on-rails-ujs</id>
     <content type="html"><![CDATA[<p>Many programmer uses jquery to catch click event and do $.get or $.post to access the server and print the response in a required div.</p>
 
 <p>But there is a handy way to do ajax request using UJS provided by Rails .</p>
@@ -1829,9 +1829,9 @@ Now lets see how to do that in rails using UJS</p>
   
   <entry>
     <title type="html"><![CDATA[Rubber + EC2 + Rails + Oracle + Nginx + Passenger]]></title>
-    <link href="http://advishnuprasad.github.io/blog/2012/02/02/rubber-plus-ec2-plus-rails-plus-oracle-plus-nginx-plus-passenger/"/>
+    <link href="https://advishnuprasad.com/blog/2012/02/02/rubber-plus-ec2-plus-rails-plus-oracle-plus-nginx-plus-passenger/"/>
     <updated>2012-02-02T03:10:36+05:30</updated>
-    <id>http://advishnuprasad.github.io/blog/2012/02/02/rubber-plus-ec2-plus-rails-plus-oracle-plus-nginx-plus-passenger</id>
+    <id>https://advishnuprasad.com/blog/2012/02/02/rubber-plus-ec2-plus-rails-plus-oracle-plus-nginx-plus-passenger</id>
     <content type="html"><![CDATA[<h2>Deploying rails app into EC2 using Rubber</h2>
 
 <h4>Step 1</h4>

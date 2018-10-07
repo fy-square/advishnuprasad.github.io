@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: Autocomplete | A D Vishnu Prasad]]></title>
-  <link href="http://advishnuprasad.github.io/blog/categories/autocomplete/atom.xml" rel="self"/>
-  <link href="http://advishnuprasad.github.io/"/>
-  <updated>2018-10-07T21:34:29+05:30</updated>
-  <id>http://advishnuprasad.github.io/</id>
+  <link href="https://advishnuprasad.com/blog/categories/autocomplete/atom.xml" rel="self"/>
+  <link href="https://advishnuprasad.com/"/>
+  <updated>2018-10-07T21:42:27+05:30</updated>
+  <id>https://advishnuprasad.com/</id>
   <author>
     <name><![CDATA[A D Vishnu Prasad]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[Elasticsearch Autocomplete Example]]></title>
-    <link href="http://advishnuprasad.github.io/blog/2018/09/23/elasticsearch-autocomplete-example/"/>
+    <link href="https://advishnuprasad.com/blog/2018/09/23/elasticsearch-autocomplete-example/"/>
     <updated>2018-09-23T20:57:23+05:30</updated>
-    <id>http://advishnuprasad.github.io/blog/2018/09/23/elasticsearch-autocomplete-example</id>
+    <id>https://advishnuprasad.com/blog/2018/09/23/elasticsearch-autocomplete-example</id>
     <content type="html"><![CDATA[<p>This post will help you to create autocomplete feature on Elasticsearch.</p>
 
 <p>For Example, if you have a select box and when you search for <code>data</code> you would want to get all results that starts with <code>data</code>.</p>

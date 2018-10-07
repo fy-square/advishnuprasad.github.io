@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: Ajax | A D Vishnu Prasad]]></title>
-  <link href="http://advishnuprasad.github.io/blog/categories/ajax/atom.xml" rel="self"/>
-  <link href="http://advishnuprasad.github.io/"/>
-  <updated>2018-10-07T21:34:29+05:30</updated>
-  <id>http://advishnuprasad.github.io/</id>
+  <link href="https://advishnuprasad.com/blog/categories/ajax/atom.xml" rel="self"/>
+  <link href="https://advishnuprasad.com/"/>
+  <updated>2018-10-07T21:42:27+05:30</updated>
+  <id>https://advishnuprasad.com/</id>
   <author>
     <name><![CDATA[A D Vishnu Prasad]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[Ajax Request in Ruby on Rails (UJS)]]></title>
-    <link href="http://advishnuprasad.github.io/blog/2012/10/10/ajax-request-in-ruby-on-rails-ujs/"/>
+    <link href="https://advishnuprasad.com/blog/2012/10/10/ajax-request-in-ruby-on-rails-ujs/"/>
     <updated>2012-10-10T06:09:19+05:30</updated>
-    <id>http://advishnuprasad.github.io/blog/2012/10/10/ajax-request-in-ruby-on-rails-ujs</id>
+    <id>https://advishnuprasad.com/blog/2012/10/10/ajax-request-in-ruby-on-rails-ujs</id>
     <content type="html"><![CDATA[<p>Many programmer uses jquery to catch click event and do $.get or $.post to access the server and print the response in a required div.</p>
 
 <p>But there is a handy way to do ajax request using UJS provided by Rails .</p>

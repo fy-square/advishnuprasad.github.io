@@ -1,4 +1,4 @@
 User-agent: *
 Disallow: 
 
-Sitemap: http://advishnuprasad.github.io/sitemap.xml 
+Sitemap: https://advishnuprasad.com/sitemap.xml 

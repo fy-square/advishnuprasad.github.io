@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: Hipchat | A D Vishnu Prasad]]></title>
-  <link href="http://advishnuprasad.github.io/blog/categories/hipchat/atom.xml" rel="self"/>
-  <link href="http://advishnuprasad.github.io/"/>
-  <updated>2018-10-07T21:34:29+05:30</updated>
-  <id>http://advishnuprasad.github.io/</id>
+  <link href="https://advishnuprasad.com/blog/categories/hipchat/atom.xml" rel="self"/>
+  <link href="https://advishnuprasad.com/"/>
+  <updated>2018-10-07T21:42:27+05:30</updated>
+  <id>https://advishnuprasad.com/</id>
   <author>
     <name><![CDATA[A D Vishnu Prasad]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[Send Hipchat Notifications Using Python]]></title>
-    <link href="http://advishnuprasad.github.io/blog/2017/03/07/send-hipchat-notifications-using-python/"/>
+    <link href="https://advishnuprasad.com/blog/2017/03/07/send-hipchat-notifications-using-python/"/>
     <updated>2017-03-07T18:57:53+05:30</updated>
-    <id>http://advishnuprasad.github.io/blog/2017/03/07/send-hipchat-notifications-using-python</id>
+    <id>https://advishnuprasad.com/blog/2017/03/07/send-hipchat-notifications-using-python</id>
     <content type="html"><![CDATA[<p>There might be scenarios where you want to send hipchat notifications programatically.
 Following python script will help you to create notifications in 3 simple steps.</p>
 
