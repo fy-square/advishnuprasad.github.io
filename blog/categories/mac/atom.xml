@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Mac | A D Vishnu Prasad]]></title>
+  <link href="https://advishnuprasad.com/blog/categories/mac/atom.xml" rel="self"/>
+  <link href="https://advishnuprasad.com/"/>
+  <updated>2019-03-17T20:23:55+05:30</updated>
+  <id>https://advishnuprasad.com/</id>
+  <author>
+    <name><![CDATA[A D Vishnu Prasad]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Build PgModeler From Source in MacOS Mojave]]></title>
+    <link href="https://advishnuprasad.com/blog/2019/03/17/build-pgmodeler-from-source/"/>
+    <updated>2019-03-17T20:07:46+05:30</updated>
+    <id>https://advishnuprasad.com/blog/2019/03/17/build-pgmodeler-from-source</id>
+    <content type="html"><![CDATA[<h4>Download the Source</h4>
+
+<p>Download source from <a href="https://pgmodeler.io/download?source=true">here</a> <br>
+Please refer <a href="https://pgmodeler.io/support/installation">Official build document</a></p>
+
+<p>I had to make the following changes to make it work in my mac (MacOS Mojave)</p>
+
+<h4>Install Requirements</h4>
+
+<pre><code>  brew install qt    
+  brew link qt5 —force
+  brew install postgresql
+  brew install libxml2
+</code></pre>
+
+<h4>Edit pgmodeler.pri</h4>
+
+<p>Open the cloned repo.  <br></p>
+
+<p>Edit <code>PGSQL_LIB, PGSQL_INC, XML_INC, XML_LIB</code> in pgmodeler.pri
+<sub> Please note that the following works only if you have used brew to install the requirements </sub></p>
+
+<pre><code>  PGSQL_LIB = /usr/local/opt/postgresql/lib/libpq.dylib
+  PGSQL_INC = /usr/local/opt/postgresql/include
+  XML_INC = /usr/local/opt/libxml2/include/libxml2
+  XML_LIB = /usr/local/opt/libxml2/lib/libxml2.dylib
+</code></pre>
+
+<h4>Build the software</h4>
+
+<pre><code>export PGMODELER_ROOT=/Applications/pgmodeler.app/
+qmake -r pgmodeler.pro
+make
+make install
+macdeployqt $PGMODELER_ROOT \
+                            -executable=$PGMODELER_ROOT/Contents/MacOS/pgmodeler-ch \
+                            -executable=$PGMODELER_ROOT/Contents/MacOS/pgmodeler-cli
+</code></pre>
+]]></content>
+  </entry>
+  
+</feed>

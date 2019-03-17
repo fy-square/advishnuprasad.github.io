@@ -9,7 +9,8 @@
   <meta name="author" content="A D Vishnu Prasad">
 
   
-  <meta name="description" content="Send SOAP request from ruby net/http without using Savon gem You would have seen everyone is using Savon gem for sending SOAP request. But what if &hellip;">
+  <meta name="description" content="Setup NFS server and client using ansible If you have a centralized server and you want to share a disk from the server, the best way is
+to use NFS &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -84,7 +85,7 @@
       
   <header>
     
-      <h1 class="entry-title"><a href="/blog/2016/03/25/soap-request-from-ruby-without-savon/">SOAP Request From Ruby Without Savon</a></h1>
+      <h1 class="entry-title"><a href="/blog/2016/03/29/setup-nfs-server-and-client-using-ansible/">Setup NFS Server and Client Using Ansible</a></h1>
     
     
       <p class="meta">
@@ -93,19 +94,74 @@
 
 
 
-<time class='entry-date' datetime='2016-03-25T21:11:47+05:30'><span class='date'><span class='date-month'>Mar</span> <span class='date-day'>25</span><span class='date-suffix'>th</span>, <span class='date-year'>2016</span></span> <span class='time'>9:11 pm</span></time>
+<time class='entry-date' datetime='2016-03-29T18:16:12+05:30'><span class='date'><span class='date-month'>Mar</span> <span class='date-day'>29</span><span class='date-suffix'>th</span>, <span class='date-year'>2016</span></span> <span class='time'>6:16 pm</span></time>
         
       </p>
     
   </header>
 
 
-  <div class="entry-content"><h3>Send SOAP request from ruby net/http without using Savon gem</h3>
+  <div class="entry-content"><h3>Setup NFS server and client using ansible</h3>
 
-<p>You would have seen everyone is using Savon gem for sending SOAP request. But what if the service is using SOAP 1.1.
-You might want to write your own http request. Here is the way to send request with SOAP envelope body.</p>
+<p>If you have a centralized server and you want to share a disk from the server, the best way is
+to use NFS model.</p>
 
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<p><img src="https://advishnuprasad.com/images/nfs.png" alt="API docs image" /></p>
+
+<p>You might have to create a server with enough disk space. Let&rsquo;s say you have a disk with file system
+as <code>/dev/xvdb</code> and the size is 100 GB.</p>
+
+<p>Now you want to share this volume with other machines. Below is the script to do it using ansible.</p>
+
+<p>Read <a href="https://help.ubuntu.com/community/SettingUpNFSHowTo">this</a> tutorial before writing ansible script.</p>
+
+<h3>Ansible script</h3>
+
+<figure class='code'><figcaption><span>inventory.yml</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='yaml'><span class='line'><span class="p-Indicator">[</span><span class="nv">nfs_server</span><span class="p-Indicator">]</span>
+</span><span class='line'><span class="l-Scalar-Plain">10.0.0.1</span>
+</span><span class='line'>
+</span><span class='line'><span class="l-Scalar-Plain">[nfs_clients]</span>
+</span><span class='line'><span class="l-Scalar-Plain">10.0.0.2</span>
+</span><span class='line'><span class="l-Scalar-Plain">10.0.0.3</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<figure class='code'><figcaption><span>exports.j2</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="c"># /etc/exports: the access control list for filesystems which may be exported</span>
+</span><span class='line'><span class="c">#               to NFS clients.  See exports(5).</span>
+</span><span class='line'><span class="c">#</span>
+</span><span class='line'><span class="c"># Example for NFSv2 and NFSv3:</span>
+</span><span class='line'><span class="c"># /srv/homes       hostname1(rw,sync,no_subtree_check) hostname2(ro,sync,no_subtree_check)</span>
+</span><span class='line'><span class="c">#</span>
+</span><span class='line'><span class="c"># Example for NFSv4:</span>
+</span><span class='line'><span class="c"># /srv/nfs4        gss/krb5i(rw,sync,fsid=0,crossmnt,no_subtree_check)</span>
+</span><span class='line'><span class="c"># /srv/nfs4/homes  gss/krb5i(rw,sync,no_subtree_check)</span>
+</span><span class='line'><span class="c">#</span>
+</span><span class='line'>/nfs            10.0.0.1/24<span class="o">(</span>rw,sync,no_root_squash,no_subtree_check<span class="o">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<figure class='code'><figcaption><span>nfs-server.yml</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
 <span class='line-number'>4</span>
@@ -131,53 +187,66 @@ You might want to write your own http request. Here is the way to send request w
 <span class='line-number'>24</span>
 <span class='line-number'>25</span>
 <span class='line-number'>26</span>
-<span class='line-number'>27</span>
-<span class='line-number'>28</span>
-<span class='line-number'>29</span>
-<span class='line-number'>30</span>
-<span class='line-number'>31</span>
-<span class='line-number'>32</span>
-<span class='line-number'>33</span>
-<span class='line-number'>34</span>
-<span class='line-number'>35</span>
-<span class='line-number'>36</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="nb">require</span> <span class="s1">&#39;net/https&#39;</span>
-</span><span class='line'><span class="nb">require</span> <span class="s1">&#39;uri&#39;</span>
-</span><span class='line'><span class="nb">require</span> <span class="s1">&#39;nokogiri&#39;</span>
+</pre></td><td class='code'><pre><code class='yaml'><span class='line'><span class="nn">---</span>
+</span><span class='line'><span class="p-Indicator">-</span> <span class="l-Scalar-Plain">hosts</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">nfs_server</span>
+</span><span class='line'>  <span class="l-Scalar-Plain">remote_user</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">ubuntu</span>
+</span><span class='line'>  <span class="l-Scalar-Plain">sudo</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">yes</span>
 </span><span class='line'>
-</span><span class='line'><span class="c1"># Create the http object</span>
-</span><span class='line'><span class="n">url</span> <span class="o">=</span> <span class="s2">&quot;http://www.webservicex.net/globalweather.asmx?WSDL&quot;</span>
-</span><span class='line'><span class="n">uri</span> <span class="o">=</span> <span class="no">URI</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
-</span><span class='line'><span class="n">http</span> <span class="o">=</span> <span class="no">Net</span><span class="o">::</span><span class="no">HTTP</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">uri</span><span class="o">.</span><span class="n">host</span><span class="p">,</span> <span class="n">uri</span><span class="o">.</span><span class="n">port</span><span class="p">)</span>
-</span><span class='line'><span class="n">http</span><span class="o">.</span><span class="n">use_ssl</span> <span class="o">=</span> <span class="kp">false</span>
+</span><span class='line'>  <span class="l-Scalar-Plain">tasks</span><span class="p-Indicator">:</span>
+</span><span class='line'>    <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">name</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">Create mountable dir</span>
+</span><span class='line'>      <span class="l-Scalar-Plain">file</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">path=/share state=directory mode=777 owner=root group=root</span>
 </span><span class='line'>
-</span><span class='line'><span class="c1"># Raw SOAP XML to be passed</span>
-</span><span class='line'><span class="c1"># TODO : Date should be dynamic</span>
-</span><span class='line'><span class="n">data</span> <span class="o">=</span> <span class="o">&lt;&lt;-</span><span class="no">EOF</span>
-</span><span class='line'><span class="sh">&lt;soap:Envelope xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot; xmlns:xsd=&quot;http://www.w3.org/2001/XMLSchema&quot; xmlns:soap=&quot;http://schemas.xmlsoap.org/soap/envelope/&quot;&gt;</span>
-</span><span class='line'><span class="sh">  &lt;soap:Body&gt;</span>
-</span><span class='line'><span class="sh">    &lt;GetWeather xmlns=&quot;http://www.webserviceX.NET&quot;&gt;</span>
-</span><span class='line'><span class="sh">      &lt;CityName&gt;Madras&lt;/CityName&gt;</span>
-</span><span class='line'><span class="sh">      &lt;CountryName&gt;India&lt;/CountryName&gt;</span>
-</span><span class='line'><span class="sh">    &lt;/GetWeather&gt;</span>
-</span><span class='line'><span class="sh">  &lt;/soap:Body&gt;</span>
-</span><span class='line'><span class="sh">&lt;/soap:Envelope&gt;</span>
-</span><span class='line'><span class="no">EOF</span>
+</span><span class='line'>    <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">name</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">make sure the mount drive has a filesystem</span>
+</span><span class='line'>      <span class="l-Scalar-Plain">filesystem</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">fstype=ext4 dev={{ mountable_share_drive | default(&#39;/dev/xvdb&#39;) }}</span>
 </span><span class='line'>
-</span><span class='line'><span class="c1"># # Set Headers</span>
-</span><span class='line'><span class="c1"># SOAPAction is mandatory</span>
-</span><span class='line'><span class="n">headers</span> <span class="o">=</span> <span class="p">{</span>
-</span><span class='line'>  <span class="s1">&#39;Content-Type&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;text/xml; charset=utf-8&#39;</span><span class="p">,</span>
-</span><span class='line'>  <span class="s1">&#39;SOAPAction&#39;</span> <span class="o">=&gt;</span> <span class="s2">&quot;http://www.webserviceX.NET/GetWeather&quot;</span>
-</span><span class='line'><span class="p">}</span>
+</span><span class='line'>    <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">name</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">set mountpoints</span>
+</span><span class='line'>      <span class="l-Scalar-Plain">mount</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">name=/share src={{ mountable_share_drive | default(&#39;/dev/xvdb&#39;) }} fstype=auto opts=defaults,nobootwait dump=0 passno=2 state=mounted</span>
 </span><span class='line'>
-</span><span class='line'><span class="n">result</span><span class="o">=</span> <span class="n">http</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="n">uri</span><span class="o">.</span><span class="n">path</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">headers</span><span class="p">)</span>
+</span><span class='line'>    <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">name</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">Ensure NFS utilities are installed.</span>
+</span><span class='line'>      <span class="l-Scalar-Plain">apt</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">name={{ item }} state=installed update_cache=yes</span>
+</span><span class='line'>      <span class="l-Scalar-Plain">with_items</span><span class="p-Indicator">:</span>
+</span><span class='line'>        <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">nfs-common</span>
+</span><span class='line'>        <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">nfs-kernel-server</span>
 </span><span class='line'>
-</span><span class='line'><span class="c1"># Parse</span>
-</span><span class='line'><span class="n">doc</span> <span class="o">=</span> <span class="no">Nokogiri</span><span class="o">::</span><span class="no">XML</span><span class="p">(</span><span class="n">result</span><span class="o">.</span><span class="n">body</span><span class="p">)</span>
-</span><span class='line'><span class="n">doc</span><span class="o">.</span><span class="n">remove_namespaces!</span> <span class="c1"># Remove namespaces from xml to make it clean</span>
-</span><span class='line'><span class="nb">p</span> <span class="n">doc</span>
+</span><span class='line'>    <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">name</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">copy /etc/exports</span>
+</span><span class='line'>      <span class="l-Scalar-Plain">template</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">src=exports.j2 dest=/etc/exports owner=root group=root</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">name</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">restart nfs server</span>
+</span><span class='line'>      <span class="l-Scalar-Plain">service</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">name=nfs-kernel-server state=restarted</span>
 </span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<figure class='code'><figcaption><span>nfs_clients.yml</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+</pre></td><td class='code'><pre><code class='yaml'><span class='line'><span class="p-Indicator">-</span> <span class="l-Scalar-Plain">hosts</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">nfs_clients</span>
+</span><span class='line'>  <span class="l-Scalar-Plain">remote_user</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">ubuntu</span>
+</span><span class='line'>  <span class="l-Scalar-Plain">sudo</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">yes</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="l-Scalar-Plain">tasks</span><span class="p-Indicator">:</span>
+</span><span class='line'>    <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">name</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">Ensure NFS common is installed.</span>
+</span><span class='line'>      <span class="l-Scalar-Plain">apt</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">name=nfs-common state=installed update_cache=yes</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">name</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">Create mountable dir</span>
+</span><span class='line'>      <span class="l-Scalar-Plain">file</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">path=/nfs state=directory mode=777 owner=root group=root</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">name</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">set mountpoints</span>
+</span><span class='line'>      <span class="l-Scalar-Plain">mount</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">name=/nfs src={{hostvars[groups[&#39;nfs_server&#39;][0]][&#39;ansible_eth0&#39;][&#39;ipv4&#39;][&#39;address&#39;]}}:/share fstype=nfs opts=defaults,nobootwait dump=0 passno=2 state=mounted</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
 
 </div>
   
@@ -201,6 +270,10 @@ You might want to write your own http request. Here is the way to send request w
     <section>
   <h1>Recent Posts</h1>
   <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2019/03/17/build-pgmodeler-from-source/">Build PgModeler From Source in MacOS Mojave</a>
+      </li>
     
       <li class="post">
         <a href="/blog/2018/10/07/kubernetes-elasticsearch-scheduled-backup-and-retention-using-curator/">Kubernetes- Elasticsearch Scheduled Backup and Retention Using Curator</a>
@@ -238,10 +311,6 @@ You might want to write your own http request. Here is the way to send request w
         <a href="/blog/2016/03/29/setup-nfs-server-and-client-using-ansible/">Setup NFS Server and Client Using Ansible</a>
       </li>
     
-      <li class="post">
-        <a href="/blog/2016/03/25/soap-request-from-ruby-without-savon/">SOAP Request From Ruby Without Savon</a>
-      </li>
-    
   </ul>
 </section>
 
@@ -255,7 +324,7 @@ You might want to write your own http request. Here is the way to send request w
     </div>
   </div>
   <footer role="contentinfo"><p>
-  Copyright &copy; 2018 - A D Vishnu Prasad -
+  Copyright &copy; 2019 - A D Vishnu Prasad -
   <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
 </p>
 

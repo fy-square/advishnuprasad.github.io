@@ -9,7 +9,11 @@
   <meta name="author" content="A D Vishnu Prasad">
 
   
-  <meta name="description" content="This post will help you to create autocomplete feature on Elasticsearch. For Example, if you have a select box and when you search for data you would &hellip;">
+  <meta name="description" content="This post will guide you to create a scheduled elasticsearch backup using curator in k8s cluster. Assumptions: 1
+2
+3
+4
+You already have a 6.x.x &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -84,7 +88,7 @@
       
   <header>
     
-      <h1 class="entry-title"><a href="/blog/2018/09/23/elasticsearch-autocomplete-example/">Elasticsearch Autocomplete Example</a></h1>
+      <h1 class="entry-title"><a href="/blog/2018/10/07/kubernetes-elasticsearch-scheduled-backup-and-retention-using-curator/">Kubernetes- Elasticsearch Scheduled Backup and Retention Using Curator</a></h1>
     
     
       <p class="meta">
@@ -93,123 +97,36 @@
 
 
 
-<time class='entry-date' datetime='2018-09-23T20:57:23+05:30'><span class='date'><span class='date-month'>Sep</span> <span class='date-day'>23</span><span class='date-suffix'>rd</span>, <span class='date-year'>2018</span></span> <span class='time'>8:57 pm</span></time>
+<time class='entry-date' datetime='2018-10-07T21:54:58+05:30'><span class='date'><span class='date-month'>Oct</span> <span class='date-day'>7</span><span class='date-suffix'>th</span>, <span class='date-year'>2018</span></span> <span class='time'>9:54 pm</span></time>
         
       </p>
     
   </header>
 
 
-  <div class="entry-content"><p>This post will help you to create autocomplete feature on Elasticsearch.</p>
+  <div class="entry-content"><p>This post will guide you to create a scheduled elasticsearch backup using curator in k8s cluster.</p>
 
-<p>For Example, if you have a select box and when you search for <code>data</code> you would want to get all results that starts with <code>data</code>.</p>
-
-<p><img src="https://advishnuprasad.com/images/blog_1.png" alt="ES1" /></p>
-
-<!-- ![ES1](http://localhost:4000/images/blog_1.png) -->
-
-
-<p>This can be done easily in Elasticsearch. The important thing here is the type of analyzer and tokenizer than you use for autocomplete.</p>
-
-<h4>Step 1: Create Mapping with the following tokenizer and analyzer</h4>
+<h4>Assumptions:</h4>
 
 <figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
 <span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-<span class='line-number'>24</span>
-<span class='line-number'>25</span>
-<span class='line-number'>26</span>
-<span class='line-number'>27</span>
-<span class='line-number'>28</span>
-<span class='line-number'>29</span>
-<span class='line-number'>30</span>
-<span class='line-number'>31</span>
-<span class='line-number'>32</span>
-<span class='line-number'>33</span>
-<span class='line-number'>34</span>
-<span class='line-number'>35</span>
-<span class='line-number'>36</span>
-<span class='line-number'>37</span>
-<span class='line-number'>38</span>
-<span class='line-number'>39</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>PUT auto-test
-</span><span class='line'>{
-</span><span class='line'>  "settings": {
-</span><span class='line'>    "analysis": {
-</span><span class='line'>      "analyzer": {
-</span><span class='line'>        "autocomplete": {
-</span><span class='line'>          "tokenizer": "autocomplete",
-</span><span class='line'>          "filter": [
-</span><span class='line'>            "lowercase"
-</span><span class='line'>          ]
-</span><span class='line'>        },
-</span><span class='line'>        "autocomplete_search": {
-</span><span class='line'>          "tokenizer": "lowercase"
-</span><span class='line'>        }
-</span><span class='line'>      },
-</span><span class='line'>      "tokenizer": {
-</span><span class='line'>        "autocomplete": {
-</span><span class='line'>          "type": "edge_ngram",
-</span><span class='line'>          "min_gram": 2,
-</span><span class='line'>          "max_gram": 10,
-</span><span class='line'>          "token_chars": [
-</span><span class='line'>            "letter"
-</span><span class='line'>          ]
-</span><span class='line'>        }
-</span><span class='line'>      }
-</span><span class='line'>    }
-</span><span class='line'>  },
-</span><span class='line'>  "mappings": {
-</span><span class='line'>    "test": {
-</span><span class='line'>      "properties": {
-</span><span class='line'>        "technology": {
-</span><span class='line'>          "type": "text",
-</span><span class='line'>          "analyzer": "autocomplete",
-</span><span class='line'>          "search_analyzer": "autocomplete_search"
-</span><span class='line'>        }
-</span><span class='line'>      }
-</span><span class='line'>    }
-</span><span class='line'>  }
-</span><span class='line'>}</span></code></pre></td></tr></table></div></figure>
+</pre></td><td class='code'><pre><code class=''><span class='line'>You already have a 6.x.x elasticsearch k8s cluster
+</span><span class='line'>You already have a backup system
+</span><span class='line'>You are some what familiar with Kubernetes
+</span><span class='line'>You are familiar with curator configs</span></code></pre></td></tr></table></div></figure>
 
 
-<p><code>autocomplete_search</code> analyzer is used for searching case insensitive words.</p>
-
-<p>Step 2: Test Analyzers</p>
+<h4>Step 1: Create a configmap with curator yml</h4>
 
 <figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>POST auto-test/_analyze
-</span><span class='line'>{
-</span><span class='line'>  "field": "technology",
-</span><span class='line'>  "text": "database"
-</span><span class='line'>}</span></code></pre></td></tr></table></div></figure>
+</pre></td><td class='code'><pre><code class=''><span class='line'>Action 1 will create a snapshot
+</span><span class='line'>Action 2 will keep last 20 days snapshots and delete that are older than 20 days</span></code></pre></td></tr></table></div></figure>
 
 
-<p>If you see the results, ES is creating the following tokens. You can change the min_gram based on your needs.</p>
+<p>curator.yml</p>
 
 <figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
@@ -264,103 +181,92 @@
 <span class='line-number'>51</span>
 <span class='line-number'>52</span>
 <span class='line-number'>53</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>{
-</span><span class='line'>  "tokens": [
-</span><span class='line'>    {
-</span><span class='line'>      "token": "da",
-</span><span class='line'>      "start_offset": 0,
-</span><span class='line'>      "end_offset": 2,
-</span><span class='line'>      "type": "word",
-</span><span class='line'>      "position": 0
-</span><span class='line'>    },
-</span><span class='line'>    {
-</span><span class='line'>      "token": "dat",
-</span><span class='line'>      "start_offset": 0,
-</span><span class='line'>      "end_offset": 3,
-</span><span class='line'>      "type": "word",
-</span><span class='line'>      "position": 1
-</span><span class='line'>    },
-</span><span class='line'>    {
-</span><span class='line'>      "token": "data",
-</span><span class='line'>      "start_offset": 0,
-</span><span class='line'>      "end_offset": 4,
-</span><span class='line'>      "type": "word",
-</span><span class='line'>      "position": 2
-</span><span class='line'>    },
-</span><span class='line'>    {
-</span><span class='line'>      "token": "datab",
-</span><span class='line'>      "start_offset": 0,
-</span><span class='line'>      "end_offset": 5,
-</span><span class='line'>      "type": "word",
-</span><span class='line'>      "position": 3
-</span><span class='line'>    },
-</span><span class='line'>    {
-</span><span class='line'>      "token": "databa",
-</span><span class='line'>      "start_offset": 0,
-</span><span class='line'>      "end_offset": 6,
-</span><span class='line'>      "type": "word",
-</span><span class='line'>      "position": 4
-</span><span class='line'>    },
-</span><span class='line'>    {
-</span><span class='line'>      "token": "databas",
-</span><span class='line'>      "start_offset": 0,
-</span><span class='line'>      "end_offset": 7,
-</span><span class='line'>      "type": "word",
-</span><span class='line'>      "position": 5
-</span><span class='line'>    },
-</span><span class='line'>    {
-</span><span class='line'>      "token": "database",
-</span><span class='line'>      "start_offset": 0,
-</span><span class='line'>      "end_offset": 8,
-</span><span class='line'>      "type": "word",
-</span><span class='line'>      "position": 6
-</span><span class='line'>    }
-</span><span class='line'>  ]
-</span><span class='line'>}</span></code></pre></td></tr></table></div></figure>
+<span class='line-number'>54</span>
+<span class='line-number'>55</span>
+<span class='line-number'>56</span>
+<span class='line-number'>57</span>
+<span class='line-number'>58</span>
+<span class='line-number'>59</span>
+<span class='line-number'>60</span>
+<span class='line-number'>61</span>
+<span class='line-number'>62</span>
+<span class='line-number'>63</span>
+<span class='line-number'>64</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>apiVersion: v1
+</span><span class='line'>kind: ConfigMap
+</span><span class='line'>metadata:
+</span><span class='line'>  name: curator-config
+</span><span class='line'>  labels:
+</span><span class='line'>    app: curator
+</span><span class='line'>data:
+</span><span class='line'>  backup.yml: |-
+</span><span class='line'>    ---
+</span><span class='line'>    # Remember, leave a key empty if there is no value.  None will be a string,
+</span><span class='line'>    # not a Python "NoneType"
+</span><span class='line'>    #
+</span><span class='line'>    # Also remember that all examples have 'disable_action' set to True.  If you
+</span><span class='line'>    # want to use this action as a template, be sure to set this to False after
+</span><span class='line'>    # copying it.
+</span><span class='line'>    actions:
+</span><span class='line'>      1:
+</span><span class='line'>        action: snapshot
+</span><span class='line'>        description: "Create snapshot"
+</span><span class='line'>        options:
+</span><span class='line'>          repository: "primary_backup"
+</span><span class='line'>          continue_if_exception: False
+</span><span class='line'>          wait_for_completion: True
+</span><span class='line'>        filters:
+</span><span class='line'>          - filtertype: pattern
+</span><span class='line'>            kind: regex
+</span><span class='line'>            value: ".*$"
+</span><span class='line'>      2:
+</span><span class='line'>        action: delete_snapshots
+</span><span class='line'>        description: &gt;-
+</span><span class='line'>          Delete snapshots from the selected repository older than 10 days
+</span><span class='line'>          (based on creation_date), for 'curator-' prefixed snapshots.
+</span><span class='line'>        options:
+</span><span class='line'>          repository: "primary_backup"
+</span><span class='line'>          disable_action: False
+</span><span class='line'>        filters:
+</span><span class='line'>          - filtertype: pattern
+</span><span class='line'>            kind: prefix
+</span><span class='line'>            value: curator-
+</span><span class='line'>            exclude:
+</span><span class='line'>          - filtertype: age
+</span><span class='line'>            source: creation_date
+</span><span class='line'>            direction: older
+</span><span class='line'>            unit: days
+</span><span class='line'>            unit_count: 20
+</span><span class='line'>  config.yml: |-
+</span><span class='line'>    ---
+</span><span class='line'>    # Remember, leave a key empty if there is no value.  None will be a string,
+</span><span class='line'>    # not a Python "NoneType"
+</span><span class='line'>    client:
+</span><span class='line'>      hosts:
+</span><span class='line'>        - elasticsearch
+</span><span class='line'>      port: 9200
+</span><span class='line'>      url_prefix:
+</span><span class='line'>      use_ssl: False
+</span><span class='line'>      certificate:
+</span><span class='line'>      client_cert:
+</span><span class='line'>      client_key:
+</span><span class='line'>      ssl_no_validate: False
+</span><span class='line'>      http_auth:
+</span><span class='line'>      timeout: 30
+</span><span class='line'>      master_only: False
+</span><span class='line'>    logging:
+</span><span class='line'>      loglevel: DEBUG</span></code></pre></td></tr></table></div></figure>
 
 
-<p>Step 3: Create data and search</p>
+<h4>Step 2: Create a config map in your kubernetes cluster</h4>
 
 <figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>POST auto-test/test
-</span><span class='line'>{
-</span><span class='line'>  "technology": "data"
-</span><span class='line'>}
-</span><span class='line'>
-</span><span class='line'>POST auto-test/test
-</span><span class='line'>{
-</span><span class='line'>  "technology": "database"
-</span><span class='line'>}
-</span></code></pre></td></tr></table></div></figure>
+</pre></td><td class='code'><pre><code class=''><span class='line'>kubectl apply -f curator.yml</span></code></pre></td></tr></table></div></figure>
 
 
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>GET auto-test/_search
-</span><span class='line'>{
-</span><span class='line'>  "query": {
-</span><span class='line'>    "match": {
-</span><span class='line'>      "technology": "dat"
-</span><span class='line'>    }
-</span><span class='line'>  }
-</span><span class='line'>}</span></code></pre></td></tr></table></div></figure>
+<h4>Step 3: Create a cronjob</h4>
 
-
-<p>The results should be</p>
+<p>es_cronjob.yml</p>
 
 <figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
@@ -390,46 +296,50 @@
 <span class='line-number'>26</span>
 <span class='line-number'>27</span>
 <span class='line-number'>28</span>
-<span class='line-number'>29</span>
-<span class='line-number'>30</span>
-<span class='line-number'>31</span>
-<span class='line-number'>32</span>
-<span class='line-number'>33</span>
-<span class='line-number'>34</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>{
-</span><span class='line'>  "took": 2,
-</span><span class='line'>  "timed_out": false,
-</span><span class='line'>  "_shards": {
-</span><span class='line'>    "total": 5,
-</span><span class='line'>    "successful": 5,
-</span><span class='line'>    "skipped": 0,
-</span><span class='line'>    "failed": 0
-</span><span class='line'>  },
-</span><span class='line'>  "hits": {
-</span><span class='line'>    "total": 2,
-</span><span class='line'>    "max_score": 0.2876821,
-</span><span class='line'>    "hits": [
-</span><span class='line'>      {
-</span><span class='line'>        "_index": "auto-test",
-</span><span class='line'>        "_type": "test",
-</span><span class='line'>        "_id": "3woWB2YBsF1yfhimkgKz",
-</span><span class='line'>        "_score": 0.2876821,
-</span><span class='line'>        "_source": {
-</span><span class='line'>          "technology": "data"
-</span><span class='line'>        }
-</span><span class='line'>      },
-</span><span class='line'>      {
-</span><span class='line'>        "_index": "auto-test",
-</span><span class='line'>        "_type": "test",
-</span><span class='line'>        "_id": "xGsWB2YBVxVaheWYfgCc",
-</span><span class='line'>        "_score": 0.2876821,
-</span><span class='line'>        "_source": {
-</span><span class='line'>          "technology": "database"
-</span><span class='line'>        }
-</span><span class='line'>      }
-</span><span class='line'>    ]
-</span><span class='line'>  }
-</span><span class='line'>}</span></code></pre></td></tr></table></div></figure>
+</pre></td><td class='code'><pre><code class=''><span class='line'>apiVersion: batch/v1beta1
+</span><span class='line'>kind: CronJob
+</span><span class='line'>metadata:
+</span><span class='line'>  name: esbackup
+</span><span class='line'>  labels:
+</span><span class='line'>    app: esbackup
+</span><span class='line'>spec:
+</span><span class='line'>  schedule: "@daily"
+</span><span class='line'>  successfulJobsHistoryLimit: 1
+</span><span class='line'>  failedJobsHistoryLimit: 3
+</span><span class='line'>  concurrencyPolicy: Forbid
+</span><span class='line'>  startingDeadlineSeconds: 120
+</span><span class='line'>  jobTemplate:
+</span><span class='line'>    spec:
+</span><span class='line'>      template:
+</span><span class='line'>        spec:
+</span><span class='line'>          containers:
+</span><span class='line'>          - image: bobrik/curator:5.5.4
+</span><span class='line'>            name: curator
+</span><span class='line'>            args: ["--config", "/etc/config/config.yml", "/etc/config/backup.yml"]
+</span><span class='line'>            volumeMounts:
+</span><span class='line'>            - name: config
+</span><span class='line'>              mountPath: /etc/config
+</span><span class='line'>          volumes:
+</span><span class='line'>          - name: config
+</span><span class='line'>            configMap:
+</span><span class='line'>              name: curator-config
+</span><span class='line'>          restartPolicy: Never</span></code></pre></td></tr></table></div></figure>
+
+
+<h4>Step 4: Create cronjob in kubernetes</h4>
+
+<p>This cronjob will run everyday 00:00 hrs</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>kubectl create -f es_cronjob.yml</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Reference:</p>
+
+<ul>
+<li><a href="https://medium.com/@hagaibarel/running-curator-as-a-kubernetes-cronjob-19eaab9afd3b">https://medium.com/@hagaibarel/running-curator-as-a-kubernetes-cronjob-19eaab9afd3b</a></li>
+<li><a href="https://www.elastic.co/guide/en/elasticsearch/client/curator/current/delete_snapshots.html">https://www.elastic.co/guide/en/elasticsearch/client/curator/current/delete_snapshots.html</a></li>
+</ul>
 
 </div>
   
@@ -453,6 +363,10 @@
     <section>
   <h1>Recent Posts</h1>
   <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2019/03/17/build-pgmodeler-from-source/">Build PgModeler From Source in MacOS Mojave</a>
+      </li>
     
       <li class="post">
         <a href="/blog/2018/10/07/kubernetes-elasticsearch-scheduled-backup-and-retention-using-curator/">Kubernetes- Elasticsearch Scheduled Backup and Retention Using Curator</a>
@@ -490,10 +404,6 @@
         <a href="/blog/2016/03/29/setup-nfs-server-and-client-using-ansible/">Setup NFS Server and Client Using Ansible</a>
       </li>
     
-      <li class="post">
-        <a href="/blog/2016/03/25/soap-request-from-ruby-without-savon/">SOAP Request From Ruby Without Savon</a>
-      </li>
-    
   </ul>
 </section>
 
@@ -507,7 +417,7 @@
     </div>
   </div>
   <footer role="contentinfo"><p>
-  Copyright &copy; 2018 - A D Vishnu Prasad -
+  Copyright &copy; 2019 - A D Vishnu Prasad -
   <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
 </p>
 

@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd" xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 <url>
+<loc>https://advishnuprasad.com/blog/2019/03/17/build-pgmodeler-from-source/</loc>
+<lastmod>2019-03-17T20:07:46+05:30</lastmod>
+</url>
+<url>
 <loc>https://advishnuprasad.com/blog/2018/10/07/kubernetes-elasticsearch-scheduled-backup-and-retention-using-curator/</loc>
 <lastmod>2018-10-07T21:54:58+05:30</lastmod>
 </url>
@@ -10,11 +14,11 @@
 </url>
 <url>
 <loc>https://advishnuprasad.com/blog/2017/11/09/elasticsearch-backup-and-restore-from-azure-blob-storage/</loc>
-<lastmod>2017-11-09T23:30:26+05:30</lastmod>
+<lastmod>2017-11-09T13:00:26-05:00</lastmod>
 </url>
 <url>
 <loc>https://advishnuprasad.com/blog/2017/10/31/docker-commands/</loc>
-<lastmod>2017-10-31T21:20:54+05:30</lastmod>
+<lastmod>2017-10-31T11:50:54-04:00</lastmod>
 </url>
 <url>
 <loc>https://advishnuprasad.com/blog/2017/03/07/send-hipchat-notifications-using-python/</loc>
@@ -191,5 +195,14 @@
 </url>
 <url>
 <loc>https://advishnuprasad.com/blog/categories/cronjob/</loc>
+</url>
+<url>
+<loc>https://advishnuprasad.com/blog/categories/db/</loc>
+</url>
+<url>
+<loc>https://advishnuprasad.com/blog/categories/mac/</loc>
+</url>
+<url>
+<loc>https://advishnuprasad.com/blog/categories/pgmodeler/</loc>
 </url>
 </urlset>
