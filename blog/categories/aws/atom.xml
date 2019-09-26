@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Aws, | A D Vishnu Prasad]]></title>
+  <link href="https://advishnuprasad.com/blog/categories/aws/atom.xml" rel="self"/>
+  <link href="https://advishnuprasad.com/"/>
+  <updated>2019-09-27T00:28:25+05:30</updated>
+  <id>https://advishnuprasad.com/</id>
+  <author>
+    <name><![CDATA[A D Vishnu Prasad]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Upgrade Kubernetes Version in AWS EKS]]></title>
+    <link href="https://advishnuprasad.com/blog/2019/09/26/upgrade-kubernetes-version-in-eks/"/>
+    <updated>2019-09-26T23:55:25+05:30</updated>
+    <id>https://advishnuprasad.com/blog/2019/09/26/upgrade-kubernetes-version-in-eks</id>
+    <content type="html"><![CDATA[<p>There are two things you need to do to upgrade Kubernetes in EKS.</p>
+
+<p>Unlike <code>Azure AKS</code> where you can upgrade with a single button, in <code>AWS EKS</code> you will need
+upgrade cluster and worker nodes separately.</p>
+
+<h3>Upgrade Cluster</h3>
+
+<p>=> Login into AWS console.</p>
+
+<p>=> Go to EKS services.</p>
+
+<p>=> Click on Clusters</p>
+
+<p><img src="/images/update_cluster.jpg" alt="Cluster Upgrade" /></p>
+
+<h3>Upgrade Worker Nodes</h3>
+
+<p>Reference Link: <a href="https://docs.aws.amazon.com/eks/latest/userguide/update-stack.html">https://docs.aws.amazon.com/eks/latest/userguide/update-stack.html</a></p>
+
+<h4>Step 1:</h4>
+
+<p>Go to Worker node cloud formation stack and click on <code>Update</code></p>
+
+<h4>Step 2:</h4>
+
+<p>Click on &ldquo;Replace current template&rdquo;</p>
+
+<p>Paste the following URL: <a href="https://amazon-eks.s3-us-west-2.amazonaws.com/cloudformation/2019-09-17/amazon-eks-nodegroup.yaml">https://amazon-eks.s3-us-west-2.amazonaws.com/cloudformation/2019-09-17/amazon-eks-nodegroup.yaml</a></p>
+
+<p>Click &ldquo;Next&rdquo;</p>
+
+<p><img src="/images/update_stack_1.jpg" alt="Worker Node 1" /></p>
+
+<h4>Step 3:</h4>
+
+<p>Update the following parameters
+<code>
+NodeAutoScalingGroupDesiredCapacity = NodeAutoScalingGroupDesiredCapacity
+</code></p>
+
+<pre><code>NodeAutoScalingGroupMaxSize = NodeAutoScalingGroupDesiredCapacity + 1 (or more)
+(It must be more than what you have)
+</code></pre>
+
+<pre><code>NodeImageIdSSMParam = /aws/service/eks/optimized-ami/`1.14`/amazon-linux-2/recommended/image_id
+(If your cluster version is 1.13 change it to 1.13. Ideally it should match with the Cluster version. Otherwise the upgrade won't work.
+You will end up in `matchnodeselector` error and `NotReady` status)
+</code></pre>
+
+<p>Leave the other fields to default</p>
+
+<p>Click &ldquo;Next&rdquo;</p>
+
+<p><img src="/images/update_stack_2.jpg" alt="Worker Node 2" /></p>
+
+<h4>Step 4:</h4>
+
+<p>Go to last page and check the box. Click &ldquo;Update&rdquo;</p>
+
+<p><img src="/images/update_stack_3.jpg" alt="Worker Node 3" /></p>
+
+<p>Once the stack is updated, Connect to your cluster. You should see your version upgraded to 1.14</p>
+
+<p><code>kubectl get nodes</code></p>
+
+<p><img src="/images/final.jpg" alt="Final" /></p>
+]]></content>
+  </entry>
+  
+</feed>

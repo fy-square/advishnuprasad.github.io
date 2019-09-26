@@ -1,0 +1,334 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Upgrade Kubernetes Version in AWS EKS - A D Vishnu Prasad</title>
+  <meta name="author" content="A D Vishnu Prasad">
+
+  
+  <meta name="description" content="There are two things you need to do to upgrade Kubernetes in EKS. Unlike Azure AKS where you can upgrade with a single button, in AWS EKS you will &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="https://advishnuprasad.com/blog/2019/09/26/upgrade-kubernetes-version-in-eks/">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="A D Vishnu Prasad" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="/javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="//fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="//fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-93865180-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">A D Vishnu Prasad</a></h1>
+  
+    <h2>CID - Cloud Infrastructure Designer</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="https://www.google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="sitesearch" value="advishnuprasad.com">
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+  <li><a href="/about">About</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">Upgrade Kubernetes Version in AWS EKS</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2019-09-26T23:55:25+05:30'><span class='date'><span class='date-month'>Sep</span> <span class='date-day'>26</span><span class='date-suffix'>th</span>, <span class='date-year'>2019</span></span> <span class='time'>11:55 pm</span></time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>There are two things you need to do to upgrade Kubernetes in EKS.</p>
+
+<p>Unlike <code>Azure AKS</code> where you can upgrade with a single button, in <code>AWS EKS</code> you will need
+upgrade cluster and worker nodes separately.</p>
+
+<h3>Upgrade Cluster</h3>
+
+<p>=> Login into AWS console.</p>
+
+<p>=> Go to EKS services.</p>
+
+<p>=> Click on Clusters</p>
+
+<p><img src="https://advishnuprasad.com/images/update_cluster.jpg" alt="Cluster Upgrade" /></p>
+
+<h3>Upgrade Worker Nodes</h3>
+
+<p>Reference Link: <a href="https://docs.aws.amazon.com/eks/latest/userguide/update-stack.html">https://docs.aws.amazon.com/eks/latest/userguide/update-stack.html</a></p>
+
+<h4>Step 1:</h4>
+
+<p>Go to Worker node cloud formation stack and click on <code>Update</code></p>
+
+<h4>Step 2:</h4>
+
+<p>Click on &ldquo;Replace current template&rdquo;</p>
+
+<p>Paste the following URL: <a href="https://amazon-eks.s3-us-west-2.amazonaws.com/cloudformation/2019-09-17/amazon-eks-nodegroup.yaml">https://amazon-eks.s3-us-west-2.amazonaws.com/cloudformation/2019-09-17/amazon-eks-nodegroup.yaml</a></p>
+
+<p>Click &ldquo;Next&rdquo;</p>
+
+<p><img src="https://advishnuprasad.com/images/update_stack_1.jpg" alt="Worker Node 1" /></p>
+
+<h4>Step 3:</h4>
+
+<p>Update the following parameters</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>NodeAutoScalingGroupDesiredCapacity = NodeAutoScalingGroupDesiredCapacity</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>NodeAutoScalingGroupMaxSize = NodeAutoScalingGroupDesiredCapacity + 1 (or more)
+</span><span class='line'>(It must be more than what you have)</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>NodeImageIdSSMParam = /aws/service/eks/optimized-ami/`1.14`/amazon-linux-2/recommended/image_id
+</span><span class='line'>(If your cluster version is 1.13 change it to 1.13. Ideally it should match with the Cluster version. Otherwise the upgrade won't work.
+</span><span class='line'>You will end up in `matchnodeselector` error and `NotReady` status)
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Leave the other fields to default</p>
+
+<p>Click &ldquo;Next&rdquo;</p>
+
+<p><img src="https://advishnuprasad.com/images/update_stack_2.jpg" alt="Worker Node 2" /></p>
+
+<h4>Step 4:</h4>
+
+<p>Go to last page and check the box. Click &ldquo;Update&rdquo;</p>
+
+<p><img src="https://advishnuprasad.com/images/update_stack_3.jpg" alt="Worker Node 3" /></p>
+
+<p>Once the stack is updated, Connect to your cluster. You should see your version upgraded to 1.14</p>
+
+<p><code>kubectl get nodes</code></p>
+
+<p><img src="https://advishnuprasad.com/images/final.jpg" alt="Final" /></p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">A D Vishnu Prasad</span></span>
+
+      
+
+
+
+
+<time class='entry-date' datetime='2019-09-26T23:55:25+05:30'><span class='date'><span class='date-month'>Sep</span> <span class='date-day'>26</span><span class='date-suffix'>th</span>, <span class='date-year'>2019</span></span> <span class='time'>11:55 pm</span></time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/aws/'>aws,</a>, <a class='category' href='/blog/categories/k8s/'>k8s</a>, <a class='category' href='/blog/categories/kubernetes/'>kubernetes,</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="//twitter.com/share" class="twitter-share-button" data-url="https://advishnuprasad.com/blog/2019/09/26/upgrade-kubernetes-version-in-eks/" data-via="advishnuprasad" data-counturl="https://advishnuprasad.com/blog/2019/09/26/upgrade-kubernetes-version-in-eks/" >Tweet</a>
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2019/03/17/build-pgmodeler-from-source/" title="Previous Post: Build PgModeler from Source in MacOS Mojave">&laquo; Build PgModeler from Source in MacOS Mojave</a>
+      
+      
+    </p>
+  </footer>
+</article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2019/09/26/upgrade-kubernetes-version-in-eks/">Upgrade Kubernetes Version in AWS EKS</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2019/03/17/build-pgmodeler-from-source/">Build PgModeler From Source in MacOS Mojave</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2018/10/07/kubernetes-elasticsearch-scheduled-backup-and-retention-using-curator/">Kubernetes- Elasticsearch Scheduled Backup and Retention Using Curator</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2018/09/23/elasticsearch-autocomplete-example/">Elasticsearch Autocomplete Example</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2017/11/09/elasticsearch-backup-and-restore-from-azure-blob-storage/">Elasticsearch Backup and Restore From Azure Blob Storage</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2017/10/31/docker-commands/">Docker Commands</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2017/03/07/send-hipchat-notifications-using-python/">Send Hipchat Notifications Using Python</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2017/02/22/create-swap-using-ansible-in-ubuntu/">Create Swap Using Ansible in Ubuntu</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2016/09/24/encryption-at-rest/">Encryption at REST</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2016/09/05/creating-a-postgres-master-and-slave-streaming-server-with-s3-backup/">Creating a Postgres Master and Slave Streaming Server With S3 Backup</a>
+      </li>
+    
+  </ul>
+</section>
+
+
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2019 - A D Vishnu Prasad -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'advishnuprasad';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'https://advishnuprasad.com/blog/2019/09/26/upgrade-kubernetes-version-in-eks/';
+        var disqus_url = 'https://advishnuprasad.com/blog/2019/09/26/upgrade-kubernetes-version-in-eks/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = '//' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = '//platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>
