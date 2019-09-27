@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Aws, | A D Vishnu Prasad]]></title>
   <link href="https://advishnuprasad.com/blog/categories/aws/atom.xml" rel="self"/>
   <link href="https://advishnuprasad.com/"/>
-  <updated>2019-09-27T00:28:25+05:30</updated>
+  <updated>2019-09-27T10:52:59+05:30</updated>
   <id>https://advishnuprasad.com/</id>
   <author>
     <name><![CDATA[A D Vishnu Prasad]]></name>
@@ -20,8 +20,8 @@
     <id>https://advishnuprasad.com/blog/2019/09/26/upgrade-kubernetes-version-in-eks</id>
     <content type="html"><![CDATA[<p>There are two things you need to do to upgrade Kubernetes in EKS.</p>
 
-<p>Unlike <code>Azure AKS</code> where you can upgrade with a single button, in <code>AWS EKS</code> you will need
-upgrade cluster and worker nodes separately.</p>
+<p>Unlike <code>Azure AKS</code> where you can upgrade with a single button, in <code>AWS EKS</code> you need
+to upgrade the cluster and worker nodes separately.</p>
 
 <h3>Upgrade Cluster</h3>
 
