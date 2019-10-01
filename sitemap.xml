@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd" xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 <url>
+<loc>https://advishnuprasad.com/blog/2019/10/01/upgrade-jenkins-shell-script/</loc>
+<lastmod>2019-10-01T18:02:17+05:30</lastmod>
+</url>
+<url>
 <loc>https://advishnuprasad.com/blog/2019/09/26/upgrade-kubernetes-version-in-eks/</loc>
 <lastmod>2019-09-26T23:55:25+05:30</lastmod>
 </url>
@@ -217,5 +221,14 @@
 </url>
 <url>
 <loc>https://advishnuprasad.com/blog/categories/k8s/</loc>
+</url>
+<url>
+<loc>https://advishnuprasad.com/blog/categories/jenkins/</loc>
+</url>
+<url>
+<loc>https://advishnuprasad.com/blog/categories/shell/</loc>
+</url>
+<url>
+<loc>https://advishnuprasad.com/blog/categories/automation/</loc>
 </url>
 </urlset>

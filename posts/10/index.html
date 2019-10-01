@@ -9,11 +9,8 @@
   <meta name="author" content="A D Vishnu Prasad">
 
   
-  <meta name="description" content="Setup * Image credit: google images Master server setup 1
-2
-3
-4
-sudo sh -c &#39;echo &quot;deb http://apt.postgresql.org/pub/repos/apt/ `lsb_release &hellip;">
+  <meta name="description" content="Already so many people have written about what/why Encryption at REST.
+So I am just going to help you to setup Encryption at REST in ubuntu using &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -88,7 +85,7 @@ sudo sh -c &#39;echo &quot;deb http://apt.postgresql.org/pub/repos/apt/ `lsb_rel
       
   <header>
     
-      <h1 class="entry-title"><a href="/blog/2016/09/05/creating-a-postgres-master-and-slave-streaming-server-with-s3-backup/">Creating a Postgres Master and Slave Streaming Server With S3 Backup</a></h1>
+      <h1 class="entry-title"><a href="/blog/2016/09/24/encryption-at-rest/">Encryption at REST</a></h1>
     
     
       <p class="meta">
@@ -97,186 +94,59 @@ sudo sh -c &#39;echo &quot;deb http://apt.postgresql.org/pub/repos/apt/ `lsb_rel
 
 
 
-<time class='entry-date' datetime='2016-09-05T13:01:13+05:30'><span class='date'><span class='date-month'>Sep</span> <span class='date-day'>5</span><span class='date-suffix'>th</span>, <span class='date-year'>2016</span></span> <span class='time'>1:01 pm</span></time>
+<time class='entry-date' datetime='2016-09-24T22:04:32+05:30'><span class='date'><span class='date-month'>Sep</span> <span class='date-day'>24</span><span class='date-suffix'>th</span>, <span class='date-year'>2016</span></span> <span class='time'>10:04 pm</span></time>
         
       </p>
     
   </header>
 
 
-  <div class="entry-content"><h3>Setup</h3>
+  <div class="entry-content"><p>Already so many people have written about what/why Encryption at REST.
+So I am just going to help you to setup Encryption at REST in ubuntu using luksFormat.
+You can read more about the cryptsetup and LuksFormat <a href="https://wiki.archlinux.org/index.php/Dm-crypt/Device_encryption">here</a></p>
 
-<p><img src="https://advishnuprasad.com/images/db.png" alt="API docs image" />
-<sub><sup> * Image credit: google images </sub></sup></p>
+<h3>Step 1: Create crypt volume file format</h3>
 
-<h3>Master server setup</h3>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'>sudo sh -c <span class="s1">&#39;echo &quot;deb http://apt.postgresql.org/pub/repos/apt/ `lsb_release -cs`-pgdg main&quot; &gt;&gt; /etc/apt/sources.list.d/pgdg.list&#39;</span>
-</span><span class='line'>wget -q https://www.postgresql.org/media/keys/ACCC4CF8.asc -O - <span class="p">|</span> sudo apt-key add -
-</span><span class='line'>sudo apt-get update
-</span><span class='line'>sudo apt-get install postgresql postgresql-contrib
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Create user for replication</p>
+<p>Assuming the device is <code>/dev/xvdc</code>. Please do not forget the passphrase. You will not be able to recover the data if you forget.</p>
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'>sudo su postgres
-</span><span class='line'>psql
-</span><span class='line'>CREATE USER replicator REPLICATION LOGIN ENCRYPTED PASSWORD <span class="s1">&#39;password&#39;</span><span class="p">;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Edit the following line in postgresql.conf</p>
-
-<figure class='code'><figcaption><span>/etc/postgresql/9.5/postgresql.conf</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='sql'><span class='line'><span class="n">wal_level</span> <span class="o">=</span> <span class="n">hot_standby</span>
-</span><span class='line'><span class="n">max_wal_senders</span> <span class="o">=</span> <span class="mi">3</span>
-</span><span class='line'><span class="n">wal_keep_segments</span> <span class="o">=</span> <span class="mi">8</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Add the following line in pg_hba.conf</p>
-
-<figure class='code'><figcaption><span>/etc/postgresql/9.5/pg_hba.conf</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='sql'><span class='line'><span class="k">host</span>     <span class="n">replication</span>     <span class="n">replicator</span>      <span class="o">&lt;</span><span class="n">slave</span> <span class="n">ip</span><span class="o">&gt;</span>            <span class="n">md5</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Restart master postgres.</p>
-
-<h3>Slave server setup</h3>
-
-<p>Setup postgresql 9.5 in slave server.
-Stop the server before chaning any configurations</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'>sudo su postgres
-</span><span class='line'>service postgresql stop
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Edit the following line in postgresql.conf</p>
-
-<figure class='code'><figcaption><span>/etc/postgresql/9.5/postgresql.conf</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='sql'><span class='line'><span class="n">wal_level</span> <span class="o">=</span> <span class="n">hot_standby</span>
-</span><span class='line'><span class="n">hot_standby</span> <span class="o">=</span> <span class="k">on</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Pull base backup from master server</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='sql'><span class='line'><span class="n">rm</span> <span class="o">-</span><span class="n">rf</span> <span class="o">/</span><span class="n">var</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">postgresql</span><span class="o">/</span><span class="mi">9</span><span class="p">.</span><span class="mi">5</span><span class="o">/</span><span class="n">main</span>
-</span><span class='line'><span class="n">pg_basebackup</span> <span class="o">-</span><span class="n">h</span> <span class="o">&lt;</span><span class="n">master_ip</span><span class="o">&gt;</span> <span class="o">-</span><span class="n">D</span> <span class="o">/</span><span class="n">var</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">postgresql</span><span class="o">/</span><span class="mi">9</span><span class="p">.</span><span class="mi">5</span><span class="o">/</span><span class="n">main</span> <span class="o">-</span><span class="n">U</span> <span class="n">replicator</span> <span class="o">-</span><span class="n">v</span> <span class="o">-</span><span class="n">P</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Create a recovery file for streaming</p>
-
-<figure class='code'><figcaption><span>/var/lib/postgresql/9.5/main/recovery.conf</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='sql'><span class='line'><span class="n">standby_mode</span> <span class="o">=</span> <span class="s1">&#39;on&#39;</span>
-</span><span class='line'><span class="n">primary_conninfo</span> <span class="o">=</span> <span class="s1">&#39;host=&lt;master_ip&gt; port=5432 user=replicator password=password&#39;</span>
-</span><span class='line'><span class="n">trigger_file</span> <span class="o">=</span> <span class="s1">&#39;/var/lib/postgresql.trigger&#39;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Now start the slave server</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'>service postgresql start
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Run the following command in master to check whether replication is on or not.</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='sql'><span class='line'><span class="k">select</span> <span class="o">*</span> <span class="k">from</span> <span class="n">pg_stat_replication</span><span class="p">;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h2>Send Wal-E files to S3 for backup</h2>
-
-<p>Run the following commands to setup wal-e</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
 </pre></td><td class='code'><pre><code class='bash'><span class='line'>sudo su
-</span><span class='line'>sudo apt-get install daemontools libevent-dev python-all-dev lzop pv
-</span><span class='line'>sudo apt-get install python-setuptools
-</span><span class='line'>sudo easy_install pip
-</span><span class='line'>sudo pip install wal-e --upgrade
+</span><span class='line'>cryptsetup -y -v luksFormat /dev/xvdc
 </span></code></pre></td></tr></table></div></figure>
 
 
-<p>Add your s3 credentials</p>
+<h3>Step 2:</h3>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>cryptsetup luksOpen /dev/xvdc edata-epg
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>Step 3:</h3>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>cryptsetup -v status edata-epg
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Step 4:</p>
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'>mkdir -p /etc/wal-e.d/env
-</span><span class='line'><span class="nb">echo</span> &lt;ACCESS_KEY&gt; &gt; /etc/wal-e.d/env/AWS_ACCESS_KEY_ID
-</span><span class='line'><span class="nb">echo</span> &lt;SECRET_KEY&gt; &gt; /etc/wal-e.d/env/AWS_SECRET_ACCESS_KEY
-</span><span class='line'><span class="nb">echo</span> <span class="s1">&#39;s3://&lt;bucket_path&gt;&#39;</span> &gt; /etc/wal-e.d/env/WALE_S3_PREFIX
-</span><span class='line'><span class="nb">echo</span> <span class="s1">&#39;us-east-1&#39;</span> &gt; /etc/wal-e.d/env/AWS_REGION
-</span><span class='line'>chown -R root:postgres /etc/wal-e.d
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>apt-get install pv
+</span><span class='line'>pv -tpreb /dev/zero <span class="p">|</span> dd <span class="nv">of</span><span class="o">=</span>/dev/mapper/edata-epg <span class="nv">bs</span><span class="o">=</span>128M
 </span></code></pre></td></tr></table></div></figure>
 
 
-<p>Create a base backup</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'>envdir /etc/wal-e.d/env wal-e backup-push <span class="nv">$PG_DATA</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>List all the backup files</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'>envdir /etc/wal-e.d/env /usr/local/bin/wal-e backup-list
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Push Latest backup from S3</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'>envdir /etc/wal-e.d/env /usr/local/bin/wal-e backup-fetch LATEST
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Setup daily backup push crontab</p>
+<p>Step 5:</p>
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'>crontab -e
-</span><span class='line'>/usr/bin/envdir /etc/wal-e.d/env /usr/local/bin/wal-e backup-push /e_data/main/ &gt; /tmp/postgres_wale_backup_push.log<span class="p">;</span>
-</span><span class='line'><span class="c">#keep last 5 base backups</span>
-</span><span class='line'>/usr/bin/envdir /etc/wal-e.d/env /usr/local/bin/wal-e delete --confirm retain <span class="m">5</span> &gt; /tmp/postgres_wale_backup_delete.log<span class="p">;</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>mkfs.ext4 /dev/mapper/edata-epg
+</span><span class='line'>mount /dev/mapper/edata-epg /e_data
 </span></code></pre></td></tr></table></div></figure>
 
-
-<p>Please comment here if you face any problems during the setup.</p>
 </div>
   
   
@@ -299,6 +169,10 @@ Stop the server before chaning any configurations</p>
     <section>
   <h1>Recent Posts</h1>
   <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2019/10/01/upgrade-jenkins-shell-script/">Upgrade Jenkins Using Shell Script</a>
+      </li>
     
       <li class="post">
         <a href="/blog/2019/09/26/upgrade-kubernetes-version-in-eks/">Upgrade Kubernetes Version in AWS EKS</a>
@@ -334,10 +208,6 @@ Stop the server before chaning any configurations</p>
     
       <li class="post">
         <a href="/blog/2016/09/24/encryption-at-rest/">Encryption at REST</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2016/09/05/creating-a-postgres-master-and-slave-streaming-server-with-s3-backup/">Creating a Postgres Master and Slave Streaming Server With S3 Backup</a>
       </li>
     
   </ul>

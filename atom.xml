@@ -4,7 +4,7 @@
   <title><![CDATA[A D Vishnu Prasad]]></title>
   <link href="https://advishnuprasad.com/atom.xml" rel="self"/>
   <link href="https://advishnuprasad.com/"/>
-  <updated>2019-09-27T10:52:59+05:30</updated>
+  <updated>2019-10-01T18:10:13+05:30</updated>
   <id>https://advishnuprasad.com/</id>
   <author>
     <name><![CDATA[A D Vishnu Prasad]]></name>
@@ -12,6 +12,98 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Upgrade Jenkins Using Shell Script]]></title>
+    <link href="https://advishnuprasad.com/blog/2019/10/01/upgrade-jenkins-shell-script/"/>
+    <updated>2019-10-01T18:02:17+05:30</updated>
+    <id>https://advishnuprasad.com/blog/2019/10/01/upgrade-jenkins-shell-script</id>
+    <content type="html"><![CDATA[<h4>Script</h4>
+
+<figure class='code'><figcaption><span>upgrade_jenkins.sh</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">VERSION</span><span class="o">=</span><span class="nv">$1</span>
+</span><span class='line'><span class="nb">echo</span> <span class="s2">&quot;Upgrading jenkins to $VERSION&quot;</span>
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'><span class="nb">echo</span> <span class="s2">&quot;Downloading the jar file&quot;</span>
+</span><span class='line'>wget http://updates.jenkins-ci.org/download/war/<span class="nv">$VERSION</span>/jenkins.war
+</span><span class='line'>
+</span><span class='line'><span class="nb">echo</span> <span class="s2">&quot;Stopping jenkins&quot;</span>
+</span><span class='line'>service jenkins stop
+</span><span class='line'>
+</span><span class='line'>sleep 5
+</span><span class='line'>
+</span><span class='line'><span class="nb">echo</span> <span class="s2">&quot;Moving the existing jenkins jar file&quot;</span>
+</span><span class='line'><span class="nv">TIMESTAMP</span><span class="o">=</span><span class="sb">`</span>date <span class="s1">&#39;+%s&#39;</span><span class="sb">`</span>
+</span><span class='line'>mv /usr/share/jenkins/jenkins.war /usr/share/jenkins/jenkins.<span class="nv">$TIMESTAMP</span>.war
+</span><span class='line'>
+</span><span class='line'><span class="nb">echo</span> <span class="s2">&quot;Copying the latest file&quot;</span>
+</span><span class='line'>mv jenkins.war /usr/share/jenkins/jenkins.war
+</span><span class='line'>
+</span><span class='line'><span class="nb">echo</span> <span class="s2">&quot;Starting Jenkins&quot;</span>
+</span><span class='line'>service jenkins start
+</span><span class='line'>
+</span><span class='line'><span class="nb">echo</span> <span class="s2">&quot;Upgrade Successful&quot;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h4>Execute Shell</h4>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>chmod +x upgrade_jenkins.sh
+</span><span class='line'>./upgrade_jenkins.sh &lt;Version Number&gt;
+</span><span class='line'>Exammple: ./upgrade_jenkins.sh 2.198
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h4>Sample output</h4>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>Upgrading jenkins to 2.198
+</span><span class='line'>Downloading the jar file
+</span><span class='line'>Saving to: <span class="s1">&#39;jenkins.war&#39;</span>
+</span><span class='line'>2019-10-01 12:35:52 <span class="o">(</span>5.06 MB/s<span class="o">)</span> - <span class="s1">&#39;jenkins.war&#39;</span> saved <span class="o">[</span>80113050/80113050<span class="o">]</span>
+</span><span class='line'>Stopping jenkins
+</span><span class='line'>Moving the existing jenkins jar file
+</span><span class='line'>Copying the latest file
+</span><span class='line'>Starting Jenkins
+</span><span class='line'>Upgrade Successful
+</span></code></pre></td></tr></table></div></figure>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Upgrade Kubernetes Version in AWS EKS]]></title>
@@ -2217,94 +2309,6 @@ Now lets see how to do that in rails using UJS</p>
 
 
 <p>That&rsquo;s it. As simple as that.</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Rubber + EC2 + Rails + Oracle + Nginx + Passenger]]></title>
-    <link href="https://advishnuprasad.com/blog/2012/02/02/rubber-plus-ec2-plus-rails-plus-oracle-plus-nginx-plus-passenger/"/>
-    <updated>2012-02-02T03:10:36+05:30</updated>
-    <id>https://advishnuprasad.com/blog/2012/02/02/rubber-plus-ec2-plus-rails-plus-oracle-plus-nginx-plus-passenger</id>
-    <content type="html"><![CDATA[<h2>Deploying rails app into EC2 using Rubber</h2>
-
-<h4>Step 1</h4>
-
-<p>Get the key from aws and store it in ~/.ec2 folder</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'>chmod <span class="m">400</span> keyname
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Generate the publickey</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'>ssh-keygen -y -f keyname &gt; keyname.pub
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h4>Step 2</h4>
-
-<p>Add rubber gem in your gemfile</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">gem</span> <span class="n">rubber</span>
-</span><span class='line'><span class="n">bundle</span> <span class="n">install</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h4>Step 3</h4>
-
-<p>Now do vulcanize. Am using nginx and passenger</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">rails</span> <span class="n">g</span> <span class="n">vulcanize</span> <span class="n">minimal_passenger_nginx</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h4>Step 4</h4>
-
-<p>Now edit following fields in <code>config/rubber/rubber.yml</code></p>
-
-<pre><code>access key
-secret access key
-account name
-app name
-app user
-image id
-image type
-</code></pre>
-
-<h4>Step 5 :</h4>
-
-<p>Deploy Part :</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">cap</span> <span class="ss">rubber</span><span class="p">:</span><span class="n">create</span>
-</span><span class='line'><span class="n">cap</span> <span class="ss">rubber</span><span class="p">:</span><span class="n">bootstrap</span>
-</span><span class='line'><span class="n">cap</span> <span class="n">deploy</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>If you are using oracle instant client set the environment variable in server and then do <code>cap deploy</code></p>
-
-<h4>Troubleshooting:</h4>
-
-<p>Here is the way to bypass fingerprint authentication prompt</p>
-
-<p>add these two lines in deploy script.</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">ssh_options</span><span class="o">[</span><span class="ss">:keys</span><span class="o">]</span> <span class="o">=</span> <span class="o">[</span><span class="no">File</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="no">ENV</span><span class="o">[</span><span class="s2">&quot;HOME&quot;</span><span class="o">]</span><span class="p">,</span> <span class="s2">&quot;.ssh&quot;</span><span class="p">,</span> <span class="s2">&quot;id_rsa&quot;</span><span class="p">)</span><span class="o">]</span>
-</span><span class='line'><span class="n">set</span> <span class="ss">:deploy_to</span><span class="p">,</span> <span class="s2">&quot;your_deploy_folder&quot;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-
 ]]></content>
   </entry>
   

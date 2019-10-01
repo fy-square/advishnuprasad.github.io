@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Automation | A D Vishnu Prasad]]></title>
+  <link href="https://advishnuprasad.com/blog/categories/automation/atom.xml" rel="self"/>
+  <link href="https://advishnuprasad.com/"/>
+  <updated>2019-10-01T18:10:13+05:30</updated>
+  <id>https://advishnuprasad.com/</id>
+  <author>
+    <name><![CDATA[A D Vishnu Prasad]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Upgrade Jenkins Using Shell Script]]></title>
+    <link href="https://advishnuprasad.com/blog/2019/10/01/upgrade-jenkins-shell-script/"/>
+    <updated>2019-10-01T18:02:17+05:30</updated>
+    <id>https://advishnuprasad.com/blog/2019/10/01/upgrade-jenkins-shell-script</id>
+    <content type="html"><![CDATA[<h4>Script</h4>
+
+<pre><code class="bash upgrade_jenkins.sh">
+VERSION=$1
+echo "Upgrading jenkins to $VERSION"
+
+
+echo "Downloading the jar file"
+wget http://updates.jenkins-ci.org/download/war/$VERSION/jenkins.war
+
+echo "Stopping jenkins"
+service jenkins stop
+
+sleep 5
+
+echo "Moving the existing jenkins jar file"
+TIMESTAMP=`date '+%s'`
+mv /usr/share/jenkins/jenkins.war /usr/share/jenkins/jenkins.$TIMESTAMP.war
+
+echo "Copying the latest file"
+mv jenkins.war /usr/share/jenkins/jenkins.war
+
+echo "Starting Jenkins"
+service jenkins start
+
+echo "Upgrade Successful"
+</code></pre>
+
+<h4>Execute Shell</h4>
+
+<pre><code class="bash">chmod +x upgrade_jenkins.sh
+./upgrade_jenkins.sh &lt;Version Number&gt;
+Exammple: ./upgrade_jenkins.sh 2.198
+</code></pre>
+
+<h4>Sample output</h4>
+
+<pre><code class="bash">Upgrading jenkins to 2.198
+Downloading the jar file
+Saving to: 'jenkins.war'   
+2019-10-01 12:35:52 (5.06 MB/s) - 'jenkins.war' saved [80113050/80113050]
+Stopping jenkins
+Moving the existing jenkins jar file
+Copying the latest file
+Starting Jenkins
+Upgrade Successful
+</code></pre>
+]]></content>
+  </entry>
+  
+</feed>
