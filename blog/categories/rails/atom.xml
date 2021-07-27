@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: Rails | A D Vishnu Prasad]]></title>
-  <link href="https://advishnuprasad.com/blog/categories/rails/atom.xml" rel="self"/>
-  <link href="https://advishnuprasad.com/"/>
-  <updated>2019-10-01T18:10:13+05:30</updated>
-  <id>https://advishnuprasad.com/</id>
+  <link href="http://advishnuprasad.com/blog/categories/rails/atom.xml" rel="self"/>
+  <link href="http://advishnuprasad.com/"/>
+  <updated>2021-07-27T10:38:52+05:30</updated>
+  <id>http://advishnuprasad.com/</id>
   <author>
     <name><![CDATA[A D Vishnu Prasad]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[Generate API Documentation Using Rspec Acceptance Tests]]></title>
-    <link href="https://advishnuprasad.com/blog/2016/02/07/api-docs-using-rspecs/"/>
+    <link href="http://advishnuprasad.com/blog/2016/02/07/api-docs-using-rspecs/"/>
     <updated>2016-02-07T11:43:58+05:30</updated>
-    <id>https://advishnuprasad.com/blog/2016/02/07/api-docs-using-rspecs</id>
+    <id>http://advishnuprasad.com/blog/2016/02/07/api-docs-using-rspecs</id>
     <content type="html"><![CDATA[<h4>Step 1:</h4>
 
 <p>Install required gems</p>
@@ -118,9 +118,9 @@ end
   
   <entry>
     <title type="html"><![CDATA[Active Model Serializers]]></title>
-    <link href="https://advishnuprasad.com/blog/2014/11/14/active-model-serializers/"/>
+    <link href="http://advishnuprasad.com/blog/2014/11/14/active-model-serializers/"/>
     <updated>2014-11-14T19:42:22+05:30</updated>
-    <id>https://advishnuprasad.com/blog/2014/11/14/active-model-serializers</id>
+    <id>http://advishnuprasad.com/blog/2014/11/14/active-model-serializers</id>
     <content type="html"><![CDATA[<h3>When to use active model serializer ?</h3>
 
 <p>When you have your app running on both browser and mobile app, and if you have a backend rails server then active model serialiser is a perfect gem for serving APIs.</p>
@@ -192,9 +192,9 @@ respond_with @user
   
   <entry>
     <title type="html"><![CDATA[Fetch Records From Sql Query - Ruby on Rails - Oci8 Cursor]]></title>
-    <link href="https://advishnuprasad.com/blog/2014/03/14/fetch-records-from-sql-query-ruby-on-rails-oci8-cursor/"/>
+    <link href="http://advishnuprasad.com/blog/2014/03/14/fetch-records-from-sql-query-ruby-on-rails-oci8-cursor/"/>
     <updated>2014-03-14T18:50:26+05:30</updated>
-    <id>https://advishnuprasad.com/blog/2014/03/14/fetch-records-from-sql-query-ruby-on-rails-oci8-cursor</id>
+    <id>http://advishnuprasad.com/blog/2014/03/14/fetch-records-from-sql-query-ruby-on-rails-oci8-cursor</id>
     <content type="html"><![CDATA[<p>There might be time when you can&rsquo;t use ActiveRecord finders but have to write custom
 queries to fetch the records.</p>
 
@@ -227,9 +227,9 @@ end
   
   <entry>
     <title type="html"><![CDATA[Find Type of the Request in Controller]]></title>
-    <link href="https://advishnuprasad.com/blog/2012/12/15/find-type-of-the-request-in-controller/"/>
+    <link href="http://advishnuprasad.com/blog/2012/12/15/find-type-of-the-request-in-controller/"/>
     <updated>2012-12-15T07:51:00+05:30</updated>
-    <id>https://advishnuprasad.com/blog/2012/12/15/find-type-of-the-request-in-controller</id>
+    <id>http://advishnuprasad.com/blog/2012/12/15/find-type-of-the-request-in-controller</id>
     <content type="html"><![CDATA[<p>Is there any way to find the type of request in controller ?</p>
 
 <h4>Yes.</h4>
@@ -251,9 +251,9 @@ end
   
   <entry>
     <title type="html"><![CDATA[Ajax Request in Ruby on Rails (UJS)]]></title>
-    <link href="https://advishnuprasad.com/blog/2012/10/10/ajax-request-in-ruby-on-rails-ujs/"/>
+    <link href="http://advishnuprasad.com/blog/2012/10/10/ajax-request-in-ruby-on-rails-ujs/"/>
     <updated>2012-10-10T06:09:19+05:30</updated>
-    <id>https://advishnuprasad.com/blog/2012/10/10/ajax-request-in-ruby-on-rails-ujs</id>
+    <id>http://advishnuprasad.com/blog/2012/10/10/ajax-request-in-ruby-on-rails-ujs</id>
     <content type="html"><![CDATA[<p>Many programmer uses jquery to catch click event and do $.get or $.post to access the server and print the response in a required div.</p>
 
 <p>But there is a handy way to do ajax request using UJS provided by Rails .</p>

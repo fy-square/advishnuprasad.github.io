@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: Postgres | A D Vishnu Prasad]]></title>
-  <link href="https://advishnuprasad.com/blog/categories/postgres/atom.xml" rel="self"/>
-  <link href="https://advishnuprasad.com/"/>
-  <updated>2019-10-01T18:10:13+05:30</updated>
-  <id>https://advishnuprasad.com/</id>
+  <link href="http://advishnuprasad.com/blog/categories/postgres/atom.xml" rel="self"/>
+  <link href="http://advishnuprasad.com/"/>
+  <updated>2021-07-27T10:38:52+05:30</updated>
+  <id>http://advishnuprasad.com/</id>
   <author>
     <name><![CDATA[A D Vishnu Prasad]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[Build PgModeler From Source in MacOS Mojave]]></title>
-    <link href="https://advishnuprasad.com/blog/2019/03/17/build-pgmodeler-from-source/"/>
+    <link href="http://advishnuprasad.com/blog/2019/03/17/build-pgmodeler-from-source/"/>
     <updated>2019-03-17T20:07:46+05:30</updated>
-    <id>https://advishnuprasad.com/blog/2019/03/17/build-pgmodeler-from-source</id>
+    <id>http://advishnuprasad.com/blog/2019/03/17/build-pgmodeler-from-source</id>
     <content type="html"><![CDATA[<h4>Download the Source</h4>
 
 <p>Download source from <a href="https://pgmodeler.io/download?source=true">here</a> <br>
@@ -61,9 +61,9 @@ macdeployqt $PGMODELER_ROOT \
   
   <entry>
     <title type="html"><![CDATA[Creating a Postgres Master and Slave Streaming Server With S3 Backup]]></title>
-    <link href="https://advishnuprasad.com/blog/2016/09/05/creating-a-postgres-master-and-slave-streaming-server-with-s3-backup/"/>
+    <link href="http://advishnuprasad.com/blog/2016/09/05/creating-a-postgres-master-and-slave-streaming-server-with-s3-backup/"/>
     <updated>2016-09-05T13:01:13+05:30</updated>
-    <id>https://advishnuprasad.com/blog/2016/09/05/creating-a-postgres-master-and-slave-streaming-server-with-s3-backup</id>
+    <id>http://advishnuprasad.com/blog/2016/09/05/creating-a-postgres-master-and-slave-streaming-server-with-s3-backup</id>
     <content type="html"><![CDATA[<h3>Setup</h3>
 
 <p><img src="/images/db.png" alt="API docs image" />

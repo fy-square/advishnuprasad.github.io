@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: Soap | A D Vishnu Prasad]]></title>
-  <link href="https://advishnuprasad.com/blog/categories/soap/atom.xml" rel="self"/>
-  <link href="https://advishnuprasad.com/"/>
-  <updated>2019-10-01T18:10:13+05:30</updated>
-  <id>https://advishnuprasad.com/</id>
+  <link href="http://advishnuprasad.com/blog/categories/soap/atom.xml" rel="self"/>
+  <link href="http://advishnuprasad.com/"/>
+  <updated>2021-07-27T10:38:52+05:30</updated>
+  <id>http://advishnuprasad.com/</id>
   <author>
     <name><![CDATA[A D Vishnu Prasad]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[SOAP Request From Ruby Without Savon]]></title>
-    <link href="https://advishnuprasad.com/blog/2016/03/25/soap-request-from-ruby-without-savon/"/>
+    <link href="http://advishnuprasad.com/blog/2016/03/25/soap-request-from-ruby-without-savon/"/>
     <updated>2016-03-25T21:11:47+05:30</updated>
-    <id>https://advishnuprasad.com/blog/2016/03/25/soap-request-from-ruby-without-savon</id>
+    <id>http://advishnuprasad.com/blog/2016/03/25/soap-request-from-ruby-without-savon</id>
     <content type="html"><![CDATA[<h3>Send SOAP request from ruby net/http without using Savon gem</h3>
 
 <p>You would have seen everyone is using Savon gem for sending SOAP request. But what if the service is using SOAP 1.1.

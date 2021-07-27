@@ -9,7 +9,7 @@
   <meta name="author" content="A D Vishnu Prasad">
 
   
-  <meta name="description" content="Assumptions: You already have a working ELK cluster (5.x). Azure Account Step 1: Storage account Create Storage Account: Step 2: Get Credentials Get &hellip;">
+  <meta name="description" content="This post will help you to create autocomplete feature on Elasticsearch. For Example, if you have a select box and when you search for data you would &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -18,7 +18,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="https://advishnuprasad.com/posts/6/">
+  <link rel="canonical" href="http://advishnuprasad.com/posts/6/">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <link href="/atom.xml" rel="alternate" title="A D Vishnu Prasad" type="application/atom+xml">
@@ -50,7 +50,7 @@
   <header role="banner"><hgroup>
   <h1><a href="/">A D Vishnu Prasad</a></h1>
   
-    <h2>CID - Cloud Infrastructure Designer</h2>
+    <h2>DevOps and API Developer</h2>
   
 </hgroup>
 
@@ -84,7 +84,7 @@
       
   <header>
     
-      <h1 class="entry-title"><a href="/blog/2017/11/09/elasticsearch-backup-and-restore-from-azure-blob-storage/">Elasticsearch Backup and Restore From Azure Blob Storage</a></h1>
+      <h1 class="entry-title"><a href="/blog/2018/09/23/elasticsearch-autocomplete-example/">Elasticsearch Autocomplete Example</a></h1>
     
     
       <p class="meta">
@@ -93,117 +93,343 @@
 
 
 
-<time class='entry-date' datetime='2017-11-09T13:00:26-05:00'><span class='date'><span class='date-month'>Nov</span> <span class='date-day'>9</span><span class='date-suffix'>th</span>, <span class='date-year'>2017</span></span> <span class='time'>1:00 pm</span></time>
+<time class='entry-date' datetime='2018-09-23T20:57:23+05:30'><span class='date'><span class='date-month'>Sep</span> <span class='date-day'>23</span><span class='date-suffix'>rd</span>, <span class='date-year'>2018</span></span> <span class='time'>8:57 pm</span></time>
         
       </p>
     
   </header>
 
 
-  <div class="entry-content"><p>Assumptions:</p>
+  <div class="entry-content"><p>This post will help you to create autocomplete feature on Elasticsearch.</p>
 
-<p>You already have a working ELK cluster (5.x).</p>
+<p>For Example, if you have a select box and when you search for <code>data</code> you would want to get all results that starts with <code>data</code>.</p>
 
-<p>Azure Account</p>
+<p><img src="http://advishnuprasad.com/images/blog_1.png" alt="ES1" /></p>
 
-<h3>Step 1: Storage account</h3>
-
-<p>Create Storage Account:</p>
-
-<p><img src="https://advishnuprasad.com/images/es1.jpg" alt="ES1" /></p>
-
-<!-- ![ES1](http://localhost:4000/images/es1.jpg)  -->
+<!-- ![ES1](http://localhost:4000/images/blog_1.png) -->
 
 
-<h3>Step 2: Get Credentials</h3>
+<p>This can be done easily in Elasticsearch. The important thing here is the type of analyzer and tokenizer than you use for autocomplete.</p>
 
-<p>Get Storage account name and key</p>
+<h4>Step 1: Create Mapping with the following tokenizer and analyzer</h4>
 
-<p><img src="https://advishnuprasad.com/images/es2.jpg" alt="ES2" /></p>
-
-<!-- ![ES2](http://localhost:4000/images/es2.jpg)  -->
-
-
-<h3>Step 3: Install azure plugin</h3>
-
-<p>Ssh into all elastic search nodes.</p>
-
-<p>Go to <code>/usr/share/elasticsearch/</code></p>
-
-<p>Run <code>sudo bin/elasticsearch-plugin install repository-azure</code></p>
-
-<h3>Step 4: Update config</h3>
-
-<p>Go to <code>/etc/elasticsearch/elasticsearch.yml</code>. Add your Azure configuration
-<img src="https://advishnuprasad.com/images/es3.jpg" alt="ES3" /></p>
-
-<!-- ![ES3](http://localhost:4000/images/es3.jpg)  -->
-
-
-<p>Restart <code>sudo service elasticsearch restart</code></p>
-
-<h3>Step 5: Create snapshots</h3>
-
-<p>Open Kibana portal and Click on <code>Dev Tools</code></p>
-
-<p>Configure Repository</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
 <span class='line-number'>4</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'>PUT _snapshot/es_snapshot
-</span><span class='line'><span class="o">{</span>
-</span><span class='line'>    <span class="s2">&quot;type&quot;</span>: <span class="s2">&quot;azure&quot;</span>
-</span><span class='line'><span class="o">}</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>PUT auto-test
+</span><span class='line'>{
+</span><span class='line'>  "settings": {
+</span><span class='line'>    "analysis": {
+</span><span class='line'>      "analyzer": {
+</span><span class='line'>        "autocomplete": {
+</span><span class='line'>          "tokenizer": "autocomplete",
+</span><span class='line'>          "filter": [
+</span><span class='line'>            "lowercase"
+</span><span class='line'>          ]
+</span><span class='line'>        },
+</span><span class='line'>        "autocomplete_search": {
+</span><span class='line'>          "tokenizer": "lowercase"
+</span><span class='line'>        }
+</span><span class='line'>      },
+</span><span class='line'>      "tokenizer": {
+</span><span class='line'>        "autocomplete": {
+</span><span class='line'>          "type": "edge_ngram",
+</span><span class='line'>          "min_gram": 2,
+</span><span class='line'>          "max_gram": 10,
+</span><span class='line'>          "token_chars": [
+</span><span class='line'>            "letter"
+</span><span class='line'>          ]
+</span><span class='line'>        }
+</span><span class='line'>      }
+</span><span class='line'>    }
+</span><span class='line'>  },
+</span><span class='line'>  "mappings": {
+</span><span class='line'>    "test": {
+</span><span class='line'>      "properties": {
+</span><span class='line'>        "technology": {
+</span><span class='line'>          "type": "text",
+</span><span class='line'>          "analyzer": "autocomplete",
+</span><span class='line'>          "search_analyzer": "autocomplete_search"
+</span><span class='line'>        }
+</span><span class='line'>      }
+</span><span class='line'>    }
+</span><span class='line'>  }
+</span><span class='line'>}</span></code></pre></td></tr></table></div></figure>
+
+
+<p><code>autocomplete_search</code> analyzer is used for searching case insensitive words.</p>
+
+<p>Step 2: Test Analyzers</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>POST auto-test/_analyze
+</span><span class='line'>{
+</span><span class='line'>  "field": "technology",
+</span><span class='line'>  "text": "database"
+</span><span class='line'>}</span></code></pre></td></tr></table></div></figure>
+
+
+<p>If you see the results, ES is creating the following tokens. You can change the min_gram based on your needs.</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+<span class='line-number'>46</span>
+<span class='line-number'>47</span>
+<span class='line-number'>48</span>
+<span class='line-number'>49</span>
+<span class='line-number'>50</span>
+<span class='line-number'>51</span>
+<span class='line-number'>52</span>
+<span class='line-number'>53</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>{
+</span><span class='line'>  "tokens": [
+</span><span class='line'>    {
+</span><span class='line'>      "token": "da",
+</span><span class='line'>      "start_offset": 0,
+</span><span class='line'>      "end_offset": 2,
+</span><span class='line'>      "type": "word",
+</span><span class='line'>      "position": 0
+</span><span class='line'>    },
+</span><span class='line'>    {
+</span><span class='line'>      "token": "dat",
+</span><span class='line'>      "start_offset": 0,
+</span><span class='line'>      "end_offset": 3,
+</span><span class='line'>      "type": "word",
+</span><span class='line'>      "position": 1
+</span><span class='line'>    },
+</span><span class='line'>    {
+</span><span class='line'>      "token": "data",
+</span><span class='line'>      "start_offset": 0,
+</span><span class='line'>      "end_offset": 4,
+</span><span class='line'>      "type": "word",
+</span><span class='line'>      "position": 2
+</span><span class='line'>    },
+</span><span class='line'>    {
+</span><span class='line'>      "token": "datab",
+</span><span class='line'>      "start_offset": 0,
+</span><span class='line'>      "end_offset": 5,
+</span><span class='line'>      "type": "word",
+</span><span class='line'>      "position": 3
+</span><span class='line'>    },
+</span><span class='line'>    {
+</span><span class='line'>      "token": "databa",
+</span><span class='line'>      "start_offset": 0,
+</span><span class='line'>      "end_offset": 6,
+</span><span class='line'>      "type": "word",
+</span><span class='line'>      "position": 4
+</span><span class='line'>    },
+</span><span class='line'>    {
+</span><span class='line'>      "token": "databas",
+</span><span class='line'>      "start_offset": 0,
+</span><span class='line'>      "end_offset": 7,
+</span><span class='line'>      "type": "word",
+</span><span class='line'>      "position": 5
+</span><span class='line'>    },
+</span><span class='line'>    {
+</span><span class='line'>      "token": "database",
+</span><span class='line'>      "start_offset": 0,
+</span><span class='line'>      "end_offset": 8,
+</span><span class='line'>      "type": "word",
+</span><span class='line'>      "position": 6
+</span><span class='line'>    }
+</span><span class='line'>  ]
+</span><span class='line'>}</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Step 3: Create data and search</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>POST auto-test/test
+</span><span class='line'>{
+</span><span class='line'>  "technology": "data"
+</span><span class='line'>}
+</span><span class='line'>
+</span><span class='line'>POST auto-test/test
+</span><span class='line'>{
+</span><span class='line'>  "technology": "database"
+</span><span class='line'>}
 </span></code></pre></td></tr></table></div></figure>
 
 
-<p>Create Backup</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'>PUT _snapshot/es_snapshot/mybackup_1
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>List snapshots</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'>GET /_snapshot/es_snapshot/mybackup_1
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h3>Step 6:</h3>
-
-<p>Go to Storage account. Click on &ldquo;Containers&rdquo; to see the snapshots.</p>
-
-<p><img src="https://advishnuprasad.com/images/es4.jpg" alt="ES4" /></p>
-
-<!-- ![ES4](http://localhost:4000/images/es4.jpg)  -->
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>GET auto-test/_search
+</span><span class='line'>{
+</span><span class='line'>  "query": {
+</span><span class='line'>    "match": {
+</span><span class='line'>      "technology": "dat"
+</span><span class='line'>    }
+</span><span class='line'>  }
+</span><span class='line'>}</span></code></pre></td></tr></table></div></figure>
 
 
-<h2>Restore from Azure storage account</h2>
+<p>The results should be</p>
 
-<h3>Step 7:</h3>
-
-<p>Follow step 1 to step 4 to configure your new cluster.</p>
-
-<h3>Step 8:</h3>
-
-<p>Close all the indices</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'>POST /_all/_close
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h3>Step 9:</h3>
-
-<p>Restore from snapshot</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'>POST /_snapshot/es_snapshot/mybackup_1/_restore
-</span></code></pre></td></tr></table></div></figure>
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>{
+</span><span class='line'>  "took": 2,
+</span><span class='line'>  "timed_out": false,
+</span><span class='line'>  "_shards": {
+</span><span class='line'>    "total": 5,
+</span><span class='line'>    "successful": 5,
+</span><span class='line'>    "skipped": 0,
+</span><span class='line'>    "failed": 0
+</span><span class='line'>  },
+</span><span class='line'>  "hits": {
+</span><span class='line'>    "total": 2,
+</span><span class='line'>    "max_score": 0.2876821,
+</span><span class='line'>    "hits": [
+</span><span class='line'>      {
+</span><span class='line'>        "_index": "auto-test",
+</span><span class='line'>        "_type": "test",
+</span><span class='line'>        "_id": "3woWB2YBsF1yfhimkgKz",
+</span><span class='line'>        "_score": 0.2876821,
+</span><span class='line'>        "_source": {
+</span><span class='line'>          "technology": "data"
+</span><span class='line'>        }
+</span><span class='line'>      },
+</span><span class='line'>      {
+</span><span class='line'>        "_index": "auto-test",
+</span><span class='line'>        "_type": "test",
+</span><span class='line'>        "_id": "xGsWB2YBVxVaheWYfgCc",
+</span><span class='line'>        "_score": 0.2876821,
+</span><span class='line'>        "_source": {
+</span><span class='line'>          "technology": "database"
+</span><span class='line'>        }
+</span><span class='line'>      }
+</span><span class='line'>    ]
+</span><span class='line'>  }
+</span><span class='line'>}</span></code></pre></td></tr></table></div></figure>
 
 </div>
   
@@ -227,6 +453,10 @@
     <section>
   <h1>Recent Posts</h1>
   <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2021/07/27/cloud-agnostic-microservice-deployment-using-kubernetes/">Cloud Agnostic Microservice Deployment Architecture Using Kubernetes</a>
+      </li>
     
       <li class="post">
         <a href="/blog/2019/10/01/upgrade-jenkins-shell-script/">Upgrade Jenkins Using Shell Script</a>
@@ -264,10 +494,6 @@
         <a href="/blog/2017/02/22/create-swap-using-ansible-in-ubuntu/">Create Swap Using Ansible in Ubuntu</a>
       </li>
     
-      <li class="post">
-        <a href="/blog/2016/09/24/encryption-at-rest/">Encryption at REST</a>
-      </li>
-    
   </ul>
 </section>
 
@@ -281,7 +507,7 @@
     </div>
   </div>
   <footer role="contentinfo"><p>
-  Copyright &copy; 2019 - A D Vishnu Prasad -
+  Copyright &copy; 2021 - A D Vishnu Prasad -
   <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
 </p>
 

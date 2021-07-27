@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: Curator | A D Vishnu Prasad]]></title>
-  <link href="https://advishnuprasad.com/blog/categories/curator/atom.xml" rel="self"/>
-  <link href="https://advishnuprasad.com/"/>
-  <updated>2019-10-01T18:10:13+05:30</updated>
-  <id>https://advishnuprasad.com/</id>
+  <link href="http://advishnuprasad.com/blog/categories/curator/atom.xml" rel="self"/>
+  <link href="http://advishnuprasad.com/"/>
+  <updated>2021-07-27T10:38:52+05:30</updated>
+  <id>http://advishnuprasad.com/</id>
   <author>
     <name><![CDATA[A D Vishnu Prasad]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[Kubernetes- Elasticsearch Scheduled Backup and Retention Using Curator]]></title>
-    <link href="https://advishnuprasad.com/blog/2018/10/07/kubernetes-elasticsearch-scheduled-backup-and-retention-using-curator/"/>
+    <link href="http://advishnuprasad.com/blog/2018/10/07/kubernetes-elasticsearch-scheduled-backup-and-retention-using-curator/"/>
     <updated>2018-10-07T21:54:58+05:30</updated>
-    <id>https://advishnuprasad.com/blog/2018/10/07/kubernetes-elasticsearch-scheduled-backup-and-retention-using-curator</id>
+    <id>http://advishnuprasad.com/blog/2018/10/07/kubernetes-elasticsearch-scheduled-backup-and-retention-using-curator</id>
     <content type="html"><![CDATA[<p>This post will guide you to create a scheduled elasticsearch backup using curator in k8s cluster.</p>
 
 <h4>Assumptions:</h4>

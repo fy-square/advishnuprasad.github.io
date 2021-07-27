@@ -9,8 +9,31 @@
   <meta name="author" content="A D Vishnu Prasad">
 
   
-  <meta name="description" content="There are two things you need to do to upgrade Kubernetes in EKS. Unlike Azure AKS where you can upgrade with a single button, in AWS EKS you need
-to &hellip;">
+  <meta name="description" content="Script upgrade_jenkins.sh1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+VERSION=$1
+echo &quot;Upgrading jenkins to $VERSION&quot; echo & &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -19,7 +42,7 @@ to &hellip;">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="https://advishnuprasad.com/posts/2/">
+  <link rel="canonical" href="http://advishnuprasad.com/posts/2/">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <link href="/atom.xml" rel="alternate" title="A D Vishnu Prasad" type="application/atom+xml">
@@ -51,7 +74,7 @@ to &hellip;">
   <header role="banner"><hgroup>
   <h1><a href="/">A D Vishnu Prasad</a></h1>
   
-    <h2>CID - Cloud Infrastructure Designer</h2>
+    <h2>DevOps and API Developer</h2>
   
 </hgroup>
 
@@ -85,7 +108,7 @@ to &hellip;">
       
   <header>
     
-      <h1 class="entry-title"><a href="/blog/2019/09/26/upgrade-kubernetes-version-in-eks/">Upgrade Kubernetes Version in AWS EKS</a></h1>
+      <h1 class="entry-title"><a href="/blog/2019/10/01/upgrade-jenkins-shell-script/">Upgrade Jenkins Using Shell Script</a></h1>
     
     
       <p class="meta">
@@ -94,90 +117,97 @@ to &hellip;">
 
 
 
-<time class='entry-date' datetime='2019-09-26T23:55:25+05:30'><span class='date'><span class='date-month'>Sep</span> <span class='date-day'>26</span><span class='date-suffix'>th</span>, <span class='date-year'>2019</span></span> <span class='time'>11:55 pm</span></time>
+<time class='entry-date' datetime='2019-10-01T18:02:17+05:30'><span class='date'><span class='date-month'>Oct</span> <span class='date-day'>1</span><span class='date-suffix'>st</span>, <span class='date-year'>2019</span></span> <span class='time'>6:02 pm</span></time>
         
       </p>
     
   </header>
 
 
-  <div class="entry-content"><p>There are two things you need to do to upgrade Kubernetes in EKS.</p>
+  <div class="entry-content"><h4>Script</h4>
 
-<p>Unlike <code>Azure AKS</code> where you can upgrade with a single button, in <code>AWS EKS</code> you need
-to upgrade the cluster and worker nodes separately.</p>
-
-<h3>Upgrade Cluster</h3>
-
-<p>=> Login into AWS console.</p>
-
-<p>=> Go to EKS services.</p>
-
-<p>=> Click on Clusters</p>
-
-<p><img src="https://advishnuprasad.com/images/update_cluster.jpg" alt="Cluster Upgrade" /></p>
-
-<h3>Upgrade Worker Nodes</h3>
-
-<p>Reference Link: <a href="https://docs.aws.amazon.com/eks/latest/userguide/update-stack.html">https://docs.aws.amazon.com/eks/latest/userguide/update-stack.html</a></p>
-
-<h4>Step 1:</h4>
-
-<p>Go to Worker node cloud formation stack and click on <code>Update</code></p>
-
-<h4>Step 2:</h4>
-
-<p>Click on &ldquo;Replace current template&rdquo;</p>
-
-<p>Paste the following URL: <a href="https://amazon-eks.s3-us-west-2.amazonaws.com/cloudformation/2019-09-17/amazon-eks-nodegroup.yaml">https://amazon-eks.s3-us-west-2.amazonaws.com/cloudformation/2019-09-17/amazon-eks-nodegroup.yaml</a></p>
-
-<p>Click &ldquo;Next&rdquo;</p>
-
-<p><img src="https://advishnuprasad.com/images/update_stack_1.jpg" alt="Worker Node 1" /></p>
-
-<h4>Step 3:</h4>
-
-<p>Update the following parameters</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>NodeAutoScalingGroupDesiredCapacity = NodeAutoScalingGroupDesiredCapacity</span></code></pre></td></tr></table></div></figure>
-
-
-
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>NodeAutoScalingGroupMaxSize = NodeAutoScalingGroupDesiredCapacity + 1 (or more)
-</span><span class='line'>(It must be more than what you have)</span></code></pre></td></tr></table></div></figure>
-
-
-
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<figure class='code'><figcaption><span>upgrade_jenkins.sh</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>NodeImageIdSSMParam = /aws/service/eks/optimized-ami/`1.14`/amazon-linux-2/recommended/image_id
-</span><span class='line'>(If your cluster version is 1.13 change it to 1.13. Ideally it should match with the Cluster version. Otherwise the upgrade won't work.
-</span><span class='line'>You will end up in `matchnodeselector` error and `NotReady` status)
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">VERSION</span><span class="o">=</span><span class="nv">$1</span>
+</span><span class='line'><span class="nb">echo</span> <span class="s2">&quot;Upgrading jenkins to $VERSION&quot;</span>
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'><span class="nb">echo</span> <span class="s2">&quot;Downloading the jar file&quot;</span>
+</span><span class='line'>wget http://updates.jenkins-ci.org/download/war/<span class="nv">$VERSION</span>/jenkins.war
+</span><span class='line'>
+</span><span class='line'><span class="nb">echo</span> <span class="s2">&quot;Stopping jenkins&quot;</span>
+</span><span class='line'>service jenkins stop
+</span><span class='line'>
+</span><span class='line'>sleep 5
+</span><span class='line'>
+</span><span class='line'><span class="nb">echo</span> <span class="s2">&quot;Moving the existing jenkins jar file&quot;</span>
+</span><span class='line'><span class="nv">TIMESTAMP</span><span class="o">=</span><span class="sb">`</span>date <span class="s1">&#39;+%s&#39;</span><span class="sb">`</span>
+</span><span class='line'>mv /usr/share/jenkins/jenkins.war /usr/share/jenkins/jenkins.<span class="nv">$TIMESTAMP</span>.war
+</span><span class='line'>
+</span><span class='line'><span class="nb">echo</span> <span class="s2">&quot;Copying the latest file&quot;</span>
+</span><span class='line'>mv jenkins.war /usr/share/jenkins/jenkins.war
+</span><span class='line'>
+</span><span class='line'><span class="nb">echo</span> <span class="s2">&quot;Starting Jenkins&quot;</span>
+</span><span class='line'>service jenkins start
+</span><span class='line'>
+</span><span class='line'><span class="nb">echo</span> <span class="s2">&quot;Upgrade Successful&quot;</span>
 </span></code></pre></td></tr></table></div></figure>
 
 
-<p>Leave the other fields to default</p>
+<h4>Execute Shell</h4>
 
-<p>Click &ldquo;Next&rdquo;</p>
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>chmod +x upgrade_jenkins.sh
+</span><span class='line'>./upgrade_jenkins.sh &lt;Version Number&gt;
+</span><span class='line'>Exammple: ./upgrade_jenkins.sh 2.198
+</span></code></pre></td></tr></table></div></figure>
 
-<p><img src="https://advishnuprasad.com/images/update_stack_2.jpg" alt="Worker Node 2" /></p>
 
-<h4>Step 4:</h4>
+<h4>Sample output</h4>
 
-<p>Go to last page and check the box. Click &ldquo;Update&rdquo;</p>
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>Upgrading jenkins to 2.198
+</span><span class='line'>Downloading the jar file
+</span><span class='line'>Saving to: <span class="s1">&#39;jenkins.war&#39;</span>
+</span><span class='line'>2019-10-01 12:35:52 <span class="o">(</span>5.06 MB/s<span class="o">)</span> - <span class="s1">&#39;jenkins.war&#39;</span> saved <span class="o">[</span>80113050/80113050<span class="o">]</span>
+</span><span class='line'>Stopping jenkins
+</span><span class='line'>Moving the existing jenkins jar file
+</span><span class='line'>Copying the latest file
+</span><span class='line'>Starting Jenkins
+</span><span class='line'>Upgrade Successful
+</span></code></pre></td></tr></table></div></figure>
 
-<p><img src="https://advishnuprasad.com/images/update_stack_3.jpg" alt="Worker Node 3" /></p>
-
-<p>Once the stack is updated, Connect to your cluster. You should see your version upgraded to 1.14</p>
-
-<p><code>kubectl get nodes</code></p>
-
-<p><img src="https://advishnuprasad.com/images/final.jpg" alt="Final" /></p>
 </div>
   
   
@@ -200,6 +230,10 @@ to upgrade the cluster and worker nodes separately.</p>
     <section>
   <h1>Recent Posts</h1>
   <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2021/07/27/cloud-agnostic-microservice-deployment-using-kubernetes/">Cloud Agnostic Microservice Deployment Architecture Using Kubernetes</a>
+      </li>
     
       <li class="post">
         <a href="/blog/2019/10/01/upgrade-jenkins-shell-script/">Upgrade Jenkins Using Shell Script</a>
@@ -237,10 +271,6 @@ to upgrade the cluster and worker nodes separately.</p>
         <a href="/blog/2017/02/22/create-swap-using-ansible-in-ubuntu/">Create Swap Using Ansible in Ubuntu</a>
       </li>
     
-      <li class="post">
-        <a href="/blog/2016/09/24/encryption-at-rest/">Encryption at REST</a>
-      </li>
-    
   </ul>
 </section>
 
@@ -254,7 +284,7 @@ to upgrade the cluster and worker nodes separately.</p>
     </div>
   </div>
   <footer role="contentinfo"><p>
-  Copyright &copy; 2019 - A D Vishnu Prasad -
+  Copyright &copy; 2021 - A D Vishnu Prasad -
   <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
 </p>
 

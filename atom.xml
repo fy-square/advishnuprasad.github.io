@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[A D Vishnu Prasad]]></title>
-  <link href="https://advishnuprasad.com/atom.xml" rel="self"/>
-  <link href="https://advishnuprasad.com/"/>
-  <updated>2019-10-01T18:10:13+05:30</updated>
-  <id>https://advishnuprasad.com/</id>
+  <link href="http://advishnuprasad.com/atom.xml" rel="self"/>
+  <link href="http://advishnuprasad.com/"/>
+  <updated>2021-07-27T10:38:52+05:30</updated>
+  <id>http://advishnuprasad.com/</id>
   <author>
     <name><![CDATA[A D Vishnu Prasad]]></name>
     
@@ -14,10 +14,40 @@
 
   
   <entry>
+    <title type="html"><![CDATA[Cloud Agnostic Microservice Deployment Architecture Using Kubernetes]]></title>
+    <link href="http://advishnuprasad.com/blog/2021/07/27/cloud-agnostic-microservice-deployment-using-kubernetes/"/>
+    <updated>2021-07-27T08:46:34+05:30</updated>
+    <id>http://advishnuprasad.com/blog/2021/07/27/cloud-agnostic-microservice-deployment-using-kubernetes</id>
+    <content type="html"><![CDATA[<p>A typical web app contains the following microservices.</p>
+
+<blockquote><ul>
+<li>API (Flask / FastAPI / Rails)</li>
+<li>Worker (Celery / Sidekiq)</li>
+<li>Frontend (React / Angular)</li>
+<li>Redis (Cache)</li>
+<li>Postgres (Database)</li>
+</ul>
+</blockquote>
+
+<p>We will use kubernetes to deploy these microservices.</p>
+
+<p>We won&rsquo;t use s3 for frontend deployment even though it is easy to deploy cloudfront + s3 combination.
+But then we would have a dependency on s3 which is only available in AWS.
+(You should use s3 if you know AWS is going to be your only cloud)</p>
+
+<h3>Architecture</h3>
+
+<p><img src="http://advishnuprasad.com/images/k8s-arch.png" alt="Architecture" /></p>
+
+<p>Using this design, you just need kubernetes manifests. You can use the same in any cloud providers.</p>
+]]></content>
+  </entry>
+  
+  <entry>
     <title type="html"><![CDATA[Upgrade Jenkins Using Shell Script]]></title>
-    <link href="https://advishnuprasad.com/blog/2019/10/01/upgrade-jenkins-shell-script/"/>
+    <link href="http://advishnuprasad.com/blog/2019/10/01/upgrade-jenkins-shell-script/"/>
     <updated>2019-10-01T18:02:17+05:30</updated>
-    <id>https://advishnuprasad.com/blog/2019/10/01/upgrade-jenkins-shell-script</id>
+    <id>http://advishnuprasad.com/blog/2019/10/01/upgrade-jenkins-shell-script</id>
     <content type="html"><![CDATA[<h4>Script</h4>
 
 <figure class='code'><figcaption><span>upgrade_jenkins.sh</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
@@ -107,9 +137,9 @@
   
   <entry>
     <title type="html"><![CDATA[Upgrade Kubernetes Version in AWS EKS]]></title>
-    <link href="https://advishnuprasad.com/blog/2019/09/26/upgrade-kubernetes-version-in-eks/"/>
+    <link href="http://advishnuprasad.com/blog/2019/09/26/upgrade-kubernetes-version-in-eks/"/>
     <updated>2019-09-26T23:55:25+05:30</updated>
-    <id>https://advishnuprasad.com/blog/2019/09/26/upgrade-kubernetes-version-in-eks</id>
+    <id>http://advishnuprasad.com/blog/2019/09/26/upgrade-kubernetes-version-in-eks</id>
     <content type="html"><![CDATA[<p>There are two things you need to do to upgrade Kubernetes in EKS.</p>
 
 <p>Unlike <code>Azure AKS</code> where you can upgrade with a single button, in <code>AWS EKS</code> you need
@@ -123,7 +153,7 @@ to upgrade the cluster and worker nodes separately.</p>
 
 <p>=> Click on Clusters</p>
 
-<p><img src="https://advishnuprasad.com/images/update_cluster.jpg" alt="Cluster Upgrade" /></p>
+<p><img src="http://advishnuprasad.com/images/update_cluster.jpg" alt="Cluster Upgrade" /></p>
 
 <h3>Upgrade Worker Nodes</h3>
 
@@ -141,7 +171,7 @@ to upgrade the cluster and worker nodes separately.</p>
 
 <p>Click &ldquo;Next&rdquo;</p>
 
-<p><img src="https://advishnuprasad.com/images/update_stack_1.jpg" alt="Worker Node 1" /></p>
+<p><img src="http://advishnuprasad.com/images/update_stack_1.jpg" alt="Worker Node 1" /></p>
 
 <h4>Step 3:</h4>
 
@@ -174,27 +204,27 @@ to upgrade the cluster and worker nodes separately.</p>
 
 <p>Click &ldquo;Next&rdquo;</p>
 
-<p><img src="https://advishnuprasad.com/images/update_stack_2.jpg" alt="Worker Node 2" /></p>
+<p><img src="http://advishnuprasad.com/images/update_stack_2.jpg" alt="Worker Node 2" /></p>
 
 <h4>Step 4:</h4>
 
 <p>Go to last page and check the box. Click &ldquo;Update&rdquo;</p>
 
-<p><img src="https://advishnuprasad.com/images/update_stack_3.jpg" alt="Worker Node 3" /></p>
+<p><img src="http://advishnuprasad.com/images/update_stack_3.jpg" alt="Worker Node 3" /></p>
 
 <p>Once the stack is updated, Connect to your cluster. You should see your version upgraded to 1.14</p>
 
 <p><code>kubectl get nodes</code></p>
 
-<p><img src="https://advishnuprasad.com/images/final.jpg" alt="Final" /></p>
+<p><img src="http://advishnuprasad.com/images/final.jpg" alt="Final" /></p>
 ]]></content>
   </entry>
   
   <entry>
     <title type="html"><![CDATA[Build PgModeler From Source in MacOS Mojave]]></title>
-    <link href="https://advishnuprasad.com/blog/2019/03/17/build-pgmodeler-from-source/"/>
+    <link href="http://advishnuprasad.com/blog/2019/03/17/build-pgmodeler-from-source/"/>
     <updated>2019-03-17T20:07:46+05:30</updated>
-    <id>https://advishnuprasad.com/blog/2019/03/17/build-pgmodeler-from-source</id>
+    <id>http://advishnuprasad.com/blog/2019/03/17/build-pgmodeler-from-source</id>
     <content type="html"><![CDATA[<h4>Download the Source</h4>
 
 <p>Download source from <a href="https://pgmodeler.io/download?source=true">here</a> <br>
@@ -255,9 +285,9 @@ Please refer <a href="https://pgmodeler.io/support/installation">Official build 
   
   <entry>
     <title type="html"><![CDATA[Kubernetes- Elasticsearch Scheduled Backup and Retention Using Curator]]></title>
-    <link href="https://advishnuprasad.com/blog/2018/10/07/kubernetes-elasticsearch-scheduled-backup-and-retention-using-curator/"/>
+    <link href="http://advishnuprasad.com/blog/2018/10/07/kubernetes-elasticsearch-scheduled-backup-and-retention-using-curator/"/>
     <updated>2018-10-07T21:54:58+05:30</updated>
-    <id>https://advishnuprasad.com/blog/2018/10/07/kubernetes-elasticsearch-scheduled-backup-and-retention-using-curator</id>
+    <id>http://advishnuprasad.com/blog/2018/10/07/kubernetes-elasticsearch-scheduled-backup-and-retention-using-curator</id>
     <content type="html"><![CDATA[<p>This post will guide you to create a scheduled elasticsearch backup using curator in k8s cluster.</p>
 
 <h4>Assumptions:</h4>
@@ -500,14 +530,14 @@ Please refer <a href="https://pgmodeler.io/support/installation">Official build 
   
   <entry>
     <title type="html"><![CDATA[Elasticsearch Autocomplete Example]]></title>
-    <link href="https://advishnuprasad.com/blog/2018/09/23/elasticsearch-autocomplete-example/"/>
+    <link href="http://advishnuprasad.com/blog/2018/09/23/elasticsearch-autocomplete-example/"/>
     <updated>2018-09-23T20:57:23+05:30</updated>
-    <id>https://advishnuprasad.com/blog/2018/09/23/elasticsearch-autocomplete-example</id>
+    <id>http://advishnuprasad.com/blog/2018/09/23/elasticsearch-autocomplete-example</id>
     <content type="html"><![CDATA[<p>This post will help you to create autocomplete feature on Elasticsearch.</p>
 
 <p>For Example, if you have a select box and when you search for <code>data</code> you would want to get all results that starts with <code>data</code>.</p>
 
-<p><img src="https://advishnuprasad.com/images/blog_1.png" alt="ES1" /></p>
+<p><img src="http://advishnuprasad.com/images/blog_1.png" alt="ES1" /></p>
 
 <!-- ![ES1](http://localhost:4000/images/blog_1.png) -->
 
@@ -839,9 +869,9 @@ Please refer <a href="https://pgmodeler.io/support/installation">Official build 
   
   <entry>
     <title type="html"><![CDATA[Elasticsearch Backup and Restore From Azure Blob Storage]]></title>
-    <link href="https://advishnuprasad.com/blog/2017/11/09/elasticsearch-backup-and-restore-from-azure-blob-storage/"/>
+    <link href="http://advishnuprasad.com/blog/2017/11/09/elasticsearch-backup-and-restore-from-azure-blob-storage/"/>
     <updated>2017-11-09T13:00:26-05:00</updated>
-    <id>https://advishnuprasad.com/blog/2017/11/09/elasticsearch-backup-and-restore-from-azure-blob-storage</id>
+    <id>http://advishnuprasad.com/blog/2017/11/09/elasticsearch-backup-and-restore-from-azure-blob-storage</id>
     <content type="html"><![CDATA[<p>Assumptions:</p>
 
 <p>You already have a working ELK cluster (5.x).</p>
@@ -852,7 +882,7 @@ Please refer <a href="https://pgmodeler.io/support/installation">Official build 
 
 <p>Create Storage Account:</p>
 
-<p><img src="https://advishnuprasad.com/images/es1.jpg" alt="ES1" /></p>
+<p><img src="http://advishnuprasad.com/images/es1.jpg" alt="ES1" /></p>
 
 <!-- ![ES1](http://localhost:4000/images/es1.jpg)  -->
 
@@ -861,7 +891,7 @@ Please refer <a href="https://pgmodeler.io/support/installation">Official build 
 
 <p>Get Storage account name and key</p>
 
-<p><img src="https://advishnuprasad.com/images/es2.jpg" alt="ES2" /></p>
+<p><img src="http://advishnuprasad.com/images/es2.jpg" alt="ES2" /></p>
 
 <!-- ![ES2](http://localhost:4000/images/es2.jpg)  -->
 
@@ -877,7 +907,7 @@ Please refer <a href="https://pgmodeler.io/support/installation">Official build 
 <h3>Step 4: Update config</h3>
 
 <p>Go to <code>/etc/elasticsearch/elasticsearch.yml</code>. Add your Azure configuration
-<img src="https://advishnuprasad.com/images/es3.jpg" alt="ES3" /></p>
+<img src="http://advishnuprasad.com/images/es3.jpg" alt="ES3" /></p>
 
 <!-- ![ES3](http://localhost:4000/images/es3.jpg)  -->
 
@@ -919,7 +949,7 @@ Please refer <a href="https://pgmodeler.io/support/installation">Official build 
 
 <p>Go to Storage account. Click on &ldquo;Containers&rdquo; to see the snapshots.</p>
 
-<p><img src="https://advishnuprasad.com/images/es4.jpg" alt="ES4" /></p>
+<p><img src="http://advishnuprasad.com/images/es4.jpg" alt="ES4" /></p>
 
 <!-- ![ES4](http://localhost:4000/images/es4.jpg)  -->
 
@@ -952,9 +982,9 @@ Please refer <a href="https://pgmodeler.io/support/installation">Official build 
   
   <entry>
     <title type="html"><![CDATA[Docker Commands]]></title>
-    <link href="https://advishnuprasad.com/blog/2017/10/31/docker-commands/"/>
+    <link href="http://advishnuprasad.com/blog/2017/10/31/docker-commands/"/>
     <updated>2017-10-31T11:50:54-04:00</updated>
-    <id>https://advishnuprasad.com/blog/2017/10/31/docker-commands</id>
+    <id>http://advishnuprasad.com/blog/2017/10/31/docker-commands</id>
     <content type="html"><![CDATA[<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
@@ -1071,13 +1101,13 @@ Please refer <a href="https://pgmodeler.io/support/installation">Official build 
   
   <entry>
     <title type="html"><![CDATA[Send Hipchat Notifications Using Python]]></title>
-    <link href="https://advishnuprasad.com/blog/2017/03/07/send-hipchat-notifications-using-python/"/>
+    <link href="http://advishnuprasad.com/blog/2017/03/07/send-hipchat-notifications-using-python/"/>
     <updated>2017-03-07T18:57:53+05:30</updated>
-    <id>https://advishnuprasad.com/blog/2017/03/07/send-hipchat-notifications-using-python</id>
+    <id>http://advishnuprasad.com/blog/2017/03/07/send-hipchat-notifications-using-python</id>
     <content type="html"><![CDATA[<p>There might be scenarios where you want to send hipchat notifications programatically.
 Following python script will help you to create notifications in 3 simple steps.</p>
 
-<p><img src="https://advishnuprasad.com/images/hipchat.png" alt="Hipchat Image" />
+<p><img src="http://advishnuprasad.com/images/hipchat.png" alt="Hipchat Image" />
 <sub><sup> * Image credit: google images </sub></sup></p>
 
 <!-- ![Hipchat Image](http://localhost:4000/images/hipchat.png) -->
@@ -1140,9 +1170,9 @@ Following python script will help you to create notifications in 3 simple steps.
   
   <entry>
     <title type="html"><![CDATA[Create Swap Using Ansible in Ubuntu]]></title>
-    <link href="https://advishnuprasad.com/blog/2017/02/22/create-swap-using-ansible-in-ubuntu/"/>
+    <link href="http://advishnuprasad.com/blog/2017/02/22/create-swap-using-ansible-in-ubuntu/"/>
     <updated>2017-02-22T07:03:12+05:30</updated>
-    <id>https://advishnuprasad.com/blog/2017/02/22/create-swap-using-ansible-in-ubuntu</id>
+    <id>http://advishnuprasad.com/blog/2017/02/22/create-swap-using-ansible-in-ubuntu</id>
     <content type="html"><![CDATA[<p>This ansible script will help you to create SWAP memory in a single command.
 Just change this line based on your required memory.</p>
 
@@ -1250,9 +1280,9 @@ Just change this line based on your required memory.</p>
   
   <entry>
     <title type="html"><![CDATA[Encryption at REST]]></title>
-    <link href="https://advishnuprasad.com/blog/2016/09/24/encryption-at-rest/"/>
+    <link href="http://advishnuprasad.com/blog/2016/09/24/encryption-at-rest/"/>
     <updated>2016-09-24T22:04:32+05:30</updated>
-    <id>https://advishnuprasad.com/blog/2016/09/24/encryption-at-rest</id>
+    <id>http://advishnuprasad.com/blog/2016/09/24/encryption-at-rest</id>
     <content type="html"><![CDATA[<p>Already so many people have written about what/why Encryption at REST.
 So I am just going to help you to setup Encryption at REST in ubuntu using luksFormat.
 You can read more about the cryptsetup and LuksFormat <a href="https://wiki.archlinux.org/index.php/Dm-crypt/Device_encryption">here</a></p>
@@ -1304,12 +1334,12 @@ You can read more about the cryptsetup and LuksFormat <a href="https://wiki.arch
   
   <entry>
     <title type="html"><![CDATA[Creating a Postgres Master and Slave Streaming Server With S3 Backup]]></title>
-    <link href="https://advishnuprasad.com/blog/2016/09/05/creating-a-postgres-master-and-slave-streaming-server-with-s3-backup/"/>
+    <link href="http://advishnuprasad.com/blog/2016/09/05/creating-a-postgres-master-and-slave-streaming-server-with-s3-backup/"/>
     <updated>2016-09-05T13:01:13+05:30</updated>
-    <id>https://advishnuprasad.com/blog/2016/09/05/creating-a-postgres-master-and-slave-streaming-server-with-s3-backup</id>
+    <id>http://advishnuprasad.com/blog/2016/09/05/creating-a-postgres-master-and-slave-streaming-server-with-s3-backup</id>
     <content type="html"><![CDATA[<h3>Setup</h3>
 
-<p><img src="https://advishnuprasad.com/images/db.png" alt="API docs image" />
+<p><img src="http://advishnuprasad.com/images/db.png" alt="API docs image" />
 <sub><sup> * Image credit: google images </sub></sup></p>
 
 <h3>Master server setup</h3>
@@ -1485,15 +1515,15 @@ Stop the server before chaning any configurations</p>
   
   <entry>
     <title type="html"><![CDATA[Setup NFS Server and Client Using Ansible]]></title>
-    <link href="https://advishnuprasad.com/blog/2016/03/29/setup-nfs-server-and-client-using-ansible/"/>
+    <link href="http://advishnuprasad.com/blog/2016/03/29/setup-nfs-server-and-client-using-ansible/"/>
     <updated>2016-03-29T18:16:12+05:30</updated>
-    <id>https://advishnuprasad.com/blog/2016/03/29/setup-nfs-server-and-client-using-ansible</id>
+    <id>http://advishnuprasad.com/blog/2016/03/29/setup-nfs-server-and-client-using-ansible</id>
     <content type="html"><![CDATA[<h3>Setup NFS server and client using ansible</h3>
 
 <p>If you have a centralized server and you want to share a disk from the server, the best way is
 to use NFS model.</p>
 
-<p><img src="https://advishnuprasad.com/images/nfs.png" alt="API docs image" /></p>
+<p><img src="http://advishnuprasad.com/images/nfs.png" alt="API docs image" /></p>
 
 <p>You might have to create a server with enough disk space. Let&rsquo;s say you have a disk with file system
 as <code>/dev/xvdb</code> and the size is 100 GB.</p>
@@ -1640,9 +1670,9 @@ as <code>/dev/xvdb</code> and the size is 100 GB.</p>
   
   <entry>
     <title type="html"><![CDATA[SOAP Request From Ruby Without Savon]]></title>
-    <link href="https://advishnuprasad.com/blog/2016/03/25/soap-request-from-ruby-without-savon/"/>
+    <link href="http://advishnuprasad.com/blog/2016/03/25/soap-request-from-ruby-without-savon/"/>
     <updated>2016-03-25T21:11:47+05:30</updated>
-    <id>https://advishnuprasad.com/blog/2016/03/25/soap-request-from-ruby-without-savon</id>
+    <id>http://advishnuprasad.com/blog/2016/03/25/soap-request-from-ruby-without-savon</id>
     <content type="html"><![CDATA[<h3>Send SOAP request from ruby net/http without using Savon gem</h3>
 
 <p>You would have seen everyone is using Savon gem for sending SOAP request. But what if the service is using SOAP 1.1.
@@ -1727,9 +1757,9 @@ You might want to write your own http request. Here is the way to send request w
   
   <entry>
     <title type="html"><![CDATA[Provide Ssh Access to User Using Ansible]]></title>
-    <link href="https://advishnuprasad.com/blog/2016/02/11/add-user/"/>
+    <link href="http://advishnuprasad.com/blog/2016/02/11/add-user/"/>
     <updated>2016-02-11T19:42:30+05:30</updated>
-    <id>https://advishnuprasad.com/blog/2016/02/11/add-user</id>
+    <id>http://advishnuprasad.com/blog/2016/02/11/add-user</id>
     <content type="html"><![CDATA[<h3>How to provide production server access to users using ansible?</h3>
 
 <h4>Assumptions:</h4>
@@ -1804,9 +1834,9 @@ You might want to write your own http request. Here is the way to send request w
   
   <entry>
     <title type="html"><![CDATA[Generate API Documentation Using Rspec Acceptance Tests]]></title>
-    <link href="https://advishnuprasad.com/blog/2016/02/07/api-docs-using-rspecs/"/>
+    <link href="http://advishnuprasad.com/blog/2016/02/07/api-docs-using-rspecs/"/>
     <updated>2016-02-07T11:43:58+05:30</updated>
-    <id>https://advishnuprasad.com/blog/2016/02/07/api-docs-using-rspecs</id>
+    <id>http://advishnuprasad.com/blog/2016/02/07/api-docs-using-rspecs</id>
     <content type="html"><![CDATA[<h4>Step 1:</h4>
 
 <p>Install required gems</p>
@@ -1965,15 +1995,15 @@ You might want to write your own http request. Here is the way to send request w
 
 <p>Now navigate to <code>localhost:3000/docs</code></p>
 
-<p><img src="https://advishnuprasad.com/images/api_doc1.png" alt="API docs image" /></p>
+<p><img src="http://advishnuprasad.com/images/api_doc1.png" alt="API docs image" /></p>
 ]]></content>
   </entry>
   
   <entry>
     <title type="html"><![CDATA[Active Model Serializers]]></title>
-    <link href="https://advishnuprasad.com/blog/2014/11/14/active-model-serializers/"/>
+    <link href="http://advishnuprasad.com/blog/2014/11/14/active-model-serializers/"/>
     <updated>2014-11-14T19:42:22+05:30</updated>
-    <id>https://advishnuprasad.com/blog/2014/11/14/active-model-serializers</id>
+    <id>http://advishnuprasad.com/blog/2014/11/14/active-model-serializers</id>
     <content type="html"><![CDATA[<h3>When to use active model serializer ?</h3>
 
 <p>When you have your app running on both browser and mobile app, and if you have a backend rails server then active model serialiser is a perfect gem for serving APIs.</p>
@@ -2078,9 +2108,9 @@ You might want to write your own http request. Here is the way to send request w
   
   <entry>
     <title type="html"><![CDATA[Multiple Solr Servers in Single Machine]]></title>
-    <link href="https://advishnuprasad.com/blog/2014/04/26/multiple-solrs-in-single-solr-instance/"/>
+    <link href="http://advishnuprasad.com/blog/2014/04/26/multiple-solrs-in-single-solr-instance/"/>
     <updated>2014-04-26T10:52:00+05:30</updated>
-    <id>https://advishnuprasad.com/blog/2014/04/26/multiple-solrs-in-single-solr-instance</id>
+    <id>http://advishnuprasad.com/blog/2014/04/26/multiple-solrs-in-single-solr-instance</id>
     <content type="html"><![CDATA[<h4>Step 1:</h4>
 
 <p>Go to your solr directory.</p>
@@ -2148,9 +2178,9 @@ You might want to write your own http request. Here is the way to send request w
   
   <entry>
     <title type="html"><![CDATA[Fetch Records From Sql Query - Ruby on Rails - Oci8 Cursor]]></title>
-    <link href="https://advishnuprasad.com/blog/2014/03/14/fetch-records-from-sql-query-ruby-on-rails-oci8-cursor/"/>
+    <link href="http://advishnuprasad.com/blog/2014/03/14/fetch-records-from-sql-query-ruby-on-rails-oci8-cursor/"/>
     <updated>2014-03-14T18:50:26+05:30</updated>
-    <id>https://advishnuprasad.com/blog/2014/03/14/fetch-records-from-sql-query-ruby-on-rails-oci8-cursor</id>
+    <id>http://advishnuprasad.com/blog/2014/03/14/fetch-records-from-sql-query-ruby-on-rails-oci8-cursor</id>
     <content type="html"><![CDATA[<p>There might be time when you can&rsquo;t use ActiveRecord finders but have to write custom
 queries to fetch the records.</p>
 
@@ -2195,9 +2225,9 @@ But how to read the records from this cursor?.</p>
   
   <entry>
     <title type="html"><![CDATA[Find Type of the Request in Controller]]></title>
-    <link href="https://advishnuprasad.com/blog/2012/12/15/find-type-of-the-request-in-controller/"/>
+    <link href="http://advishnuprasad.com/blog/2012/12/15/find-type-of-the-request-in-controller/"/>
     <updated>2012-12-15T07:51:00+05:30</updated>
-    <id>https://advishnuprasad.com/blog/2012/12/15/find-type-of-the-request-in-controller</id>
+    <id>http://advishnuprasad.com/blog/2012/12/15/find-type-of-the-request-in-controller</id>
     <content type="html"><![CDATA[<p>Is there any way to find the type of request in controller ?</p>
 
 <h4>Yes.</h4>
@@ -2224,91 +2254,6 @@ But how to read the records from this cursor?.</p>
 
 
 
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Ajax Request in Ruby on Rails (UJS)]]></title>
-    <link href="https://advishnuprasad.com/blog/2012/10/10/ajax-request-in-ruby-on-rails-ujs/"/>
-    <updated>2012-10-10T06:09:19+05:30</updated>
-    <id>https://advishnuprasad.com/blog/2012/10/10/ajax-request-in-ruby-on-rails-ujs</id>
-    <content type="html"><![CDATA[<p>Many programmer uses jquery to catch click event and do $.get or $.post to access the server and print the response in a required div.</p>
-
-<p>But there is a handy way to do ajax request using UJS provided by Rails .</p>
-
-<p>Let us take an example of <code>add to wish list</code> event.</p>
-
-<p>This can be easily achieved in three easy steps.
-Now lets see how to do that in rails using UJS</p>
-
-<h4>Step 1:</h4>
-
-<p>In view(<code>show.haml.html</code>) your may have</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="o">=</span> <span class="n">link_to</span> <span class="s2">&quot;Add to wishlist&quot;</span> <span class="p">,</span> <span class="n">wish_list_path</span><span class="p">(</span><span class="vi">@product</span><span class="p">)</span> <span class="p">,</span><span class="ss">:id</span> <span class="o">=&gt;</span> <span class="s2">&quot;wish_list_link&quot;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Now we make it as ajax request by adding <code>:remote =&gt; true</code></p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="o">=</span> <span class="n">link_to</span> <span class="s2">&quot;Add to wishlist&quot;</span> <span class="p">,</span> <span class="n">wish_list_path</span><span class="p">(</span><span class="vi">@product</span><span class="p">)</span> <span class="p">,</span><span class="ss">:id</span> <span class="o">=&gt;</span> <span class="s2">&quot;wish_list_link&quot;</span> <span class="p">,</span><span class="ss">:remote</span> <span class="o">=&gt;</span> <span class="kp">true</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h4>Step 2:</h4>
-
-<p>Now in controller</p>
-
-<figure class='code'><figcaption><span>products_controller.rb</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">def</span> <span class="nf">wish_list</span>
-</span><span class='line'>  <span class="c1">#adding wish list </span>
-</span><span class='line'>  <span class="n">respond_to</span> <span class="k">do</span> <span class="o">|</span><span class="nb">format</span><span class="o">|</span>
-</span><span class='line'>     <span class="nb">format</span><span class="o">.</span><span class="n">js</span> <span class="c1">#This line is important</span>
-</span><span class='line'>   <span class="k">end</span>
-</span><span class='line'><span class="k">end</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p></p>
-
-<h4>Step 3:</h4>
-
-<p>Now create a file named wish_list.js.erb</p>
-
-<figure class='code'><figcaption><span>wish_list.js.erb</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-</pre></td><td class='code'><pre><code class='erb'><span class='line'><span class="x">$(&quot;#wish_list_link&quot;).html(&#39;&#39;&lt;b&gt;added to wishlist&lt;/b&gt;&quot;);</span>
-</span><span class='line'>
-</span><span class='line'><span class="x"># Lets say you want to render a partial .</span>
-</span><span class='line'>
-</span><span class='line'><span class="x">$(&quot;#wish_list_linkt&quot;).html(&#39;</span><span class="cp">&lt;%=</span> <span class="n">escape_javascript</span><span class="p">(</span><span class="n">render</span> <span class="ss">:partial</span> <span class="o">=&gt;</span> <span class="s2">&quot;wish_list&quot;</span> <span class="p">,</span> <span class="ss">:locals</span> <span class="o">=&gt;</span> <span class="p">{</span> <span class="ss">:product</span> <span class="o">=&gt;</span> <span class="vi">@product</span><span class="p">})</span><span class="cp">%&gt;</span><span class="x">&#39;);</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h4>Step 4(optional):</h4>
-
-<p>You can use jquery to show the loading part while server is responding</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="err">$</span><span class="p">(</span><span class="s2">&quot;#wish_list_link&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">live</span><span class="p">(</span><span class="s2">&quot;click&quot;</span><span class="p">,</span><span class="n">function</span><span class="p">(){</span>
-</span><span class='line'>    <span class="c1">#show_loading_img</span>
-</span><span class='line'><span class="p">})</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>That&rsquo;s it. As simple as that.</p>
 ]]></content>
   </entry>
   

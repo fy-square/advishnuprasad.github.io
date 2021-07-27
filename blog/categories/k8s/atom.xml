@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: K8s | A D Vishnu Prasad]]></title>
-  <link href="https://advishnuprasad.com/blog/categories/k8s/atom.xml" rel="self"/>
-  <link href="https://advishnuprasad.com/"/>
-  <updated>2019-10-01T18:10:13+05:30</updated>
-  <id>https://advishnuprasad.com/</id>
+  <link href="http://advishnuprasad.com/blog/categories/k8s/atom.xml" rel="self"/>
+  <link href="http://advishnuprasad.com/"/>
+  <updated>2021-07-27T10:38:52+05:30</updated>
+  <id>http://advishnuprasad.com/</id>
   <author>
     <name><![CDATA[A D Vishnu Prasad]]></name>
     
@@ -14,10 +14,40 @@
 
   
   <entry>
+    <title type="html"><![CDATA[Cloud Agnostic Microservice Deployment Architecture Using Kubernetes]]></title>
+    <link href="http://advishnuprasad.com/blog/2021/07/27/cloud-agnostic-microservice-deployment-using-kubernetes/"/>
+    <updated>2021-07-27T08:46:34+05:30</updated>
+    <id>http://advishnuprasad.com/blog/2021/07/27/cloud-agnostic-microservice-deployment-using-kubernetes</id>
+    <content type="html"><![CDATA[<p>A typical web app contains the following microservices.</p>
+
+<blockquote><ul>
+<li>API (Flask / FastAPI / Rails)</li>
+<li>Worker (Celery / Sidekiq)</li>
+<li>Frontend (React / Angular)</li>
+<li>Redis (Cache)</li>
+<li>Postgres (Database)</li>
+</ul>
+</blockquote>
+
+<p>We will use kubernetes to deploy these microservices.</p>
+
+<p>We won&rsquo;t use s3 for frontend deployment even though it is easy to deploy cloudfront + s3 combination.
+But then we would have a dependency on s3 which is only available in AWS.
+(You should use s3 if you know AWS is going to be your only cloud)</p>
+
+<h3>Architecture</h3>
+
+<p><img src="/images/k8s-arch.png" alt="Architecture" /></p>
+
+<p>Using this design, you just need kubernetes manifests. You can use the same in any cloud providers.</p>
+]]></content>
+  </entry>
+  
+  <entry>
     <title type="html"><![CDATA[Upgrade Kubernetes Version in AWS EKS]]></title>
-    <link href="https://advishnuprasad.com/blog/2019/09/26/upgrade-kubernetes-version-in-eks/"/>
+    <link href="http://advishnuprasad.com/blog/2019/09/26/upgrade-kubernetes-version-in-eks/"/>
     <updated>2019-09-26T23:55:25+05:30</updated>
-    <id>https://advishnuprasad.com/blog/2019/09/26/upgrade-kubernetes-version-in-eks</id>
+    <id>http://advishnuprasad.com/blog/2019/09/26/upgrade-kubernetes-version-in-eks</id>
     <content type="html"><![CDATA[<p>There are two things you need to do to upgrade Kubernetes in EKS.</p>
 
 <p>Unlike <code>Azure AKS</code> where you can upgrade with a single button, in <code>AWS EKS</code> you need

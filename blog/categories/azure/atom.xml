@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Azure | A D Vishnu Prasad]]></title>
+  <link href="http://advishnuprasad.com/blog/categories/azure/atom.xml" rel="self"/>
+  <link href="http://advishnuprasad.com/"/>
+  <updated>2021-07-27T10:38:52+05:30</updated>
+  <id>http://advishnuprasad.com/</id>
+  <author>
+    <name><![CDATA[A D Vishnu Prasad]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Cloud Agnostic Microservice Deployment Architecture Using Kubernetes]]></title>
+    <link href="http://advishnuprasad.com/blog/2021/07/27/cloud-agnostic-microservice-deployment-using-kubernetes/"/>
+    <updated>2021-07-27T08:46:34+05:30</updated>
+    <id>http://advishnuprasad.com/blog/2021/07/27/cloud-agnostic-microservice-deployment-using-kubernetes</id>
+    <content type="html"><![CDATA[<p>A typical web app contains the following microservices.</p>
+
+<blockquote><ul>
+<li>API (Flask / FastAPI / Rails)</li>
+<li>Worker (Celery / Sidekiq)</li>
+<li>Frontend (React / Angular)</li>
+<li>Redis (Cache)</li>
+<li>Postgres (Database)</li>
+</ul>
+</blockquote>
+
+<p>We will use kubernetes to deploy these microservices.</p>
+
+<p>We won&rsquo;t use s3 for frontend deployment even though it is easy to deploy cloudfront + s3 combination.
+But then we would have a dependency on s3 which is only available in AWS.
+(You should use s3 if you know AWS is going to be your only cloud)</p>
+
+<h3>Architecture</h3>
+
+<p><img src="/images/k8s-arch.png" alt="Architecture" /></p>
+
+<p>Using this design, you just need kubernetes manifests. You can use the same in any cloud providers.</p>
+]]></content>
+  </entry>
+  
+</feed>
