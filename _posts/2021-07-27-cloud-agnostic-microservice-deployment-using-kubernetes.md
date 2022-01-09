@@ -1,9 +1,16 @@
 ---
 layout: post
-title: "Cloud Agnostic Microservice Deployment Architecture Using Kubernetes"
-date: 2021-07-27 08:46:34 +0530
+title: Cloud Agnostic Microservice Deployment Architecture Using Kubernetes
+date: 2022-01-09T13:26:49.004Z
 comments: true
-categories: ["kubernetes", "k8s", "cloud", "aws", "azure"]
+categories:
+  - kubernetes
+  - k8s
+  - cloud
+  - aws
+  - azure
+thumbnail: https://pbs.twimg.com/profile_images/419916558371016705/5ktQ3XkH.jpeg
+rating: 5
 ---
 
 A typical web app contains the following microservices.
