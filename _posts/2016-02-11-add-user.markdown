@@ -1,0 +1,54 @@
+---
+layout: post
+title: "Provide ssh access to user using ansible"
+date: 2016-02-11 19:42:30 +0530
+comments: true
+categories: [devops, ansible, ssh]
+---
+
+### How to provide production server access to users using ansible?
+
+#### Assumptions:
+
+  You have  ssh access to prod servers as Ubuntu user.
+
+##### Ansible Script for adding user
+
+{% raw %}
+```yml add_user.yml
+# ansible-playbook add_user.yml --extra-vars "user=advp key=advp.pub" -i ad
+---
+- hosts: all
+  remote_user: ubuntu
+  become: True
+  become_method: sudo
+  become_user: root
+
+  tasks:
+    - name: Add user
+      user:
+            name="{{ user }}"
+            shell=/bin/bash
+            state=present
+            groups=staff
+            append=yes
+            createhome=yes
+            password=<password SALT>
+            update_password=on_create
+
+    - name: Add keys to the users
+      authorized_key:
+        key="{{ lookup('file', '{{ key }}') }}"
+        user="{{ user }}"
+        state=present
+```
+{% endraw %}
+
+
+#### Add a single user:
+
+```bash
+ansible-playbook add_user.yml --extra-vars "user=advp key=<user/pub/key/path>"  -i inventory/ad
+```
+
+don't forget to change the user and key location in the above command.
